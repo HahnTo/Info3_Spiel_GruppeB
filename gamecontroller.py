@@ -1,6 +1,6 @@
 import pygame
 from level import Level
-
+from player import Player
 
 WIDTH = 600
 HEIGHT = 600
@@ -29,9 +29,9 @@ class GameController:
         self.levels = []
 
         # Alle verschiedenen Sprite Gruppen initialisieren
-        self.all_sprites = pygame.sprite.Group
-        self.player = pygame.sprite.Group
-        self.obstacles = pygame.sprite.Group
+        self.all_sprites = pygame.sprite.Group()
+        self.players = pygame.sprite.Group()
+        self.obstacles = pygame.sprite.Group()
 
 
         self.playing = None
@@ -57,13 +57,14 @@ class GameController:
 
     def draw(self):
         self.screen.fill(BACKGROUND_COLOR)
+        self.all_sprites.draw(self.screen)
 
         # Lädt das komplette Display neu
         pygame.display.flip()
 
 
     def update(self, dt):
-        pass
+        self.all_sprites.update(dt)
 
 
     def play(self):
@@ -71,6 +72,10 @@ class GameController:
         self.add_level(Level(1))
         self.show_level(1)
 
+        player1 = Player(1, 100, 100, (255, 255, 255))
+        player1.add(self.all_sprites, self.players)
+
+        # Gameloop mit allen update ... Funktionen
         while self.playing:
             # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
             self.dt = self.clock.tick(FPS) / 1000

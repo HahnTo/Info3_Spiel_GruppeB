@@ -9,14 +9,17 @@ class Player(pygame.sprite.Sprite):
     Die Physik, Input und Bewegung wird hier implementiert.
     """
 
+    # Größe des Spielers
+    WIDTH = 30
+    HEIGHT = 40
+
     # Physik
     GRAVITY = 0.8
     MOVE_SPEED = 5.0
     JUMP_HEIGHT = -12.0 # Muss negativ sein, weil bei PyGames das Fenster oben links bei (0, 0) anfängt, also y ins negative geht.
+    DUCK_HEIGHT = HEIGHT * 0.8
 
-    # Größe des Spielers
-    WIDTH = 30
-    HEIGHT = 40
+
 
 
     def __init__(self, player_id, start_x, start_y, color):
@@ -47,6 +50,7 @@ class Player(pygame.sprite.Sprite):
 
         # States
         self.on_ground = False
+        self.is_duck = False
         self.is_alive = True
         self.facing_right = True # Wird später für die Texturen und Interaktion mit Gegenständen o.ä. gebraucht.
 
@@ -70,7 +74,7 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         """
-        Der Spieler sprintg, wenn er auf dem Boden ist
+        Der Spieler springt, wenn er auf dem Boden ist
         """
 
         if not self.is_alive:
@@ -80,6 +84,27 @@ class Player(pygame.sprite.Sprite):
             self.velocity.y = self.JUMP_HEIGHT
             self.on_ground = False
 
+    def duck(self):
+        """
+        Der Spieler duckt sich, wenn er auf dem Boden ist
+        Sein Rect (Hitbox) wird etwas kleiner
+        """
+
+        if not self.is_alive or self.is_duck:
+            return
+
+        self.is_duck = True
+        self.rect.height = int(self.DUCK_HEIGHT)
+
+    def stand_up(self):
+        """
+        Lässt den Spieler wieder größer werden, nachdem er sich geduckt hat.
+        """
+        if not self.is_duck:
+            return
+
+        self.is_duck = False
+        self.rect.height = self.HEIGHT
 
     def update(self, dt):
         """

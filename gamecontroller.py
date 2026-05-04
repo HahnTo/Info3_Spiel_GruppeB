@@ -98,12 +98,13 @@ class GameController:
         while self.playing:
             # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
             self.dt = self.clock.tick(FPS) / 1000
+
+            self.events()
             self.update(self.dt)
             for obstacle in self.obstacles:
                 if player1.rect.colliderect(obstacle.rect):
                     player1.stand(obstacle)
-            self.events()
-            
+
             self.draw()
 
             

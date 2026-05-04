@@ -42,6 +42,7 @@ class Player(pygame.sprite.Sprite):
         # Setzt den Player auf seinen Spawn
         self.rect.x = start_x
         self.rect.y = start_y
+        self.prev_rect = self.rect.copy()
         # self.position ist die echte Position, self.rect.x und y sind nur für Kollision und zeichnen notwendig
         self.position = Vector2(start_x, start_y)
 
@@ -115,6 +116,8 @@ class Player(pygame.sprite.Sprite):
         if not self.alive:
             return
 
+        self.prev_rect = self.rect.copy()
+
         # Die Fallgeschwindigkeit(velocity.y) wird jeden Frame leicht erhöht, dadurch entsteht die "Physik"
         if not self.on_ground:
             self.velocity.y += self.GRAVITY
@@ -156,10 +159,11 @@ class Player(pygame.sprite.Sprite):
         self.rect.y = start_y
     
     def stand(self, obstacle):
-        if self.rect.colliderect(obstacle.rect):
+        # Nur wenn der Player von oben kommt
+        if self.prev_rect.bottom <= obstacle.rect.top:
+            self.rect.bottom = obstacle.rect.top
             self.velocity.y = 0
             self.on_ground = True
-
 
 
 

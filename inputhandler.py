@@ -41,7 +41,7 @@ class InputHandler:
         if keys[self.key_bindings["right"]]: player.move(1);
         if keys[self.key_bindings["jump"]]: player.jump();
 
-        if keys[self.key_bindings["duck"]]: player.duck();
+       # if keys[self.key_bindings["duck"]]: player.duck();
         else: player.stand_up()
 
     def save_bindings(self, filepath: str = "config/keybindings.json"):

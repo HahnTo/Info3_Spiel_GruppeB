@@ -155,8 +155,8 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = start_x
         self.rect.y = start_y
     
-    def stand(self, obstacle1):
-        if self.rect.colliderect(obstacle1.rect):
+    def stand(self, obstacle):
+        if self.rect.colliderect(obstacle.rect):
             self.velocity.y = 0
             self.on_ground = True
 

@@ -83,20 +83,27 @@ class GameController:
         self.add_level(Level(1))
         self.show_level(1)
 
-        player1 = Player(1, 100, 100, (255, 255, 255))
-        player1.add(self.all_sprites, self.players)
+        
 
         obstacle1 = Obstacle((255, 0, 255), 600, 20, 0, 580)
         obstacle1.add(self.all_sprites, self.obstacles )
+
+        obstacle2 = Obstacle((0, 0, 255), 100, 20, 300, 540)
+        obstacle2.add(self.all_sprites, self.obstacles)
+
+        player1 = Player(1, 100, 100, (255, 255, 255))
+        player1.add(self.all_sprites, self.players)
 
         # Gameloop mit allen update ... Funktionen
         while self.playing:
             # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
             self.dt = self.clock.tick(FPS) / 1000
-            if player1.rect.colliderect(obstacle1.rect):
-                player1.stand(obstacle1)
-            self.events()
             self.update(self.dt)
+            for obstacle in self.obstacles:
+                if player1.rect.colliderect(obstacle.rect):
+                    player1.stand(obstacle)
+            self.events()
+            
             self.draw()
 
             

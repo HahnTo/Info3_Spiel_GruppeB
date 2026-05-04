@@ -3,6 +3,7 @@ from pygame import Vector2
 from typing import Literal
 
 
+
 class Player(pygame.sprite.Sprite):
     """
     Erstellt die Spieler in Mole Escape.
@@ -115,7 +116,8 @@ class Player(pygame.sprite.Sprite):
             return
 
         # Die Fallgeschwindigkeit(velocity.y) wird jeden Frame leicht erhöht, dadurch entsteht die "Physik"
-        self.velocity.y += self.GRAVITY
+        if not self.on_ground:
+            self.velocity.y += self.GRAVITY
 
         # Position updaten
         self.position.x += self.velocity.x
@@ -153,6 +155,14 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = start_x
         self.rect.y = start_y
     
+    def stand(self, obstacle1):
+        if self.rect.colliderect(obstacle1.rect):
+            self.velocity.y = 0
+            self.on_ground = True
+
+
+
+
     #Funktion  zum checken von Kollisionen
     #Funktion zum checken ob on Ground -> wenn unten Kollision Player onground true
     #in Player update wenn onground true dann y position unten gleich y position oben von Floor

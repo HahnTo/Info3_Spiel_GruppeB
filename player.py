@@ -128,6 +128,12 @@ class Player(pygame.sprite.Sprite):
         # Bewegung in x Richtung wieder zurücksetzten
         self.velocity.x = 0
 
+        
+
+
+        
+            
+
 
     def die(self):
         """
@@ -146,3 +152,9 @@ class Player(pygame.sprite.Sprite):
         self.position = Vector2(start_x, start_y)
         self.rect.x = start_x
         self.rect.y = start_y
+    
+    #Funktion  zum checken von Kollisionen
+    #Funktion zum checken ob on Ground -> wenn unten Kollision Player onground true
+    #in Player update wenn onground true dann y position unten gleich y position oben von Floor
+
+    #oder: wenn Kollision unten und non lethal dann yPosition Player unten gleich yPosition Ground oben

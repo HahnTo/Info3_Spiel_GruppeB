@@ -1,6 +1,7 @@
 import pygame
 from level import Level
 from player import Player
+from obstacle import Obstacle
 
 WIDTH = 600
 HEIGHT = 600
@@ -65,6 +66,7 @@ class GameController:
 
     def update(self, dt):
         self.all_sprites.update(dt)
+        
 
 
     def play(self):
@@ -75,6 +77,9 @@ class GameController:
         player1 = Player(1, 100, 100, (255, 255, 255))
         player1.add(self.all_sprites, self.players)
 
+        obstacle1 = Obstacle((255, 0, 255), 600, 20, 0, 580)
+        obstacle1.add(self.all_sprites, self.obstacles )
+
         # Gameloop mit allen update ... Funktionen
         while self.playing:
             # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
@@ -82,6 +87,7 @@ class GameController:
             self.events()
             self.update(self.dt)
             self.draw()
+            
 
 
 gc = GameController()

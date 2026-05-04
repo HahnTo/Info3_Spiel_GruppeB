@@ -1,4 +1,6 @@
 import pygame
+
+from inputhandler import InputHandler
 from level import Level
 from player import Player
 from obstacle import Obstacle
@@ -38,6 +40,11 @@ class GameController:
         self.playing = None
         self.running = True
 
+
+        self.input_handler = InputHandler()
+
+
+
     def add_level(self, level):
         self.levels.append(level)
 
@@ -55,6 +62,8 @@ class GameController:
                 if self.playing:
                     self.playing = False
                 self.running = False
+
+        self.input_handler.get_input(self.players.sprites()[0])
 
     def draw(self):
         self.screen.fill(BACKGROUND_COLOR)

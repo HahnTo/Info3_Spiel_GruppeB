@@ -1,6 +1,7 @@
 # Hier sollten alle Inputs behandelt werden. Eventuell auch custom keybindings
 
 import pygame
+from gamecontroller import Gamecontroller 
 
 
 class InputHandler:
@@ -44,7 +45,15 @@ class InputHandler:
             player.move(1)
         if keys[self.key_bindings["jump"]]:
             player.jump()
+    
+    def get_menuinput(self, gc:Gamecontroller):
 
+        keys = pygame.key.get_pressed()
+
+        if keys[self.key_bindings["jump"]]:
+            gc.playing = True
+            return True
+        return False
     def save_bindings(self, filepath: str = "config/keybindings.json"):
         """
         Speichert die neu gesetzten Bindings.

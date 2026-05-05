@@ -32,6 +32,9 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__()
 
+        self.start_x = start_x
+        self.start_y = start_y
+
         self.player_id = player_id
 
         # Das Rechteck und die Farbe für den Player
@@ -123,12 +126,12 @@ class Player(pygame.sprite.Sprite):
         self.velocity = Vector2((0,0))
 
 
-    def respawn(self, start_x, start_y):
+    def respawn(self):
         """
         Spieler wird zurückgesetzt und auf den Spawn teleportiert.
         """
         self.is_alive = True
         self.facing_right = True
-        self.position = Vector2(start_x, start_y)
-        self.rect.x = start_x
-        self.rect.y = start_y
+        self.rect.x = self.start_x
+        self.rect.y = self.start_y
+        self.position = Vector2(self.start_x, self.start_y)

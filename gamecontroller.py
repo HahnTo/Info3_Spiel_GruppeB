@@ -10,6 +10,9 @@ HEIGHT = 720
 
 TITLE = "Mole Escape"
 
+pygame.font.init()
+FONT = pygame.font.SysFont("Arial", 48)
+
 FPS = 60
 
 BACKGROUND_COLOR = (0, 255, 0)
@@ -38,6 +41,7 @@ class GameController:
 
 
         self.playing = True
+        self.menu = None
 
 
         self.input_handler = InputHandler()
@@ -115,8 +119,20 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
+    def draw_menu(self):
+        self.screen.fill(BACKGROUND_COLOR)
+        text_surf = FONT.render("Penis", False, (255,255,255))
+        self.screen.blit(text_surf,(500,300))
+        pygame.display.flip()
 
-    def play(self):
+        
+
+        
+
+
+
+
+    def run(self):
         self.playing = True
         self.add_level(Level(1))
         self.show_level(1)
@@ -150,9 +166,9 @@ class GameController:
                 self.update(self.dt)
                 self.draw()
             else:
-                self.all_sprites.empty
-                self.screen.fill(BACKGROUND_COLOR)
-                pygame.display.flip()
+                if self.input_handler.get_menuinput(self):
+                    player1.respawn()
+                self.draw_menu()
 
 
 
@@ -163,6 +179,6 @@ class GameController:
 
 gc = GameController()
 
-gc.play()
+gc.run()
 
 

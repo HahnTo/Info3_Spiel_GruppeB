@@ -86,7 +86,7 @@ class Player(pygame.sprite.Sprite):
             self.velocity.y = self.JUMP_HEIGHT
             self.on_ground = False
 
-    def update(self, dt, obstacles):
+    def update(self, dt):
         """
                 Position des Spielers updaten
         """
@@ -101,16 +101,14 @@ class Player(pygame.sprite.Sprite):
         # Horizontale Bewegung
         self.position.x += self.velocity.x
         self.rect.x = int(self.position.x)
-        self.check_horizontal_collision(obstacles)
 
         # Vertikale Bewegung
         self.position.y += self.velocity.y
         self.rect.y = int(self.position.y)
 
-        self.on_ground = False
-        self.check_vertical_collision(obstacles)
-
         # Bewegung in x Richtung zurücksetzen
+        self.on_ground = False
+
         self.velocity.x = 0
 
 
@@ -131,33 +129,3 @@ class Player(pygame.sprite.Sprite):
         self.position = Vector2(start_x, start_y)
         self.rect.x = start_x
         self.rect.y = start_y
-
-    def check_horizontal_collision(self, obstacles):
-
-        collider_group = pygame.sprite.spritecollide(self, obstacles, False)
-        for obstacle in collider_group:
-            if self.velocity.x < 0:     # Bewegt sich nach links, also muss er an dem rechten Ende vo, Obstacle stehen bleiben.
-                self.rect.left = obstacle.rect.right
-                self.position.x = self.rect.x
-                self.velocity.x = 0
-
-            elif self.velocity.x > 0:   # Bewegt sich nach rechts
-                self.rect.right = obstacle.rect.left
-                self.position.x = self.rect.x
-                self.velocity.x = 0
-
-
-    def check_vertical_collision(self, obstacles):
-
-        collider_group = pygame.sprite.spritecollide(self, obstacles, False)
-        for obstacle in collider_group:
-            if self.velocity.y < 0:
-                self.rect.top = obstacle.rect.bottom
-                self.position.y = self.rect.y
-                self.velocity.y = 0
-
-            elif self.velocity.y > 0:
-                self.rect.bottom = obstacle.rect.top
-                self.on_ground = True
-                self.position.y = self.rect.y
-                self.velocity.y = 0

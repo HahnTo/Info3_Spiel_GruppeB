@@ -75,11 +75,48 @@ class GameController:
 
     def update(self, dt):
         for sprite in self.all_sprites:
-            if sprite in self.players:
-                sprite.update(dt, self.obstacles)   # Es müssen obstacles für die Kollission übergeben werden.
-            else:
+            if not sprite in self.players:
                 sprite.update(dt)
 
+        for player in self.players:
+            player.update(dt)
+            self.check_horizontal_collision(player, self.obstacles)
+            self.check_vertical_collision(player, self.obstacles)
+
+    def check_horizontal_collision(self, player, obstacles):
+
+        collider_group = pygame.sprite.spritecollide(player, obstacles, False)
+        for obstacle in collider_group:
+            if obstacle.is_goal:
+                pygame.quit()
+
+            if player.velocity.x < 0:     # Bewegt sich nach links, also muss er an dem rechten Ende vo, Obstacle stehen bleiben.
+                player.rect.left = obstacle.rect.right
+                player.position.x = player.rect.x
+                player.velocity.x = 0
+            elif player.velocity.x > 0:   # Bewegt sich nach rechts
+                player.rect.right = obstacle.rect.left
+                player.position.x = player.rect.x
+                player.velocity.x = 0
+
+
+    def check_vertical_collision(self, player, obstacles):
+
+        collider_group = pygame.sprite.spritecollide(player, obstacles, False)
+        for obstacle in collider_group:
+            if obstacle.is_goal:
+                pygame.quit()
+
+            if player.velocity.y < 0:
+                player.rect.top = obstacle.rect.bottom
+                player.position.y = player.rect.y
+                player.velocity.y = 0
+
+            elif player.velocity.y > 0:
+                player.rect.bottom = obstacle.rect.top
+                player.on_ground = True
+                player.position.y = player.rect.y
+                player.velocity.y = 0
 
 
     def play(self):
@@ -97,11 +134,12 @@ class GameController:
         frame_floor = Obstacle((255, 0, 255), WIDTH, 20, 0, HEIGHT-20)
         frame_floor.add(self.all_sprites, self.obstacles )
 
-        obstacle2 = Obstacle((0, 0, 255), 100, 20, 300, 540)
+        obstacle2 = Obstacle((0, 0, 255), 100, 20, 300, HEIGHT-100)
         obstacle2.add(self.all_sprites, self.obstacles)
 
-        obstacle3 = Obstacle((0, 0, 255), 100, 20, 300, 450)
-        obstacle3.add(self.all_sprites, self.obstacles)
+        goal_obstacle = Obstacle((255, 0, 0), 50, 50, WIDTH-50, HEIGHT-70, True)
+        goal_obstacle.add(self.all_sprites, self.obstacles)
+
 
         player1 = Player(1, 100, 100, (255, 255, 255))
         player1.add(self.all_sprites, self.players)

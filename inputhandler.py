@@ -1,7 +1,6 @@
 # Hier sollten alle Inputs behandelt werden. Eventuell auch custom keybindings
 
 import pygame
-from gamecontroller import Gamecontroller 
 
 
 class InputHandler:
@@ -46,7 +45,7 @@ class InputHandler:
         if keys[self.key_bindings["jump"]]:
             player.jump()
     
-    def get_menuinput(self, gc:Gamecontroller):
+    def get_menuinput(self, gc):
 
         keys = pygame.key.get_pressed()
 

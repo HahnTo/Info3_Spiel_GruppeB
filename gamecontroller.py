@@ -77,46 +77,44 @@ class GameController:
         for sprite in self.all_sprites:
             if not sprite in self.players:
                 sprite.update(dt)
+            else:
+                sprite.update(dt, self)
 
-        for player in self.players:
-            player.update(dt)
-            self.check_horizontal_collision(player, self.obstacles)
-            self.check_vertical_collision(player, self.obstacles)
 
-    def check_horizontal_collision(self, player, obstacles):
+    def check_horizontal_collision(self, player):
 
-        collider_group = pygame.sprite.spritecollide(player, obstacles, False)
+        collider_group = pygame.sprite.spritecollide(player, self.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
-                pygame.quit()
+                pass
+            else:
+                if player.velocity.x < 0:     # Bewegt sich nach links, also muss er an dem rechten Ende vo, Obstacle stehen bleiben.
+                    player.rect.left = obstacle.rect.right
+                    player.position.x = player.rect.x
+                    player.velocity.x = 0
+                elif player.velocity.x > 0:   # Bewegt sich nach rechts
+                    player.rect.right = obstacle.rect.left
+                    player.position.x = player.rect.x
+                    player.velocity.x = 0
 
-            if player.velocity.x < 0:     # Bewegt sich nach links, also muss er an dem rechten Ende vo, Obstacle stehen bleiben.
-                player.rect.left = obstacle.rect.right
-                player.position.x = player.rect.x
-                player.velocity.x = 0
-            elif player.velocity.x > 0:   # Bewegt sich nach rechts
-                player.rect.right = obstacle.rect.left
-                player.position.x = player.rect.x
-                player.velocity.x = 0
 
+    def check_vertical_collision(self, player):
 
-    def check_vertical_collision(self, player, obstacles):
-
-        collider_group = pygame.sprite.spritecollide(player, obstacles, False)
+        collider_group = pygame.sprite.spritecollide(player, self.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
-                pygame.quit()
+                pass
+            else:
+                if player.velocity.y < 0:
+                    player.rect.top = obstacle.rect.bottom
+                    player.position.y = player.rect.y
+                    player.velocity.y = 0
 
-            if player.velocity.y < 0:
-                player.rect.top = obstacle.rect.bottom
-                player.position.y = player.rect.y
-                player.velocity.y = 0
-
-            elif player.velocity.y > 0:
-                player.rect.bottom = obstacle.rect.top
-                player.on_ground = True
-                player.position.y = player.rect.y
-                player.velocity.y = 0
+                elif player.velocity.y > 0:
+                    player.rect.bottom = obstacle.rect.top
+                    player.on_ground = True
+                    player.position.y = player.rect.y
+                    player.velocity.y = 0
 
 
     def play(self):

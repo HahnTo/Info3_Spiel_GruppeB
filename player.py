@@ -86,7 +86,7 @@ class Player(pygame.sprite.Sprite):
             self.velocity.y = self.JUMP_HEIGHT
             self.on_ground = False
 
-    def update(self, dt):
+    def update(self, dt, gc):
         """
                 Position des Spielers updaten
         """
@@ -101,13 +101,16 @@ class Player(pygame.sprite.Sprite):
         # Horizontale Bewegung
         self.position.x += self.velocity.x
         self.rect.x = int(self.position.x)
+        gc.check_horizontal_collision(self)
 
         # Vertikale Bewegung
         self.position.y += self.velocity.y
         self.rect.y = int(self.position.y)
 
-        # Bewegung in x Richtung zurücksetzen
         self.on_ground = False
+        gc.check_vertical_collision(self)
+
+        # Bewegung in x Richtung zurücksetzen
 
         self.velocity.x = 0
 

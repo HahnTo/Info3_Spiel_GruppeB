@@ -37,7 +37,7 @@ class GameController:
         self.obstacles = pygame.sprite.Group()
 
 
-        self.playing = None
+        self.playing = True
 
 
         self.input_handler = InputHandler()
@@ -85,7 +85,7 @@ class GameController:
         collider_group = pygame.sprite.spritecollide(player, self.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
-                pass
+                self.playing = False
             else:
                 if player.velocity.x < 0:     # Bewegt sich nach links, also muss er an dem rechten Ende vo, Obstacle stehen bleiben.
                     player.rect.left = obstacle.rect.right
@@ -102,7 +102,7 @@ class GameController:
         collider_group = pygame.sprite.spritecollide(player, self.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
-                pass
+                self.playing = False
             else:
                 if player.velocity.y < 0:
                     player.rect.top = obstacle.rect.bottom
@@ -147,9 +147,14 @@ class GameController:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
             if self.playing:
-                
                 self.update(self.dt)
                 self.draw()
+            else:
+                self.all_sprites.empty
+                self.screen.fill(BACKGROUND_COLOR)
+                pygame.display.flip()
+
+
 
             
             

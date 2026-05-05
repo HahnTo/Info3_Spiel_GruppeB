@@ -38,7 +38,6 @@ class GameController:
 
 
         self.playing = None
-        self.running = True
 
 
         self.input_handler = InputHandler()
@@ -59,9 +58,9 @@ class GameController:
         for event in pygame.event.get():
             # Checkt, ob das Fenster geschlossen wird
             if event.type == pygame.QUIT:
-                if self.playing:
-                    self.playing = False
-                self.running = False
+                pygame.quit()
+                exit()
+                
 
         self.input_handler.get_input(self.players.sprites()[0])
 
@@ -143,13 +142,14 @@ class GameController:
         player1.add(self.all_sprites, self.players)
 
         # Gameloop mit allen update ... Funktionen
-        while self.playing:
+        while True:
             # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
             self.dt = self.clock.tick(FPS) / 1000
-
             self.events()
-            self.update(self.dt)
-            self.draw()
+            if self.playing:
+                
+                self.update(self.dt)
+                self.draw()
 
             
             

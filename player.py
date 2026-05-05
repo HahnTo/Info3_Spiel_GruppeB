@@ -42,7 +42,6 @@ class Player(pygame.sprite.Sprite):
         # Setzt den Player auf seinen Spawn
         self.rect.x = start_x
         self.rect.y = start_y
-        self.prev_rect = self.rect.copy()
         # self.position ist die echte Position, self.rect.x und y sind nur für Kollision und zeichnen notwendig
         self.position = Vector2(start_x, start_y)
 
@@ -74,6 +73,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.facing_right = False
 
+
     def jump(self):
         """
         Der Spieler springt, wenn er auf dem Boden ist
@@ -86,58 +86,32 @@ class Player(pygame.sprite.Sprite):
             self.velocity.y = self.JUMP_HEIGHT
             self.on_ground = False
 
-    def duck(self):
+    def update(self, dt, obstacles):
         """
-        Der Spieler duckt sich, wenn er auf dem Boden ist
-        Sein Rect (Hitbox) wird etwas kleiner
-        """
-
-        if not self.is_alive or self.is_duck:
-            return
-
-        self.is_duck = True
-        self.rect.height = int(self.DUCK_HEIGHT)
-
-    def stand_up(self):
-        """
-        Lässt den Spieler wieder größer werden, nachdem er sich geduckt hat.
-        """
-        if not self.is_duck:
-            return
-
-        self.is_duck = False
-        self.rect.height = self.HEIGHT
-
-    def update(self, dt):
-        """
-        Position des Spielers updaten
+                Position des Spielers updaten
         """
 
         if not self.alive:
             return
 
-        self.prev_rect = self.rect.copy()
-
         # Die Fallgeschwindigkeit(velocity.y) wird jeden Frame leicht erhöht, dadurch entsteht die "Physik"
         if not self.on_ground:
             self.velocity.y += self.GRAVITY
 
-        # Position updaten
+        # Horizontale Bewegung
         self.position.x += self.velocity.x
-        self.position.y += self.velocity.y
-
-        # rects müssen als Position Integer haben, die Position kann aber durch Gravity float sein.
         self.rect.x = int(self.position.x)
+        self.check_horizontal_collision(obstacles)
+
+        # Vertikale Bewegung
+        self.position.y += self.velocity.y
         self.rect.y = int(self.position.y)
 
-        # Bewegung in x Richtung wieder zurücksetzten
+        self.on_ground = False
+        self.check_vertical_collision(obstacles)
+
+        # Bewegung in x Richtung zurücksetzen
         self.velocity.x = 0
-
-        
-
-
-        
-            
 
 
     def die(self):
@@ -157,18 +131,33 @@ class Player(pygame.sprite.Sprite):
         self.position = Vector2(start_x, start_y)
         self.rect.x = start_x
         self.rect.y = start_y
-    
-    def stand(self, obstacle):
-        # Nur wenn der Player von oben kommt
-        if self.prev_rect.bottom <= obstacle.rect.top:
-            self.rect.bottom = obstacle.rect.top
-            self.velocity.y = 0
-            self.on_ground = True
+
+    def check_horizontal_collision(self, obstacles):
+
+        collider_group = pygame.sprite.spritecollide(self, obstacles, False)
+        for obstacle in collider_group:
+            if self.velocity.x < 0:     # Bewegt sich nach links, also muss er an dem rechten Ende vo, Obstacle stehen bleiben.
+                self.rect.left = obstacle.rect.right
+                self.position.x = self.rect.x
+                self.velocity.x = 0
+
+            elif self.velocity.x > 0:   # Bewegt sich nach rechts
+                self.rect.right = obstacle.rect.left
+                self.position.x = self.rect.x
+                self.velocity.x = 0
 
 
+    def check_vertical_collision(self, obstacles):
 
-    #Funktion  zum checken von Kollisionen
-    #Funktion zum checken ob on Ground -> wenn unten Kollision Player onground true
-    #in Player update wenn onground true dann y position unten gleich y position oben von Floor
+        collider_group = pygame.sprite.spritecollide(self, obstacles, False)
+        for obstacle in collider_group:
+            if self.velocity.y < 0:
+                self.rect.top = obstacle.rect.bottom
+                self.position.y = self.rect.y
+                self.velocity.y = 0
 
-    #oder: wenn Kollision unten und non lethal dann yPosition Player unten gleich yPosition Ground oben
+            elif self.velocity.y > 0:
+                self.rect.bottom = obstacle.rect.top
+                self.on_ground = True
+                self.position.y = self.rect.y
+                self.velocity.y = 0

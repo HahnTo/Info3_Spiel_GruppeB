@@ -13,7 +13,6 @@ class InputHandler:
         "left": pygame.K_a,
         "right": pygame.K_d,
         "jump": pygame.K_w,
-        "duck": pygame.K_s
     }
 
     def __init__(self):
@@ -35,14 +34,16 @@ class InputHandler:
         """
         Behandelt die Eingabe der Tastatur
         """
+
+
         keys = pygame.key.get_pressed()
 
-        if keys[self.key_bindings["left"]]: player.move(-1);
-        if keys[self.key_bindings["right"]]: player.move(1);
-        if keys[self.key_bindings["jump"]]: player.jump();
-
-       # if keys[self.key_bindings["duck"]]: player.duck();
-        else: player.stand_up()
+        if keys[self.key_bindings["left"]]:
+            player.move(-1)
+        if keys[self.key_bindings["right"]]:
+            player.move(1)
+        if keys[self.key_bindings["jump"]]:
+            player.jump()
 
     def save_bindings(self, filepath: str = "config/keybindings.json"):
         """

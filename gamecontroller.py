@@ -5,8 +5,8 @@ from level import Level
 from player import Player
 from obstacle import Obstacle
 
-WIDTH = 600
-HEIGHT = 600
+WIDTH = 1080
+HEIGHT = 720
 
 TITLE = "Mole Escape"
 
@@ -74,8 +74,12 @@ class GameController:
 
 
     def update(self, dt):
-        self.all_sprites.update(dt)
-        
+        for sprite in self.all_sprites:
+            if sprite in self.players:
+                sprite.update(dt, self.obstacles)   # Es müssen obstacles für die Kollission übergeben werden.
+            else:
+                sprite.update(dt)
+
 
 
     def play(self):
@@ -83,13 +87,21 @@ class GameController:
         self.add_level(Level(1))
         self.show_level(1)
 
-        
 
-        obstacle1 = Obstacle((255, 0, 255), 600, 20, 0, 580)
-        obstacle1.add(self.all_sprites, self.obstacles )
+        frame_wall_left = Obstacle((255, 0, 0), 10, HEIGHT, -10, 0)
+        frame_wall_left.add(self.all_sprites, self.obstacles)
+
+        frame_wall_right = Obstacle((255, 0, 0), 10, HEIGHT, WIDTH, 0)
+        frame_wall_right.add(self.all_sprites, self.obstacles)
+
+        frame_floor = Obstacle((255, 0, 255), WIDTH, 20, 0, HEIGHT-20)
+        frame_floor.add(self.all_sprites, self.obstacles )
 
         obstacle2 = Obstacle((0, 0, 255), 100, 20, 300, 540)
         obstacle2.add(self.all_sprites, self.obstacles)
+
+        obstacle3 = Obstacle((0, 0, 255), 100, 20, 300, 450)
+        obstacle3.add(self.all_sprites, self.obstacles)
 
         player1 = Player(1, 100, 100, (255, 255, 255))
         player1.add(self.all_sprites, self.players)
@@ -101,10 +113,6 @@ class GameController:
 
             self.events()
             self.update(self.dt)
-            for obstacle in self.obstacles:
-                if player1.rect.colliderect(obstacle.rect):
-                    player1.stand(obstacle)
-
             self.draw()
 
             

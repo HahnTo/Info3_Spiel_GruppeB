@@ -1,6 +1,4 @@
 import pygame
-from pygame import Vector2
-from typing import Literal
 
 class Obstacle(pygame.sprite.Sprite):
 

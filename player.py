@@ -135,3 +135,5 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = self.start_x
         self.rect.y = self.start_y
         self.position = Vector2(self.start_x, self.start_y)
+        self.velocity.x = 0
+        self.velocity.y = 0

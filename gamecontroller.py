@@ -5,6 +5,7 @@ from level import Level
 from player import Player
 from obstacle import Obstacle
 from button import Button
+from endmenu import EndMenu
 
 WIDTH = 1080
 HEIGHT = 720
@@ -120,13 +121,13 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
-    def draw_menu(self):
-        self.screen.fill(BACKGROUND_COLOR)
-        #text_surf = FONT.render("Penis", False, (255,255,255))
-        #self.screen.blit(text_surf,(500,300))
-        self.button1 = Button('Neustart', 48, (300,300))
-        self.button1.draw(self.screen)
-        pygame.display.flip()
+    #def draw_menu(self):
+        #self.screen.fill(BACKGROUND_COLOR)
+        ##text_surf = FONT.render("Penis", False, (255,255,255))
+        ##self.screen.blit(text_surf,(500,300))
+        #self.button1 = Button('Neustart', 48, (300,300))
+        #self.button1.draw(self.screen)
+        #pygame.display.flip()
 
 
         
@@ -161,6 +162,8 @@ class GameController:
         player1 = Player(1, 100, 100, (255, 255, 255))
         player1.add(self.all_sprites, self.players)
 
+        end_menu = EndMenu(self.screen)
+
         # Gameloop mit allen update ... Funktionen
         while True:
             # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
@@ -170,8 +173,9 @@ class GameController:
                 self.update(self.dt)
                 self.draw()
             else:
-                self.draw_menu()
-                if  self.button1.is_pressed():
+                end_menu.draw()
+                pygame.display.flip()
+                if  end_menu.buttons[0].is_pressed():
                     self.playing = True
                     player1.respawn()
 

@@ -4,6 +4,7 @@ from inputhandler import InputHandler
 from level import Level
 from player import Player
 from obstacle import Obstacle
+from button import Button
 
 WIDTH = 1080
 HEIGHT = 720
@@ -121,9 +122,12 @@ class GameController:
 
     def draw_menu(self):
         self.screen.fill(BACKGROUND_COLOR)
-        text_surf = FONT.render("Penis", False, (255,255,255))
-        self.screen.blit(text_surf,(500,300))
+        #text_surf = FONT.render("Penis", False, (255,255,255))
+        #self.screen.blit(text_surf,(500,300))
+        self.button1 = Button('Neustart', 48, (300,300))
+        self.button1.draw(self.screen)
         pygame.display.flip()
+
 
         
 
@@ -166,9 +170,10 @@ class GameController:
                 self.update(self.dt)
                 self.draw()
             else:
-                if self.input_handler.get_menuinput(self):
-                    player1.respawn()
                 self.draw_menu()
+                if  self.button1.is_pressed():
+                    self.playing = True
+                    player1.respawn()
 
 
 

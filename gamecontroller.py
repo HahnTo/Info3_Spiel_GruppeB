@@ -7,6 +7,12 @@ from obstacle import Obstacle
 from button import Button
 from endmenu import EndMenu
 
+#mögliche Änderungen: Gamestates für Level, Startscreen und Endscreen,
+#jede Klasse bekommt eigene Update und Render Funktion
+#Hier im Gamecontroller dann nur noch Gamestates switchen und je nach State Update und Render Funktionen
+#der jeweiligen Klasse aufrufen
+
+
 WIDTH = 1080
 HEIGHT = 720
 
@@ -87,7 +93,8 @@ class GameController:
 
 
     def check_horizontal_collision(self, player):
-
+        #Name passt nicht so ganz weil mehr gemacht wird als Kollision checken, Player Movement wird beeinflusst
+        #Wahrscheinlich Kollision und Movement Beeinflussung seperat, maybe Movement Beeinflussung dann im Player
         collider_group = pygame.sprite.spritecollide(player, self.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
@@ -142,7 +149,7 @@ class GameController:
         self.add_level(Level(1))
         self.show_level(1)
 
-
+        #auslagern in Level
         frame_wall_left = Obstacle((255, 0, 0), 10, HEIGHT, -10, 0)
         frame_wall_left.add(self.all_sprites, self.obstacles)
 
@@ -165,6 +172,7 @@ class GameController:
         end_menu = EndMenu(self.screen)
 
         # Gameloop mit allen update ... Funktionen
+        #Gamestates benutzen statt if else
         while True:
             # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
             self.dt = self.clock.tick(FPS) / 1000

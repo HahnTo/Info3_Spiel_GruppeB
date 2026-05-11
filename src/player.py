@@ -94,7 +94,7 @@ class Player(pygame.sprite.Sprite):
                 Position des Spielers updaten
         """
 
-        if not self.alive:
+        if not self.is_alive:
             return
 
         # Die Fallgeschwindigkeit(velocity.y) wird jeden Frame leicht erhöht, dadurch entsteht die "Physik"
@@ -135,3 +135,5 @@ class Player(pygame.sprite.Sprite):
         self.rect.x = self.start_x
         self.rect.y = self.start_y
         self.position = Vector2(self.start_x, self.start_y)
+        self.velocity.x = 0
+        self.velocity.y = 0

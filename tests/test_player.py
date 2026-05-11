@@ -2,7 +2,7 @@ import pygame
 import pytest
 from pygame import Vector2
 
-from player import Player
+from src.player import Player
 
 
 # Dummy GameController für den update Aufruf

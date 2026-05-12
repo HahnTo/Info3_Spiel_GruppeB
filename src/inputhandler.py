@@ -13,6 +13,7 @@ class InputHandler:
         "left1": pygame.K_a,
         "right1": pygame.K_d,
         "jump1": pygame.K_w,
+
         "left2": pygame.K_LEFT,
         "right2": pygame.K_RIGHT,
         "jump2": pygame.K_UP
@@ -55,13 +56,19 @@ class InputHandler:
                     player.jump()
     
     def get_menuinput(self, gc):
+        """
+        Verarbeitet den Input in den Menus
+        """
+        # Noch ist es nur mit einem Klick geregelt.
 
-        keys = pygame.key.get_pressed()
 
-        if keys[self.key_bindings["jump"]]:
-            gc.playing = True
-            return True
-        return False
+        # keys = pygame.key.get_pressed()
+        #
+        # if keys[self.key_bindings["jump"]]:
+        #     gc.playing = True
+        #     return True
+        # return False
+
     def save_bindings(self, filepath: str = "config/keybindings.json"):
         """
         Speichert die neu gesetzten Bindings.

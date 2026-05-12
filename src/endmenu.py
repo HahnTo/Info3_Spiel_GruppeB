@@ -17,7 +17,7 @@ class EndMenu:
 
     def create_buttons(self):
         self.buttons.append(Button('Neustart',48, (300,300)))
-        self.buttons.append(Button('End Game',48, (200,300)))
+        
 
 
     

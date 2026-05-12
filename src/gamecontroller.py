@@ -40,7 +40,6 @@ class GameController:
         self.clock = pygame.time.Clock()
         self.dt = 0
 
-        self.levels = []
 
         # Alle verschiedenen Sprite Gruppen initialisieren
         self.all_sprites = pygame.sprite.Group()
@@ -56,15 +55,6 @@ class GameController:
 
 
 
-    def add_level(self, level):
-        self.levels.append(level)
-
-    def show_level(self, level=1):
-        try:
-            self.levels[level-1].load()
-        except IndexError as e:
-            print(e)
-            print("Level nicht vorhanden")
 
     def events(self):
         for event in pygame.event.get():
@@ -127,26 +117,9 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
-    #def draw_menu(self):
-        #self.screen.fill(BACKGROUND_COLOR)
-        ##text_surf = FONT.render("Penis", False, (255,255,255))
-        ##self.screen.blit(text_surf,(500,300))
-        #self.button1 = Button('Neustart', 48, (300,300))
-        #self.button1.draw(self.screen)
-        #pygame.display.flip()
-
-
-        
-
-        
-
-
-
 
     def run(self):
         self.playing = True
-        self.add_level(Level(1))
-        self.show_level(1)
 
         #auslagern in Level
         frame_wall_left = Obstacle((255, 0, 0), 10, HEIGHT, -10, 0)
@@ -155,17 +128,60 @@ class GameController:
         frame_wall_right = Obstacle((255, 0, 0), 10, HEIGHT, WIDTH, 0)
         frame_wall_right.add(self.all_sprites, self.obstacles)
 
-        frame_floor = Obstacle((255, 0, 255), WIDTH, 20, 0, HEIGHT-20)
+        frame_floor = Obstacle((0, 0, 255), WIDTH, 20, 0, HEIGHT-20)
         frame_floor.add(self.all_sprites, self.obstacles )
 
-        obstacle2 = Obstacle((0, 0, 255), 100, 20, 300, HEIGHT-100)
-        obstacle2.add(self.all_sprites, self.obstacles)
+        platform1 = Obstacle((0, 0, 255), 200, HEIGHT-100, 300, HEIGHT-100)
+        platform1.add(self.all_sprites, self.obstacles)
 
-        goal_obstacle = Obstacle((255, 0, 0), 50, 50, WIDTH-50, HEIGHT-70, True)
+        platform2 = Obstacle((0, 0, 255), 20, 70, 500, HEIGHT-150)
+        platform2.add(self.all_sprites, self.obstacles)
+
+        platform3 = Obstacle((0, 0, 255), 200, HEIGHT-150, 500, HEIGHT-150)
+        platform3.add(self.all_sprites, self.obstacles)
+
+        platform4 = Obstacle((0, 0, 255), 20, 70, 700, HEIGHT-200)
+        platform4.add(self.all_sprites, self.obstacles)
+
+        platform5 = Obstacle((0, 0, 255), 400, HEIGHT-200, 700, HEIGHT-200)
+        platform5.add(self.all_sprites, self.obstacles)
+
+        platform6 = Obstacle((0, 0, 255), 20, 80, 300, HEIGHT-100)
+        platform6.add(self.all_sprites, self.obstacles)
+
+        platform7 = Obstacle((0, 0, 255), 80, 80, 850, HEIGHT-280)
+        platform7.add(self.all_sprites, self.obstacles)
+
+        platform8 = Obstacle((0, 0, 255), 20, 200, 650, HEIGHT-500)
+        platform8.add(self.all_sprites, self.obstacles)
+
+        platform9 = Obstacle((0, 0, 255), 40, 20, 670, HEIGHT-320)
+        platform9.add(self.all_sprites, self.obstacles)
+
+        platform10 = Obstacle((0, 0, 255), 30, 20, 670, HEIGHT-400)
+        platform10.add(self.all_sprites, self.obstacles)
+
+        platform11 = Obstacle((0, 0, 255), 400, 20, 800, HEIGHT-450)
+        platform11.add(self.all_sprites, self.obstacles)
+
+        platform12 = Obstacle((0, 0, 255), 200, 20, 0, HEIGHT-500)
+        platform12.add(self.all_sprites, self.obstacles)
+
+        platform13 = Obstacle((0, 0, 255), 300, 20, 350, HEIGHT-500)
+        platform13.add(self.all_sprites, self.obstacles)
+
+        platform14 = Obstacle((0, 0, 255), 400, 20, 800, HEIGHT-450)
+        platform14.add(self.all_sprites, self.obstacles)
+
+
+
+
+
+        goal_obstacle = Obstacle((255, 0, 0), 50, 50, 0, HEIGHT-550, True)
         goal_obstacle.add(self.all_sprites, self.obstacles)
 
 
-        player1 = Player(100, 100, 'burlywood4')
+        player1 = Player(20, HEIGHT-20, 'burlywood4')
         player1.add(self.all_sprites, self.players)
 
         player2 = Player(100, 100, 'burlywood')

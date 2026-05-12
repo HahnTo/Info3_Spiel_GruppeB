@@ -184,7 +184,7 @@ class GameController:
         player1 = Player(20, HEIGHT-20, 'burlywood4')
         player1.add(self.all_sprites, self.players)
 
-        player2 = Player(100, 100, 'burlywood')
+        player2 = Player(60, HEIGHT-20, 'burlywood')
         player2.add(self.all_sprites, self.players)
 
         end_menu = EndMenu(self.screen)
@@ -209,7 +209,7 @@ class GameController:
 
 
             
-            
+
             
 
 

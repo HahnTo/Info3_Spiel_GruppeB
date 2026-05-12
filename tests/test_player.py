@@ -19,7 +19,6 @@ class DummyGC:
 def player():
     pygame.init()
     return Player(
-        player_id=1,
         start_x=100,
         start_y=200,
         color=(255, 0, 0)

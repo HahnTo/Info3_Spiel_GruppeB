@@ -10,9 +10,12 @@ class InputHandler:
 
     # Später über JSON Datei laden und speichern für custom Bindings
     BINDINGS = {
-        "left": pygame.K_a,
-        "right": pygame.K_d,
-        "jump": pygame.K_w,
+        "left1": pygame.K_a,
+        "right1": pygame.K_d,
+        "jump1": pygame.K_w,
+        "left2": pygame.K_LEFT,
+        "right2": pygame.K_RIGHT,
+        "jump2": pygame.K_UP
     }
 
     def __init__(self):
@@ -30,20 +33,26 @@ class InputHandler:
         """
         pass
 
-    def get_input(self, player):
+    def get_input(self, players):
         """
         Behandelt die Eingabe der Tastatur
         """
-
-
         keys = pygame.key.get_pressed()
-
-        if keys[self.key_bindings["left"]]:
-            player.move(-1)
-        if keys[self.key_bindings["right"]]:
-            player.move(1)
-        if keys[self.key_bindings["jump"]]:
-            player.jump()
+        for player in players.sprites():
+            if player.player_id == 1:
+                if keys[self.key_bindings["left1"]]:
+                    player.move(-1)
+                if keys[self.key_bindings["right1"]]:
+                    player.move(1)
+                if keys[self.key_bindings["jump1"]]:
+                    player.jump()
+            else:
+                if keys[self.key_bindings["left2"]]:
+                    player.move(-1)
+                if keys[self.key_bindings["right2"]]:
+                    player.move(1)
+                if keys[self.key_bindings["jump2"]]:
+                    player.jump()
     
     def get_menuinput(self, gc):
 

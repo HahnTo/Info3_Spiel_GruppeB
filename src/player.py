@@ -21,9 +21,9 @@ class Player(pygame.sprite.Sprite):
     DUCK_HEIGHT = HEIGHT * 0.8
 
 
+    player_id = 1
 
-
-    def __init__(self, player_id, start_x, start_y, color):
+    def __init__(self, start_x, start_y, color):
         """
         Initialisiert den Spieler.
 
@@ -35,7 +35,8 @@ class Player(pygame.sprite.Sprite):
         self.start_x = start_x
         self.start_y = start_y
 
-        self.player_id = player_id
+        self.player_id = Player.player_id
+        Player.player_id += 1
 
         # Das Rechteck und die Farbe für den Player
         self.image = pygame.Surface((self.WIDTH, self.HEIGHT))

@@ -72,9 +72,8 @@ class GameController:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
-                
 
-        self.input_handler.get_input(self.players.sprites()[0])
+        self.input_handler.get_input(self.players)
 
     def draw(self):
         self.screen.fill(BACKGROUND_COLOR)
@@ -166,8 +165,11 @@ class GameController:
         goal_obstacle.add(self.all_sprites, self.obstacles)
 
 
-        player1 = Player(1, 100, 100, (255, 255, 255))
+        player1 = Player(100, 100, 'burlywood4')
         player1.add(self.all_sprites, self.players)
+
+        player2 = Player(100, 100, 'burlywood')
+        player2.add(self.all_sprites, self.players)
 
         end_menu = EndMenu(self.screen)
 
@@ -185,7 +187,8 @@ class GameController:
                 pygame.display.flip()
                 if  end_menu.buttons[0].is_pressed():
                     self.playing = True
-                    player1.respawn()
+                    for player in self.players.sprites():
+                        player.respawn()
 
 
 

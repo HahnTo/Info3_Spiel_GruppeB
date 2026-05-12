@@ -118,22 +118,7 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
-    #def draw_menu(self):
-        #self.screen.fill(BACKGROUND_COLOR)
-        ##text_surf = FONT.render("Penis", False, (255,255,255))
-        ##self.screen.blit(text_surf,(500,300))
-        #self.button1 = Button('Neustart', 48, (300,300))
-        #self.button1.draw(self.screen)
-        #pygame.display.flip()
-
-
-        
-
-        
-
-
-
-
+  
     def run(self):
         self.playing = True
         
@@ -144,17 +129,60 @@ class GameController:
         frame_wall_right = Obstacle((255, 0, 0), 10, HEIGHT, WIDTH, 0)
         frame_wall_right.add(self.all_sprites, self.obstacles)
 
-        frame_floor = Obstacle((255, 0, 255), WIDTH, 20, 0, HEIGHT-20)
+        frame_floor = Obstacle((0, 0, 255), WIDTH, 20, 0, HEIGHT-20)
         frame_floor.add(self.all_sprites, self.obstacles )
 
-        obstacle2 = Obstacle((0, 0, 255), 100, 20, 300, HEIGHT-100)
-        obstacle2.add(self.all_sprites, self.obstacles)
+        platform1 = Obstacle((0, 0, 255), 200, HEIGHT-100, 300, HEIGHT-100)
+        platform1.add(self.all_sprites, self.obstacles)
 
-        goal_obstacle = Obstacle((255, 0, 0), 50, 50, WIDTH-50, HEIGHT-70, True)
+        platform2 = Obstacle((0, 0, 255), 20, 70, 500, HEIGHT-150)
+        platform2.add(self.all_sprites, self.obstacles)
+
+        platform3 = Obstacle((0, 0, 255), 200, HEIGHT-150, 500, HEIGHT-150)
+        platform3.add(self.all_sprites, self.obstacles)
+
+        platform4 = Obstacle((0, 0, 255), 20, 70, 700, HEIGHT-200)
+        platform4.add(self.all_sprites, self.obstacles)
+
+        platform5 = Obstacle((0, 0, 255), 400, HEIGHT-200, 700, HEIGHT-200)
+        platform5.add(self.all_sprites, self.obstacles)
+
+        platform6 = Obstacle((0, 0, 255), 20, 80, 300, HEIGHT-100)
+        platform6.add(self.all_sprites, self.obstacles)
+
+        platform7 = Obstacle((0, 0, 255), 80, 80, 850, HEIGHT-280)
+        platform7.add(self.all_sprites, self.obstacles)
+
+        platform8 = Obstacle((0, 0, 255), 20, 200, 650, HEIGHT-500)
+        platform8.add(self.all_sprites, self.obstacles)
+
+        platform9 = Obstacle((0, 0, 255), 40, 20, 670, HEIGHT-320)
+        platform9.add(self.all_sprites, self.obstacles)
+
+        platform10 = Obstacle((0, 0, 255), 30, 20, 670, HEIGHT-400)
+        platform10.add(self.all_sprites, self.obstacles)
+
+        platform11 = Obstacle((0, 0, 255), 400, 20, 800, HEIGHT-450)
+        platform11.add(self.all_sprites, self.obstacles)
+
+        platform12 = Obstacle((0, 0, 255), 200, 20, 0, HEIGHT-500)
+        platform12.add(self.all_sprites, self.obstacles)
+
+        platform13 = Obstacle((0, 0, 255), 300, 20, 350, HEIGHT-500)
+        platform13.add(self.all_sprites, self.obstacles)
+
+        platform14 = Obstacle((0, 0, 255), 400, 20, 800, HEIGHT-450)
+        platform14.add(self.all_sprites, self.obstacles)
+
+
+
+
+
+        goal_obstacle = Obstacle((255, 0, 0), 50, 50, 0, HEIGHT-550, True)
         goal_obstacle.add(self.all_sprites, self.obstacles)
 
 
-        player1 = Player(1, 100, 100, (255, 255, 255))
+        player1 = Player(1, 20, HEIGHT-20, (255, 255, 255))
         player1.add(self.all_sprites, self.players)
 
         end_menu = EndMenu(self.screen)

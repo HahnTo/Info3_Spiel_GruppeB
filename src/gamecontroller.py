@@ -40,7 +40,6 @@ class GameController:
         self.clock = pygame.time.Clock()
         self.dt = 0
 
-        self.levels = []
 
         # Alle verschiedenen Sprite Gruppen initialisieren
         self.all_sprites = pygame.sprite.Group()
@@ -56,15 +55,6 @@ class GameController:
 
 
 
-    def add_level(self, level):
-        self.levels.append(level)
-
-    def show_level(self, level=1):
-        try:
-            self.levels[level-1].load()
-        except IndexError as e:
-            print(e)
-            print("Level nicht vorhanden")
 
     def events(self):
         for event in pygame.event.get():
@@ -146,9 +136,7 @@ class GameController:
 
     def run(self):
         self.playing = True
-        self.add_level(Level(1))
-        self.show_level(1)
-
+        
         #auslagern in Level
         frame_wall_left = Obstacle((255, 0, 0), 10, HEIGHT, -10, 0)
         frame_wall_left.add(self.all_sprites, self.obstacles)

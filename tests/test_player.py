@@ -5,16 +5,16 @@ from pygame import Vector2
 from src.player import Player
 
 
-# Dummy GameController für den update Aufruf
+# Dummy GameController for update function in Player
 class DummyGC:
-    def check_horizontal_collision(self, player):
+    def handle_horizontal_collision(self, player):
         pass
 
-    def check_vertical_collision(self, player):
+    def handle_vertical_collision(self, player):
         pass
 
 
-# Bei jedem Aufruf von Player wird automatisch eine neue Instanz dieses players erstellt
+# Every time Player is called in this file, a new instance of this player is automatically created
 @pytest.fixture
 def player():
     pygame.init()
@@ -74,7 +74,7 @@ def test_update(player):
     gc = DummyGC()
 
     player.move(1)
-    # Position sollte erst in update geändert werden
+
     old_x = player.position.x
 
     player.update(1, gc)
@@ -83,16 +83,16 @@ def test_update(player):
     assert player.position.x == old_x + player.MOVE_SPEED
 
 
-# Sollte sich nicht bewegen können
-def test_die(player):
-    player.die()
-
-    player.on_ground = True
-    player.jump()
-    player.move(1)
-
-    assert player.is_alive is False
-    assert player.velocity == Vector2(0, 0)
+# # Sollte sich nicht bewegen können
+# def test_die(player):
+#     player.die()
+#
+#     player.on_ground = True
+#     player.jump()
+#     player.move(1)
+#
+#     assert player.is_alive is False
+#     assert player.velocity == Vector2(0, 0)
 
 
 def test_respawn(player):

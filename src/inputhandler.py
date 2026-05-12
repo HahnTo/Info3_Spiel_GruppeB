@@ -4,11 +4,10 @@ import pygame
 
 
 class InputHandler:
-    """
-    Setzt die Eingaben über die Tastatur in Aktionen um
-    """
+    """ Converts keyboard input into actions."""
 
     # Später über JSON Datei laden und speichern für custom Bindings
+    # Two bindings for both local players
     BINDINGS = {
         "left1": pygame.K_a,
         "right1": pygame.K_d,
@@ -21,44 +20,61 @@ class InputHandler:
 
     def __init__(self):
         """
-        Initialisiert den Input Handler.
-        Setzt die default Bindings
+        Initializes the input handler.
+        Sets the default bindings
         """
         self.key_bindings = self.BINDINGS
         # Später: self.key_bindings = self.load_bindings(path)
 
 
     def set_custom_binding(self, action, key):
-        """
-        Eigene Keybinds setzen
-        """
+        """ Set own keybindings. """
         pass
 
     def get_input(self, players):
-        """
-        Behandelt die Eingabe der Tastatur
-        """
+        """ Handles the keyboard input. """
+
+        # Get all pressed keys
         keys = pygame.key.get_pressed()
         for player in players.sprites():
+            # Different player_id values for different keybindings
             if player.player_id == 1:
-                if keys[self.key_bindings["left1"]]:
-                    player.move(-1)
-                if keys[self.key_bindings["right1"]]:
-                    player.move(1)
+
+                left = keys[self.key_bindings["left1"]]
+                right = keys[self.key_bindings["right1"]]
+
+                direction = 0
+
+                # If both buttons are pressed, the direction remains at 0 so that no movement occurs
+                if left and not right:
+                    direction = -1
+                elif not left and right:
+                    direction = 1
+
+                player.move(direction)
+
                 if keys[self.key_bindings["jump1"]]:
                     player.jump()
-            else:
-                if keys[self.key_bindings["left2"]]:
-                    player.move(-1)
-                if keys[self.key_bindings["right2"]]:
-                    player.move(1)
+
+            elif player.player_id == 2:
+                left = keys[self.key_bindings["left2"]]
+                right = keys[self.key_bindings["right2"]]
+
+                direction = 0
+
+                # If both buttons are pressed, the direction remains at 0 so that no movement occurs
+                if left and not right:
+                    direction = -1
+                elif not left and right:
+                    direction = 1
+
+                player.move(direction)
+
                 if keys[self.key_bindings["jump2"]]:
                     player.jump()
     
     def get_menuinput(self, gc):
-        """
-        Verarbeitet den Input in den Menus
-        """
+        """ Handles the input in the menus. """
         # Noch ist es nur mit einem Klick geregelt.
 
 
@@ -71,7 +87,7 @@ class InputHandler:
 
     def save_bindings(self, filepath: str = "config/keybindings.json"):
         """
-        Speichert die neu gesetzten Bindings.
+        Saves the new keybindings.
 
         TODO:
             - Keybindings vermutlich in JSON Format abspeichern und dann per load_bindings laden.
@@ -79,7 +95,5 @@ class InputHandler:
         pass
 
     def load_bindings(self, filepath):
-        """
-        Lädt die Keybindings von einer JSON Datei
-        """
+        """ Loads the saved keybindings from a JSON file. """
         pass

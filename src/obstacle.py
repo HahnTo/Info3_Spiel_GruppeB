@@ -1,7 +1,7 @@
 import pygame
 
 class Obstacle(pygame.sprite.Sprite):
-
+    """ Creates Obstacle to build the map. """
     
 
     def __init__(self, color, width, height,x_pos, y_pos, is_goal=False):

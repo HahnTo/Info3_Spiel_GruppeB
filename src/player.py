@@ -6,29 +6,29 @@ from typing import Literal
 
 class Player(pygame.sprite.Sprite):
     """
-    Erstellt die Spieler in Mole Escape.
-    Die Physik, Input und Bewegung wird hier implementiert.
+    Creates the players in Mole Escape.
+    The physics and movement are implemented here.
     """
 
-    # Größe des Spielers
+    # Physics of the player
     WIDTH = 30
     HEIGHT = 40
 
-    # Physik
     GRAVITY = 0.8
     MOVE_SPEED = 5.0
-    JUMP_HEIGHT = -12.0 # Muss negativ sein, weil bei PyGames das Fenster oben links bei (0, 0) anfängt, also y ins negative geht.
+    # Must be negative, since the grid starts at (0, 0) in the top-left corner
+    JUMP_HEIGHT = -12.0
     DUCK_HEIGHT = HEIGHT * 0.8
 
-
+    # Static variable to assign an ID to each new Player
     player_id = 1
 
     def __init__(self, start_x, start_y, color):
         """
-        Initialisiert den Spieler.
+        Initializes the player.
 
-        Setzt Startpunkt und Farbe bei erstem Level.
-        Bis die Texturen fertig sind, werden einfache Farben verwendet.
+        Sets the starting point and color.
+        Until the textures are ready, simple colors are used.
         """
         super().__init__()
 
@@ -38,19 +38,18 @@ class Player(pygame.sprite.Sprite):
         self.player_id = Player.player_id
         Player.player_id += 1
 
-        # Das Rechteck und die Farbe für den Player
+        # Create the rect for the player
         self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
         self.rect = self.image.get_rect(topleft=(self.WIDTH, self.HEIGHT))
         self.image.fill(color)
 
-        # Setzt den Player auf seinen Spawn
+        # Set the position to his spawn point
         self.rect.x = start_x
         self.rect.y = start_y
-        # self.position ist die echte Position, self.rect.x und y sind nur für Kollision und zeichnen notwendig
         self.position = Vector2(start_x, start_y)
 
 
-        # velocity ist die Geschwindigkeit des Spielers in X- und Y-Richtung, wird pro Frame auf die aktuelle Position addiert.
+        # The velocity is the player's speed in the x and y directions. It is added to the current position in every frame in the update function.
         self.velocity = Vector2(0,0)
 
         # States
@@ -60,16 +59,17 @@ class Player(pygame.sprite.Sprite):
         self.facing_right = True # Wird später für die Texturen und Interaktion mit Gegenständen o.ä. gebraucht.
 
 
-    def move(self, direction: Literal[-1, 1]):
+    def move(self, direction: Literal[-1, 0, 1]):
         """
-        Bewegt den Spieler beim Aufruf der Funktion.
-        direction: links = -1, rechts = 1
+        Moves the player when the function is called.
+        direction: -1 = left, 0 = stay in place, 1 = right
         """
 
-        if not self.is_alive:
+        if not self.is_alive or direction == 0:
             return
 
         # Multiplikation mit direction, um velocity.x positiv oder negativ zu erhalten
+        # Multiplying the SPEED by direction determines the sign, and thus the direction.
         self.velocity.x = direction * self.MOVE_SPEED
 
         if direction == 1:
@@ -79,9 +79,7 @@ class Player(pygame.sprite.Sprite):
 
 
     def jump(self):
-        """
-        Der Spieler springt, wenn er auf dem Boden ist
-        """
+        """ The player jumps when standing on the ground. """
 
         if not self.is_alive:
             return
@@ -91,46 +89,41 @@ class Player(pygame.sprite.Sprite):
             self.on_ground = False
 
     def update(self, dt, gc):
-        """
-                Position des Spielers updaten
-        """
+        """ Update the player's position based on velocity and apply physics and collision handling. """
 
         if not self.is_alive:
             return
 
-        # Die Fallgeschwindigkeit(velocity.y) wird jeden Frame leicht erhöht, dadurch entsteht die "Physik"
+        # The vertical velocity is increased slightly every frame, which creates the physics of falling
         if not self.on_ground:
             self.velocity.y += self.GRAVITY
 
-        # Horizontale Bewegung
+        # horizontal movement
         self.position.x += self.velocity.x
         self.rect.x = int(self.position.x)
-        gc.check_horizontal_collision(self)
+        gc.handle_horizontal_collision(self)
 
-        # Vertikale Bewegung
+        # vertikal movement
         self.position.y += self.velocity.y
         self.rect.y = int(self.position.y)
 
         self.on_ground = False
-        gc.check_vertical_collision(self)
+        gc.handle_vertical_collision(self)
 
-        # Bewegung in x Richtung zurücksetzen
-
+        # Set the horizontal speed to zero to stop the player when the key is no longer pressed down
         self.velocity.x = 0
 
 
-    def die(self):
-        """
-        Setzt Spieler tot.
-        """
-        self.is_alive = False
-        self.velocity = Vector2((0,0))
+    # def die(self):
+    #     """
+    #     Setzt Spieler tot.
+    #     """
+    #     self.is_alive = False
+    #     self.velocity = Vector2((0,0))
 
 
     def respawn(self):
-        """
-        Spieler wird zurückgesetzt und auf den Spawn teleportiert.
-        """
+        """ The player is reset and teleported to the spawn point. """
         self.is_alive = True
         self.facing_right = True
         self.rect.x = self.start_x

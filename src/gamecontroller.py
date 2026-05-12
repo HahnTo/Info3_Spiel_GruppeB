@@ -1,10 +1,8 @@
 import pygame
 
 from inputhandler import InputHandler
-from level import Level
 from player import Player
 from obstacle import Obstacle
-from button import Button
 from endmenu import EndMenu
 
 #mögliche Änderungen: Gamestates für Level, Startscreen und Endscreen,
@@ -26,7 +24,7 @@ FPS = 60
 BACKGROUND_COLOR = (0, 255, 0)
 
 class GameController:
-    """Initialisiert das Spiel und erstellt den Game-Loop"""
+    """Initializes the game and creates the game loop"""
 
 
     def __init__(self):
@@ -36,12 +34,12 @@ class GameController:
 
         pygame.display.set_caption(TITLE)
 
-        # Clock wartet immer bestimmte Zeit, bis der nächste Frame geladen wird und gibt die Delta Time zurück
+        # The tick speed is set to 60 in the game loop to limit the frame rate to 60 FPS
         self.clock = pygame.time.Clock()
         self.dt = 0
 
 
-        # Alle verschiedenen Sprite Gruppen initialisieren
+        # Initialise all sprite groups
         self.all_sprites = pygame.sprite.Group()
         self.players = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
@@ -54,11 +52,10 @@ class GameController:
         self.input_handler = InputHandler()
 
 
-
-
     def events(self):
+        """Reacts to all pygame.events, like keyboard input and closing the Window"""
         for event in pygame.event.get():
-            # Checkt, ob das Fenster geschlossen wird
+            # Ends the script if window gets closed
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
@@ -66,14 +63,19 @@ class GameController:
         self.input_handler.get_input(self.players)
 
     def draw(self):
+        """Draws the in-game screen"""
         self.screen.fill(BACKGROUND_COLOR)
         self.all_sprites.draw(self.screen)
 
-        # Lädt das komplette Display neu
+        # After drawing the sprites, you need to flip it on the display
         pygame.display.flip()
 
 
     def update(self, dt):
+        """
+        Update all sprites.
+        Player sprites need the game controller as an additional parameter
+        """
         for sprite in self.all_sprites:
             if not sprite in self.players:
                 sprite.update(dt)
@@ -81,36 +83,51 @@ class GameController:
                 sprite.update(dt, self)
 
 
-    def check_horizontal_collision(self, player):
+    def handle_horizontal_collision(self, player):
+        """ Handles horizontal collisions.
+            If the player is coming from the left, their position is set to the right side of the object.
+            If the player is coming from the right, their position is set to the left side of the object.
+        """
         #Name passt nicht so ganz weil mehr gemacht wird als Kollision checken, Player Movement wird beeinflusst
         #Wahrscheinlich Kollision und Movement Beeinflussung seperat, maybe Movement Beeinflussung dann im Player
+
+        # Get all objects that are colliding with each other
         collider_group = pygame.sprite.spritecollide(player, self.obstacles, False)
         for obstacle in collider_group:
+            # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
                 self.playing = False
             else:
-                if player.velocity.x < 0:     # Bewegt sich nach links, also muss er an dem rechten Ende vo, Obstacle stehen bleiben.
+                # It moves to the left, so it must stop at the right end of the obstacle.
+                if player.velocity.x < 0:
                     player.rect.left = obstacle.rect.right
                     player.position.x = player.rect.x
                     player.velocity.x = 0
-                elif player.velocity.x > 0:   # Bewegt sich nach rechts
+                # It moves to the right, so it must stop at the left end of the obstacle.
+                elif player.velocity.x > 0:
                     player.rect.right = obstacle.rect.left
                     player.position.x = player.rect.x
                     player.velocity.x = 0
 
 
-    def check_vertical_collision(self, player):
+    def handle_vertical_collision(self, player):
+        """ Handles vertical collisions.
+            If the player is coming from above, their position is set to the top of the object.
+            If the player is coming from below, their position is set to the bottom of the object.
+        """
 
+        # Get all objects that are colliding with each other
         collider_group = pygame.sprite.spritecollide(player, self.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
                 self.playing = False
             else:
+                # Since it's coming from below, it must stop at the bottom of the obstacle.
                 if player.velocity.y < 0:
                     player.rect.top = obstacle.rect.bottom
                     player.position.y = player.rect.y
                     player.velocity.y = 0
-
+                # Since it's coming from above, it must stop at the top of the obstacle.
                 elif player.velocity.y > 0:
                     player.rect.bottom = obstacle.rect.top
                     player.on_ground = True
@@ -119,6 +136,10 @@ class GameController:
 
 
     def run(self):
+        """ This is the main function.
+            It initializes all objects and runs the game loop.
+            It switches between different game states.
+        """
         self.playing = True
 
         #auslagern in Level
@@ -175,8 +196,6 @@ class GameController:
 
 
 
-
-
         goal_obstacle = Obstacle((255, 0, 0), 50, 50, 0, HEIGHT-550, True)
         goal_obstacle.add(self.all_sprites, self.obstacles)
 
@@ -191,13 +210,17 @@ class GameController:
 
         # Gameloop mit allen update ... Funktionen
         #Gamestates benutzen statt if else
+        # Game loop with the different game states. In each frame, events are checked and all elements are updated.
         while True:
-            # Delta Time wird verwendet, um flüssige und konstante Bewegungen bei Objekten sicherzustellen
+            # Delta time ensures that movement and timers stay consistent regardless of the frame rate.
             self.dt = self.clock.tick(FPS) / 1000
+            # Handle all events
             self.events()
+            # If playing, update all sprites and draw them.
             if self.playing:
                 self.update(self.dt)
                 self.draw()
+            # If not playing, show the end menu and wait for input.
             else:
                 end_menu.draw()
                 pygame.display.flip()

@@ -114,14 +114,6 @@ class Player(pygame.sprite.Sprite):
         self.velocity.x = 0
 
 
-    # def die(self):
-    #     """
-    #     Setzt Spieler tot.
-    #     """
-    #     self.is_alive = False
-    #     self.velocity = Vector2((0,0))
-
-
     def respawn(self):
         """ The player is reset and teleported to the spawn point. """
         self.is_alive = True

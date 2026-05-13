@@ -3,9 +3,9 @@ import pygame
 from inputhandler import InputHandler
 from player import Player
 from obstacle import Obstacle
-from src.gamestatemanager import GameStateManager
-from src.states.endmenu import EndMenu
-from src.states.level import Level
+from gamestatemanager import GameStateManager
+from states.endmenu import EndMenu
+from states.level import Level
 
 #mögliche Änderungen: Gamestates für Level, Startscreen und Endscreen,
 #jede Klasse bekommt eigene Update und Render Funktion

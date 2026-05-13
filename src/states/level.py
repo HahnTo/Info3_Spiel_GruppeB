@@ -1,9 +1,9 @@
 # Soll die Platformen aus einer JSON oder ähnlichem laden, wenn ein neues Level erstellt wird.
 import pygame
 
-from src.obstacle import Obstacle
-from src.player import Player
-from src.states.state import State
+from obstacle import Obstacle
+from player import Player
+from states.state import State
 
 WIDTH = 1080
 HEIGHT = 720

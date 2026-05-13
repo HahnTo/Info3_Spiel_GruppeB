@@ -1,8 +1,6 @@
 import pygame
 
 from inputhandler import InputHandler
-from player import Player
-from obstacle import Obstacle
 from src.gamestatemanager import GameStateManager
 from src.states.endmenu import EndMenu
 from src.states.level import Level
@@ -39,7 +37,7 @@ class GameController:
         self.clock = pygame.time.Clock()
         self.dt = 0
 
-        self.game_state_manager = GameStateManager('end_menu')
+        self.game_state_manager = GameStateManager('level')
 
         self.level = Level(self.screen, self.game_state_manager, self)
         self.end_menu = EndMenu(self.screen, self.game_state_manager)
@@ -130,17 +128,15 @@ class GameController:
             # Delta time ensures that movement and timers stay consistent regardless of the frame rate.
             self.dt = self.clock.tick(FPS) / 1000
 
-            self.states[self.game_state_manager.get_state()].run(self.dt)
-
             # Handle all events
             self.events()
 
+            self.states[self.game_state_manager.get_state()].run(self.dt)
 
 
 
-
-gc = GameController()
-
-gc.run()
+if __name__ == "__main__":
+    gc = GameController()
+    gc.run()
 
 

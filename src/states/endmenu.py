@@ -1,8 +1,8 @@
 import pygame
 
-from src.button import Button
+from button import Button
 
-from src.states.state import State
+from states.state import State
 
 
 #from menu import AbstractMenu

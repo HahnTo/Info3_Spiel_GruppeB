@@ -20,10 +20,7 @@ class Player(pygame.sprite.Sprite):
     JUMP_HEIGHT = -12.0
     DUCK_HEIGHT = HEIGHT * 0.8
 
-    # Static variable to assign an ID to each new Player
-    player_id = 1
-
-    def __init__(self, start_x, start_y, color):
+    def __init__(self, start_x, start_y, color, player_id):
         """
         Initializes the player.
 
@@ -35,8 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.start_x = start_x
         self.start_y = start_y
 
-        self.player_id = Player.player_id
-        Player.player_id += 1
+        self.player_id = player_id
 
         # Create the rect for the player
         self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
@@ -123,3 +119,33 @@ class Player(pygame.sprite.Sprite):
         self.position = Vector2(self.start_x, self.start_y)
         self.velocity.x = 0
         self.velocity.y = 0
+
+    def get_data(self):
+        """Send player state to server."""
+        return {
+            "x": self.position.x,
+            "y": self.position.y,
+            "vx": self.velocity.x,
+            "vy": self.velocity.y,
+            "facing_right": self.facing_right,
+            "on_ground": self.on_ground
+        }
+
+    def set_data(self, data):
+        """Apply network state to player."""
+
+        if not data:
+            return
+
+        self.position.x = data["x"]
+        self.position.y = data["y"]
+
+        self.velocity.x = data["vx"]
+        self.velocity.y = data["vy"]
+
+        self.facing_right = data["facing_right"]
+        self.on_ground = data["on_ground"]
+
+        # Sync rect with position
+        self.rect.x = int(self.position.x)
+        self.rect.y = int(self.position.y)

@@ -1,7 +1,8 @@
 import pygame
 
-from inputhandler import InputHandler
+from src.inputhandler import InputHandler
 from src.gamestatemanager import GameStateManager
+from src.server.networkclient import NetworkClient
 from src.states.endmenu import EndMenu
 from src.states.level import Level
 
@@ -37,13 +38,17 @@ class GameController:
         self.clock = pygame.time.Clock()
         self.dt = 0
 
+        # local or online mode
+        self.game_mode = "online"
+        # Only initialize a network client if the mode is online.
+        self.network_client = NetworkClient() if self.game_mode == "online" else None
+
         self.game_state_manager = GameStateManager('level')
 
-        self.level = Level(self.screen, self.game_state_manager, self)
+        self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
         self.end_menu = EndMenu(self.screen, self.game_state_manager)
 
         self.states = {'level': self.level ,'end_menu': self.end_menu}
-
 
         self.input_handler = InputHandler()
 
@@ -61,8 +66,12 @@ class GameController:
                     self.game_state_manager.set_state('level')
                     for player in self.level.players.sprites():
                         player.respawn()
-
-        self.input_handler.get_input(self.level.players)
+        # If it is running in online mode, the local ID is required.
+        if self.game_state_manager.get_state() == 'level':
+            if self.game_mode == "local":
+                self.input_handler.get_input(self.level.players, self.game_mode)
+            else:
+                self.input_handler.get_input(self.level.players, self.game_mode, self.level.local_id)
 
 
     def handle_horizontal_collision(self, player):

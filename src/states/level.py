@@ -1,9 +1,9 @@
 # Soll die Platformen aus einer JSON oder ähnlichem laden, wenn ein neues Level erstellt wird.
 import pygame
 
-from obstacle import Obstacle
-from player import Player
-from states.state import State
+from src.obstacle import Obstacle
+from src.player import Player
+from src.states.state import State
 
 WIDTH = 1080
 HEIGHT = 720
@@ -12,8 +12,20 @@ BACKGROUND_COLOR = (0, 255, 0)
 
 
 class Level(State):
-    def __init__(self, screen, game_state_manager, game_controller):
+    def __init__(self, screen, game_state_manager, game_controller, network_client=None):
         super().__init__(screen, game_state_manager)
+
+        self.network_client = network_client
+        # If network_client is not None, the game is running in online mode.
+        self.is_online = self.network_client is not None
+
+        if self.is_online:
+            self.local_id = self.network_client.player_id
+            self.remote_id = 3 - self.local_id      # # It returns 1 or 2 when 3 is subtracted
+        else:
+            self.local_id = None
+            self.remote_id = None
+
         self.game_controller = game_controller
 
         # Initialise all sprite groups
@@ -81,12 +93,18 @@ class Level(State):
         goal_obstacle2 = Obstacle((255, 0, 0), 50, 50, WIDTH -700, HEIGHT - 100, True)
         goal_obstacle2.add(self.all_sprites, self.obstacles)
 
-        player1 = Player(20, HEIGHT - 20, 'burlywood4')
+        player1 = Player(20, HEIGHT - 20, 'burlywood4', 1)
         player1.add(self.all_sprites, self.players)
 
-        player2 = Player(60, HEIGHT - 20, 'burlywood')
+        player2 = Player(60, HEIGHT - 20, 'burlywood', 2)
         player2.add(self.all_sprites, self.players)
 
+    def get_player(self, player_id):
+        """Returns the player as a utility method."""
+        for player in self.players.sprites():
+            if player.player_id == player_id:
+                return player
+        return None
 
     def update(self, dt):
         """
@@ -94,7 +112,34 @@ class Level(State):
             Player sprites need the game controller as an additional parameter
         """
         self.obstacles.update()
-        self.players.update(dt, self.game_controller)
+        if not self.is_online:
+            # Update all Players
+            self.players.update(dt, self.game_controller)
+        else:
+            # Only update local Player
+            local_player = self.get_player(self.local_id)
+            if local_player:
+                local_player.update(dt, self.game_controller)
+
+    def sync_network(self):
+        """Sends local player state to the server and applies received remote updates"""
+        if not self.is_online:
+            return
+
+        local_player = self.get_player(self.local_id)
+        remote_player = self.get_player(self.remote_id)
+
+        if local_player:
+            data = {
+                "type": "update",
+                "data": local_player.get_data()
+            }
+            self.network_client.send(data)
+
+        update = self.network_client.get_update()
+
+        if update and update.get("type") == "state" and remote_player:
+            remote_player.set_data(update["data"])
 
     def draw(self):
         """ Draws all sprites."""
@@ -103,3 +148,9 @@ class Level(State):
 
         # After drawing the sprites, you need to flip it on the display
         pygame.display.flip()
+
+    def run(self, dt):
+        """Overrides and extends the base method to synchronize the data from the server on every frame."""
+        self.update(dt)
+        self.sync_network()
+        self.draw()

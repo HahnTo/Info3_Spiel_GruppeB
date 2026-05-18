@@ -31,47 +31,57 @@ class InputHandler:
         """ Set own keybindings. """
         pass
 
-    def get_input(self, players):
-        """ Handles the keyboard input. """
+    def get_input(self, players, mode, local_player_id=1):
+        """ Handles the keyboard input depending on mode."""
 
+        for player in players.sprites():
+
+            if mode == "online":
+                if player.player_id != local_player_id:
+                    # remote player is not controlled here
+                    continue
+
+                self._handle_player_input(player, mode, player.player_id)
+                continue
+
+            self._handle_player_input(player, mode, player.player_id)
+
+    def _handle_player_input(self, player, mode, player_id):
+        """Handles movement and jump for a single player."""
         # Get all pressed keys
         keys = pygame.key.get_pressed()
-        for player in players.sprites():
-            # Different player_id values for different keybindings
-            if player.player_id == 1:
 
-                left = keys[self.key_bindings["left1"]]
-                right = keys[self.key_bindings["right1"]]
+        # If it is running in online mode, only use binding 1. If it is running locally, both bindings are required.
+        if player_id == 1 and mode == "local":
+            left = keys[self.key_bindings["left1"]]
+            right = keys[self.key_bindings["right1"]]
+            jump = keys[self.key_bindings["jump1"]]
 
-                direction = 0
+        elif player_id == 2 and mode == "local":
+            left = keys[self.key_bindings["left2"]]
+            right = keys[self.key_bindings["right2"]]
+            jump = keys[self.key_bindings["jump2"]]
 
-                # If both buttons are pressed, the direction remains at 0 so that no movement occurs
-                if left and not right:
-                    direction = -1
-                elif not left and right:
-                    direction = 1
+        elif mode == "online":
+            left = keys[self.key_bindings["left1"]]
+            right = keys[self.key_bindings["right1"]]
+            jump = keys[self.key_bindings["jump1"]]
+        else:
+            return
 
-                player.move(direction)
 
-                if keys[self.key_bindings["jump1"]]:
-                    player.jump()
+        direction = 0
+        # If both buttons are pressed, the direction remains at 0 so that no movement occurs
+        if left and not right:
+            direction = -1
+        elif right and not left:
+            direction = 1
 
-            elif player.player_id == 2:
-                left = keys[self.key_bindings["left2"]]
-                right = keys[self.key_bindings["right2"]]
+        player.move(direction)
 
-                direction = 0
-
-                # If both buttons are pressed, the direction remains at 0 so that no movement occurs
-                if left and not right:
-                    direction = -1
-                elif not left and right:
-                    direction = 1
-
-                player.move(direction)
-
-                if keys[self.key_bindings["jump2"]]:
-                    player.jump()
+        # Jump
+        if jump:
+            player.jump()
     
     def get_menuinput(self, gc):
         """ Handles the input in the menus. """

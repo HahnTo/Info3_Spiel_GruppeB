@@ -149,6 +149,12 @@ class Level(State):
 
         if update and update.get("type") == "state" and remote_player:
             remote_player.set_data(update["data"])
+            # Client-side interpolation: the remote player moves between received positions instead of freezing.
+            # Continue using velocity from the last received state.
+            remote_player.position.x += remote_player.velocity.x
+            remote_player.position.y += remote_player.velocity.y
+            remote_player.rect.x = int(remote_player.position.x)
+            remote_player.rect.y = int(remote_player.position.y)
 
     def draw(self):
         """ Draws all sprites."""

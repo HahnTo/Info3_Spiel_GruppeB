@@ -14,13 +14,16 @@ class Server:
         It uses a JSON protocol to transfer player data and game states between two clients.
         Each client runs in its own thread to handle communication in the background.
     """
-    def __init__(self, host="127.0.0.1", port=5555):
+    def __init__(self, host="192.168.0.237", port=5555):
         """Initializes the server with its IP address and port and starts it."""
         self.host = host
         self.port = port
         # Create a TCP/IPv4 socket for the server to accept client connections
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        # Packets are forwarded immediately to minimize latency and prevent stuttering.
+        self.server.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+
         self.server.bind((self.host, self.port))
         # Allows up to 2 clients to connect.
         self.server.listen(2)

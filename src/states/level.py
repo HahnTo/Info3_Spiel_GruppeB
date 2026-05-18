@@ -26,6 +26,10 @@ class Level(State):
             self.local_id = None
             self.remote_id = None
 
+        # 20 updates per second are enough for smooth gameplay and prevent too many packets per second
+        self.network_update_interval = 1 / 20
+        self.network_update_timer = 0
+
         self.game_controller = game_controller
 
         # Initialise all sprite groups
@@ -121,7 +125,7 @@ class Level(State):
             if local_player:
                 local_player.update(dt, self.game_controller)
 
-    def sync_network(self):
+    def sync_network(self, dt):
         """Sends local player state to the server and applies received remote updates"""
         if not self.is_online:
             return
@@ -129,12 +133,17 @@ class Level(State):
         local_player = self.get_player(self.local_id)
         remote_player = self.get_player(self.remote_id)
 
-        if local_player:
-            data = {
-                "type": "update",
-                "data": local_player.get_data()
-            }
-            self.network_client.send(data)
+        # Limit update rate: send only one packet every 50ms (20x/s).
+        # The game loop continues running at 60 FPS – only the network is throttled.
+        self.network_update_timer += dt
+        if self.network_update_timer >= self.network_update_interval:
+            self.network_update_timer = 0
+            if local_player:
+                data = {
+                    "type": "update",
+                    "data": local_player.get_data()
+                }
+                self.network_client.send(data)
 
         update = self.network_client.get_update()
 
@@ -152,5 +161,5 @@ class Level(State):
     def run(self, dt):
         """Overrides and extends the base method to synchronize the data from the server on every frame."""
         self.update(dt)
-        self.sync_network()
+        self.sync_network(dt)
         self.draw()

@@ -26,9 +26,9 @@ class Level(State):
             self.local_id = None
             self.remote_id = None
 
-        # 20 updates per second are enough for smooth gameplay and prevent too many packets per second
-        self.network_update_interval = 1 / 20
-        self.network_update_timer = 0
+        # # 20 updates per second are enough for smooth gameplay and prevent too many packets per second
+        # self.network_update_interval = 1 / 20
+        # self.network_update_timer = 0
 
         self.game_controller = game_controller
 
@@ -135,26 +135,26 @@ class Level(State):
 
         # Limit update rate: send only one packet every 50ms (20x/s).
         # The game loop continues running at 60 FPS – only the network is throttled.
-        self.network_update_timer += dt
-        if self.network_update_timer >= self.network_update_interval:
-            self.network_update_timer = 0
-            if local_player:
-                data = {
-                    "type": "update",
-                    "data": local_player.get_data()
-                }
-                self.network_client.send(data)
+        # self.network_update_timer += dt
+        # if self.network_update_timer >= self.network_update_interval:
+        #     self.network_update_timer = 0
+        if local_player:
+            data = {
+                "type": "update",
+                "data": local_player.get_data()
+            }
+            self.network_client.send(data)
 
         update = self.network_client.get_update()
 
         if update and update.get("type") == "state" and remote_player:
             remote_player.set_data(update["data"])
-            # Client-side interpolation: the remote player moves between received positions instead of freezing.
-            # Continue using velocity from the last received state.
-            remote_player.position.x += remote_player.velocity.x
-            remote_player.position.y += remote_player.velocity.y
-            remote_player.rect.x = int(remote_player.position.x)
-            remote_player.rect.y = int(remote_player.position.y)
+            # # Client-side interpolation: the remote player moves between received positions instead of freezing.
+            # # Continue using velocity from the last received state.
+            # remote_player.position.x += remote_player.velocity.x
+            # remote_player.position.y += remote_player.velocity.y
+            # remote_player.rect.x = int(remote_player.position.x)
+            # remote_player.rect.y = int(remote_player.position.y)
 
     def draw(self):
         """ Draws all sprites."""

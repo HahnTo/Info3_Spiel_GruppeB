@@ -14,7 +14,7 @@ class Server:
         It uses a JSON protocol to transfer player data and game states between two clients.
         Each client runs in its own thread to handle communication in the background.
     """
-    def __init__(self, host="192.168.0.237", port=5555):
+    def __init__(self, host="134.103.111.80", port=5555):
         """Initializes the server with its IP address and port and starts it."""
         self.host = host
         self.port = port
@@ -38,11 +38,13 @@ class Server:
             {"x": 60,  "y": 700, "vx": 0, "vy": 0, "facing_right": True, "on_ground": False},
         ]
 
+    # TCP transmits data as a continuous stream without preserving message boundaries.
+    # The length prefix defines the size of each message so the data can be correctly separated into individual packets.
     def send(self, client, data):
         """Sends a message with a 4-byte length prefix."""
         try:
             payload = json.dumps(data).encode("utf-8")
-            # struct.pack returns 4 bytes in big-endian format.
+            # struct.pack returns 4 bytes in big-endian(>I) format.
             header = struct.pack(">I", len(payload))
             client.sendall(header + payload)
         except Exception as e:

@@ -63,6 +63,8 @@ class GameController:
                 pygame.quit()
                 exit()
 
+            self.states[self.game_state_manager.get_state()].handle_event(event)
+
         # if self.game_state_manager.get_state() == 'end_menu':
         #     if self.end_menu.buttons[0].is_pressed():
         #         self.game_state_manager.set_state('level')
@@ -152,7 +154,6 @@ class GameController:
                     player.respawn()
                 self.game_state_manager.prev_state = current_state
             self.states[self.game_state_manager.get_state()].run(self.dt)
-
 
 
 if __name__ == "__main__":

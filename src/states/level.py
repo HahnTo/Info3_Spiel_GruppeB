@@ -169,3 +169,6 @@ class Level(State):
         self.update(dt)
         self.sync_network(dt)
         self.draw()
+
+    def handle_event(self, event):
+        pass

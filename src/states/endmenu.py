@@ -1,12 +1,11 @@
 import pygame
 
-from button import Button
+from src.button import Button
 
-from states.state import State
+from src.states.state import State
 
+from src.inputhandler import InputHandler
 
-#from menu import AbstractMenu
-#import pygame
 
 class EndMenu(State):
     """ Creates the end menu that appears after the game."""
@@ -15,11 +14,12 @@ class EndMenu(State):
     def __init__(self, screen, game_state_manager):
         super().__init__(screen, game_state_manager)
 
+        self.input_handler = InputHandler()
+        self.selected_index = 0
         self.buttons = []
         self.create_buttons()
 
     def run(self, dt):
-        self.listen_for_buttons()
         self.update(dt)
         self.draw()
 
@@ -29,9 +29,11 @@ class EndMenu(State):
         self.buttons.append(Button('Neustart', 48, (300,300), lambda: self.restart_game()))
 
     def go_to_start(self):
+        """Set the game state to start"""
         self.game_state_manager.set_state('start')
 
     def restart_game(self):
+        """Set the game state to level"""
         self.game_state_manager.set_state('level')
 
     def update(self, dt):
@@ -40,11 +42,14 @@ class EndMenu(State):
     def draw(self):
         """ Draws the menu with all buttons."""
         self.screen.fill(self.BGCOLOR)
+
+        for i, button in enumerate(self.buttons):
+            button.selected = (i == self.selected_index)
+
         for button in self.buttons:
             button.draw(self.screen)
         pygame.display.flip()
 
-
-    def listen_for_buttons(self):
-        for button in self.buttons:
-            button.is_pressed()
+    def handle_event(self, event):
+        """Handles the Menu Input"""
+        self.input_handler.handle_menu_input(self, event)

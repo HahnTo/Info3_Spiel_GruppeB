@@ -83,17 +83,16 @@ class InputHandler:
         if jump:
             player.jump()
     
-    def get_menuinput(self, gc):
+    def handle_menu_input(self, menu, event):
         """ Handles the input in the menus. """
-        # Noch ist es nur mit einem Klick geregelt.
 
-
-        # keys = pygame.key.get_pressed()
-        #
-        # if keys[self.key_bindings["jump"]]:
-        #     gc.playing = True
-        #     return True
-        # return False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                menu.selected_index = (menu.selected_index - 1) % len(menu.buttons)
+            if event.key == pygame.K_DOWN:
+                menu.selected_index = (menu.selected_index + 1) % len(menu.buttons)
+            if event.key == pygame.K_RETURN:
+                menu.buttons[menu.selected_index].on_click()
 
     def save_bindings(self, filepath: str = "config/keybindings.json"):
         """

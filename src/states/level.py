@@ -97,10 +97,10 @@ class Level(State):
         goal_obstacle2 = Obstacle((255, 0, 0), 50, 50, WIDTH -700, HEIGHT - 100, True)
         goal_obstacle2.add(self.all_sprites, self.obstacles)
 
-        player1 = Player(20, HEIGHT - 20, 'burlywood4', self.local_id, True)
+        player1 = Player(20, HEIGHT - 20, 'burlywood4', self.local_id, False)
         player1.add(self.all_sprites, self.players)
 
-        player2 = Player(60, HEIGHT - 20, 'burlywood', self.remote_id, False)
+        player2 = Player(60, HEIGHT - 20, 'burlywood', self.remote_id, True)
         player2.add(self.all_sprites, self.players)
 
     def get_player(self, player_id):
@@ -122,8 +122,11 @@ class Level(State):
         else:
             # Only update local Player
             local_player = self.get_player(self.local_id)
+            remote_player = self.get_player(self.remote_id)
             if local_player:
                 local_player.update(dt, self.game_controller)
+            if remote_player:
+                remote_player.update(dt, self.game_controller)
 
     def sync_network(self, dt):
         """Sends local player state to the server and applies received remote updates"""

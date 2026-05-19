@@ -21,9 +21,9 @@ class Player(pygame.sprite.Sprite):
     DUCK_HEIGHT = HEIGHT * 0.8
 
     # How fast the remote player glides toward the target position (0.1 = slow/smooth, 0.3 = fast/snappy)
-    INTERP_ALPHA = 0.2
+    INTERP_ALPHA = 0.4
     # If the remote player is further away than this, teleport instead of interpolating (e.g. after respawn)
-    SNAP_THRESHOLD = 200
+    SNAP_THRESHOLD = 50
 
     def __init__(self, start_x, start_y, color, player_id, is_remote):
         """
@@ -128,15 +128,20 @@ class Player(pygame.sprite.Sprite):
         """ Called every frame for the remote player instead of the normal physics update """
 
         # Extrapolation
-        # Simulate gravity just like the local physics would, so the arc of a jump
-        # looks correct even without a new packet every frame.
-        if not self.on_ground:
+        if self.on_ground:
+            # On the ground: stop all vertical movement immediately.
+            # Without this, gravity would accumulate every frame and push
+            # net_target downward even though the player is standing still
+            # → causes the up/down jitter you see on flat surfaces.
+            self.network_velocity.y = 0
+            self.network_target.y = self.position.y  # lock Y, only slide horizontally
+            self.network_target.x += self.network_velocity.x
+        else:
+            # In the air: simulate gravity so jump arcs look correct
+            # between packets, even without a new network update every frame.
             self.network_velocity.y += self.GRAVITY
-
-        # Advance the target position using the extrapolated velocity.
-        # This is where the player "would be" if no new packet has arrived yet.
-        self.network_target.x += self.network_velocity.x
-        self.network_target.y += self.network_velocity.y
+            self.network_target.x += self.network_velocity.x
+            self.network_target.y += self.network_velocity.y
 
         # Interpolation
         # Instead of jumping straight to net_target, we move a fraction of the

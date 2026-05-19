@@ -97,11 +97,19 @@ class Level(State):
         goal_obstacle2 = Obstacle((255, 0, 0), 50, 50, WIDTH -700, HEIGHT - 100, True)
         goal_obstacle2.add(self.all_sprites, self.obstacles)
 
-        player1 = Player(20, HEIGHT - 20, 'burlywood4', self.local_id, False)
-        player1.add(self.all_sprites, self.players)
+        if self.is_online:
 
-        player2 = Player(60, HEIGHT - 20, 'burlywood', self.remote_id, True)
-        player2.add(self.all_sprites, self.players)
+            player1 = Player(20, HEIGHT - 20, 'burlywood4', self.local_id, False)
+            player1.add(self.all_sprites, self.players)
+
+            player2 = Player(60, HEIGHT - 20, 'burlywood', self.remote_id, True)
+            player2.add(self.all_sprites, self.players)
+        else:
+            player1 = Player(20, HEIGHT - 20, 'burlywood4', 1, False)
+            player1.add(self.all_sprites, self.players)
+
+            player2 = Player(60, HEIGHT - 20, 'burlywood', 2, False)
+            player2.add(self.all_sprites, self.players)
 
     def get_player(self, player_id):
         """Returns the player as a utility method."""

@@ -19,12 +19,20 @@ class EndMenu(State):
         self.create_buttons()
 
     def run(self, dt):
+        self.listen_for_buttons()
         self.update(dt)
         self.draw()
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        self.buttons.append(Button('Neustart',48, (300,300)))
+        self.buttons.append(Button('Start Menu', 48, (300, 400), lambda: self.go_to_start()))
+        self.buttons.append(Button('Neustart', 48, (300,300), lambda: self.restart_game()))
+
+    def go_to_start(self):
+        self.game_state_manager.set_state('start')
+
+    def restart_game(self):
+        self.game_state_manager.set_state('level')
 
     def update(self, dt):
         pass
@@ -35,7 +43,8 @@ class EndMenu(State):
         for button in self.buttons:
             button.draw(self.screen)
         pygame.display.flip()
-        
-  
 
-    
+
+    def listen_for_buttons(self):
+        for button in self.buttons:
+            button.is_pressed()

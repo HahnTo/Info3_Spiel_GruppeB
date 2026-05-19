@@ -5,6 +5,7 @@ from src.gamestatemanager import GameStateManager
 from src.server.networkclient import NetworkClient
 from src.states.endmenu import EndMenu
 from src.states.level import Level
+from src.states.startmenu import StartMenu
 
 #mögliche Änderungen: Gamestates für Level, Startscreen und Endscreen,
 #jede Klasse bekommt eigene Update und Render Funktion
@@ -39,16 +40,17 @@ class GameController:
         self.dt = 0
 
         # local or online mode
-        self.game_mode = "online" # local or online
+        self.game_mode = "local" # local or online
         # Only initialize a network client if the mode is online.
         self.network_client = NetworkClient() if self.game_mode == "online" else None
 
-        self.game_state_manager = GameStateManager('level')
+        self.game_state_manager = GameStateManager('start')
 
+        self.start_menu = StartMenu(self.screen, self.game_state_manager)
         self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
         self.end_menu = EndMenu(self.screen, self.game_state_manager)
 
-        self.states = {'level': self.level ,'end_menu': self.end_menu}
+        self.states = {'start': self.start_menu, 'level': self.level ,'end_menu': self.end_menu}
 
         self.input_handler = InputHandler()
 
@@ -61,11 +63,12 @@ class GameController:
                 pygame.quit()
                 exit()
 
-        if self.game_state_manager.get_state() == 'end_menu':
-            if self.end_menu.buttons[0].is_pressed():
-                    self.game_state_manager.set_state('level')
-                    for player in self.level.players.sprites():
-                        player.respawn()
+        # if self.game_state_manager.get_state() == 'end_menu':
+        #     if self.end_menu.buttons[0].is_pressed():
+        #         self.game_state_manager.set_state('level')
+        #         for player in self.level.players.sprites():
+        #             player.respawn()
+
         # If it is running in online mode, the local ID is required.
         if self.game_state_manager.get_state() == 'level':
             if self.game_mode == "local":
@@ -140,6 +143,14 @@ class GameController:
             # Handle all events
             self.events()
 
+            current_state = self.game_state_manager.get_state()
+            prev_state = self.game_state_manager.prev_state
+
+            # Einmalige Transition um player zurückzusetzten
+            if current_state == 'level' and prev_state != 'level':
+                for player in self.level.players.sprites():
+                    player.respawn()
+                self.game_state_manager.prev_state = current_state
             self.states[self.game_state_manager.get_state()].run(self.dt)
 
 

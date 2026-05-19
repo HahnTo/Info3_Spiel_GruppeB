@@ -40,7 +40,7 @@ class GameController:
         self.dt = 0
 
         # local or online mode
-        self.game_mode = "local" # local or online
+        self.game_mode = "online" # local or online
         # Only initialize a network client if the mode is online.
         self.network_client = NetworkClient() if self.game_mode == "online" else None
 

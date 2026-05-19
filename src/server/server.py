@@ -14,7 +14,7 @@ class Server:
         It uses a JSON protocol to transfer player data and game states between two clients.
         Each client runs in its own thread to handle communication in the background.
     """
-    def __init__(self, host="134.103.111.80", port=5555):
+    def __init__(self, host="192.168.0.237", port=5555):
         """Initializes the server with its IP address and port and starts it."""
         self.host = host
         self.port = port

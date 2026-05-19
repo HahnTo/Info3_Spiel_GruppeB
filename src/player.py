@@ -21,7 +21,7 @@ class Player(pygame.sprite.Sprite):
     DUCK_HEIGHT = HEIGHT * 0.8
 
     # How fast the remote player glides toward the target position (0.1 = slow/smooth, 0.3 = fast/snappy)
-    INTERP_ALPHA = 0.4
+    INTERP_ALPHA = 0.5
     # If the remote player is further away than this, teleport instead of interpolating (e.g. after respawn)
     SNAP_THRESHOLD = 50
 

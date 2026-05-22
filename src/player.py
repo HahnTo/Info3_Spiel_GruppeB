@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
     # If the remote player is further away than this, teleport instead of interpolating (e.g. after respawn)
     SNAP_THRESHOLD = 50
 
-    def __init__(self, start_x, start_y, color, player_id, is_remote):
+    def __init__(self, start_x, start_y, color, player_id, is_local):
         """
         Initializes the player.
 
@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
 
         self.player_id = player_id
 
-        self.is_remote = is_remote
+        self.is_remote = is_local
         # The target position received from the last network packet.
         self.network_target = Vector2(start_x, start_y)
         # The velocity received from the last network packet.

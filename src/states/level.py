@@ -99,10 +99,10 @@ class Level(State):
 
         if self.is_online:
 
-            player1 = Player(20, HEIGHT - 20, 'burlywood4', self.local_id, False)
+            player1 = Player(20, HEIGHT - 20, 'burlywood4', 1, self.local_id == 1)  # If local_id == 1, the player with ID 1 is the local player.
             player1.add(self.all_sprites, self.players)
 
-            player2 = Player(60, HEIGHT - 20, 'burlywood', self.remote_id, True)
+            player2 = Player(60, HEIGHT - 20, 'burlywood', 2, self.local_id == 2)
             player2.add(self.all_sprites, self.players)
         else:
             player1 = Player(20, HEIGHT - 20, 'burlywood4', 1, False)

@@ -39,7 +39,7 @@ class Player(pygame.sprite.Sprite):
 
         self.player_id = player_id
 
-        self.is_remote = is_local
+        self.is_local = is_local
         # The target position received from the last network packet.
         self.network_target = Vector2(start_x, start_y)
         # The velocity received from the last network packet.
@@ -101,7 +101,7 @@ class Player(pygame.sprite.Sprite):
             return
 
         # Remote players are handled by update_remote(), not here
-        if self.is_remote:
+        if not self.is_local:
             self._update_remote()
             return
 
@@ -172,7 +172,7 @@ class Player(pygame.sprite.Sprite):
 
         # Also reset the network interpolation state so the remote player
         # doesn't glide in from the old position after a respawn.
-        if self.is_remote:
+        if not self.is_local:
             self.network_target = Vector2(self.start_x, self.start_y)
             self.network_velocity = Vector2(0, 0)
 
@@ -216,7 +216,7 @@ class Player(pygame.sprite.Sprite):
         self.facing_right = data["facing_right"]
         self.on_ground = data["on_ground"]
 
-        if self.is_remote:
+        if not self.is_local:
             # Save the authoritative position as the new target.
             # _update_remote() will glide toward it over the next frames.
             self.network_target.x = data["x"]

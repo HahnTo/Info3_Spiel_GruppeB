@@ -105,10 +105,10 @@ class Level(State):
             player2 = Player(60, HEIGHT - 20, 'burlywood', 2, self.local_id == 2)
             player2.add(self.all_sprites, self.players)
         else:
-            player1 = Player(20, HEIGHT - 20, 'burlywood4', 1, False)
+            player1 = Player(20, HEIGHT - 20, 'burlywood4', 1, True)
             player1.add(self.all_sprites, self.players)
 
-            player2 = Player(60, HEIGHT - 20, 'burlywood', 2, False)
+            player2 = Player(60, HEIGHT - 20, 'burlywood', 2, True)
             player2.add(self.all_sprites, self.players)
 
     def get_player(self, player_id):

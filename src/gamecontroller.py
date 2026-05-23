@@ -1,11 +1,15 @@
+import threading
+
 import pygame
 
 from src.inputhandler import InputHandler
 from src.gamestatemanager import GameStateManager
 from src.server.networkclient import NetworkClient
-from src.states.endmenu import EndMenu
+from src.server.server import Server
+from src.states.menus.endmenu import EndMenu
 from src.states.level import Level
-from src.states.startmenu import StartMenu
+from src.states.menus.multyplayermenu import MultiplayerMenu
+from src.states.menus.startmenu import StartMenu
 
 #mögliche Änderungen: Gamestates für Level, Startscreen und Endscreen,
 #jede Klasse bekommt eigene Update und Render Funktion
@@ -40,20 +44,46 @@ class GameController:
         self.dt = 0
 
         # local or online mode
-        self.game_mode = "local" # local or online
+        self.game_mode = ''
         # Only initialize a network client if the mode is online.
-        self.network_client = NetworkClient() if self.game_mode == "online" else None
+        # self.network_client = NetworkClient() if self.game_mode == "online" else None
+        self.network_client = None
+        self.server = None
 
-        self.game_state_manager = GameStateManager('start')
+        self.game_state_manager = GameStateManager('start_menu')
 
-        self.start_menu = StartMenu(self.screen, self.game_state_manager)
-        self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
-        self.end_menu = EndMenu(self.screen, self.game_state_manager)
+        self.start_menu = StartMenu(self.screen, self.game_state_manager, self)
+        self.multiplayer_menu = MultiplayerMenu(self.screen, self.game_state_manager, self)
+        # self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
+        # Only initialize once it is known whether the game runs online or locally.
+        self.level = None
+        self.end_menu = EndMenu(self.screen, self.game_state_manager, self)
 
-        self.states = {'start': self.start_menu, 'level': self.level ,'end_menu': self.end_menu}
+        self.states = {
+            'start_menu': self.start_menu,
+            'level': self.level ,
+            'end_menu': self.end_menu,
+            'multiplayer_menu':  self.multiplayer_menu
+        }
 
         self.input_handler = InputHandler()
 
+    def set_game_mode(self, game_mode, is_server):
+        self.game_mode = game_mode
+        if game_mode == 'online':
+            if is_server: self.start_server()
+            self.network_client = NetworkClient()
+
+        self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
+        self.states['level'] = self.level
+
+    def start_server(self):
+        self.server = Server()
+
+        threading.Thread(
+            target=self.server.start,
+            daemon=True
+        ).start()
 
     def events(self):
         """Reacts to all pygame.events, like keyboard input and closing the Window"""
@@ -73,7 +103,7 @@ class GameController:
 
         # If it is running in online mode, the local ID is required.
         if self.game_state_manager.get_state() == 'level':
-            if self.game_mode == "local":
+            if self.game_mode == 'local':
                 self.input_handler.get_input(self.level.players, self.game_mode)
             else:
                 self.input_handler.get_input(self.level.players, self.game_mode, self.level.local_id)
@@ -146,13 +176,13 @@ class GameController:
             self.events()
 
             current_state = self.game_state_manager.get_state()
-            prev_state = self.game_state_manager.prev_state
+            first_entry = self.game_state_manager.is_first_entry()
 
             # Einmalige Transition um player zurückzusetzten
-            if current_state == 'level' and prev_state != 'level':
+            if current_state == 'level' and first_entry:
                 for player in self.level.players.sprites():
                     player.respawn()
-                self.game_state_manager.prev_state = current_state
+                self.game_state_manager.set_first_entry(False)
             self.states[self.game_state_manager.get_state()].run(self.dt)
 
 

@@ -1,9 +1,10 @@
 
 
 class State:
-    def __init__(self, screen, game_state_manager):
+    def __init__(self, screen, game_state_manager, game_controller):
         self.screen = screen
         self.game_state_manager = game_state_manager
+        self.game_controller = game_controller
 
     def run(self, dt):
         self.update(dt)

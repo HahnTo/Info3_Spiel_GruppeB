@@ -163,6 +163,6 @@ class Server:
             client.close()
 
 
-if __name__ == "__main__":
-    server = Server()
-    server.start()
+# if __name__ == "__main__":
+#     server = Server()
+#     server.start()

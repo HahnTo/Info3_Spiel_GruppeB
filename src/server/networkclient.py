@@ -15,6 +15,7 @@ class NetworkClient:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Packets are forwarded immediately to minimize latency and prevent stuttering.
         self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        self.socket.settimeout(5)
         # Localhost address
         self.server = server
         self.port = port

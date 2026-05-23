@@ -1,18 +1,15 @@
 import pygame
 
 from src.button import Button
-
-from src.states.state import State
-
 from src.inputhandler import InputHandler
+from src.states.state import State
+from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
 
-
-class EndMenu(State):
+class StartMenu(State):
     """ Creates the end menu that appears after the game."""
-    BGCOLOR = (216,161,123)
-    
-    def __init__(self, screen, game_state_manager):
-        super().__init__(screen, game_state_manager)
+
+    def __init__(self, screen, game_state_manager, game_controller):
+        super().__init__(screen, game_state_manager, game_controller)
 
         self.input_handler = InputHandler()
         self.selected_index = 0
@@ -25,15 +22,11 @@ class EndMenu(State):
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        self.buttons.append(Button('Start Menu', 48, (300, 400), lambda: self.go_to_start()))
-        self.buttons.append(Button('Neustart', 48, (300,300), lambda: self.restart_game()))
+        self.buttons.append(Button('Lokales Spiel', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.start_local_game()))
+        self.buttons.append(Button('Multiplayer', 48, (WIDTH/2, HEIGHT/2), lambda: self.game_state_manager.set_state('multiplayer_menu')))
 
-    def go_to_start(self):
-        """Set the game state to start"""
-        self.game_state_manager.set_state('start')
-
-    def restart_game(self):
-        """Set the game state to level"""
+    def start_local_game(self):
+        self.game_controller.set_game_mode('local')
         self.game_state_manager.set_state('level')
 
     def update(self, dt):
@@ -41,7 +34,7 @@ class EndMenu(State):
 
     def draw(self):
         """ Draws the menu with all buttons."""
-        self.screen.fill(self.BGCOLOR)
+        self.screen.fill(MENU_BGCOLOR)
 
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected_index)

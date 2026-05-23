@@ -21,7 +21,9 @@ def player():
     return Player(
         start_x=100,
         start_y=200,
-        color=(255, 0, 0)
+        color=(255, 0, 0),
+        player_id = 1,
+        is_local = True
     )
 
 

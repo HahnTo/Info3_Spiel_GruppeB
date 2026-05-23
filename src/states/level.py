@@ -13,7 +13,7 @@ BACKGROUND_COLOR = (0, 255, 0)
 
 class Level(State):
     def __init__(self, screen, game_state_manager, game_controller, network_client=None):
-        super().__init__(screen, game_state_manager)
+        super().__init__(screen, game_state_manager, game_controller)
 
         self.network_client = network_client
         # If network_client is not None, the game is running in online mode.

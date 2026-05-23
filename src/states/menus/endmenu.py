@@ -1,16 +1,15 @@
 import pygame
 
 from src.button import Button
-from src.inputhandler import InputHandler
-
 from src.states.state import State
+from src.inputhandler import InputHandler
+from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
 
-class StartMenu(State):
+class EndMenu(State):
     """ Creates the end menu that appears after the game."""
-    BGCOLOR = (216, 161, 123)
 
-    def __init__(self, screen, game_state_manager):
-        super().__init__(screen, game_state_manager)
+    def __init__(self, screen, game_state_manager, game_controller):
+        super().__init__(screen, game_state_manager, game_controller)
 
         self.input_handler = InputHandler()
         self.selected_index = 0
@@ -23,10 +22,15 @@ class StartMenu(State):
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        self.buttons.append(Button('Starte das Spiel', 48, (300, 300), lambda: self.start_game()))
+        self.buttons.append(Button('Start Menu', 48, (WIDTH/2, HEIGHT/2 -100), lambda: self.go_to_start()))
+        self.buttons.append(Button('Neustart', 48, (WIDTH/2, HEIGHT/2), lambda: self.restart_game()))
 
-    def start_game(self):
+    def go_to_start(self):
         """Set the game state to start"""
+        self.game_state_manager.set_state('start_menu')
+
+    def restart_game(self):
+        """Set the game state to level"""
         self.game_state_manager.set_state('level')
 
     def update(self, dt):
@@ -34,7 +38,7 @@ class StartMenu(State):
 
     def draw(self):
         """ Draws the menu with all buttons."""
-        self.screen.fill(self.BGCOLOR)
+        self.screen.fill(MENU_BGCOLOR)
 
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected_index)

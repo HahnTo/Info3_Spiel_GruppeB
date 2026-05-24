@@ -123,6 +123,17 @@ class GameController:
             # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
                 self.game_state_manager.set_state('end_menu')
+            elif obstacle.is_movable:
+                if player.velocity.x < 0:
+                    obstacle.rect.right = player.rect.left
+                    obstacle.x_pos = obstacle.rect.x
+                    player.rect.left = obstacle.rect.right
+                    player.position.x = player.rect.x
+                elif player.velocity.x > 0:
+                    obstacle.rect.left = player.rect.right
+                    obstacle.x_pos = obstacle.rect.x
+                    player.rect.right = obstacle.rect.left
+                    player.position.x = player.rect.x
             else:
                 # It moves to the left, so it must stop at the right end of the obstacle.
                 if player.velocity.x < 0:
@@ -134,6 +145,26 @@ class GameController:
                     player.rect.right = obstacle.rect.left
                     player.position.x = player.rect.x
                     player.velocity.x = 0
+        collisions = pygame.sprite.groupcollide(self.level.obstacles, self.level.obstacles, False, False)
+        for movable, colliders in collisions.items():
+            if movable.is_movable:
+                for wall in colliders:
+                    if wall != movable and not wall.is_movable:
+                        if player.velocity.x > 0:
+                            movable.rect.right = wall.rect.left
+                            movable.x_pos = movable.rect.x
+                            player.rect.right = movable.rect.left
+                            player.position.x = player.rect.x
+                            player.velocity.x = 0
+
+                        elif player.velocity.x < 0:
+                            movable.rect.left = wall.rect.right
+                            movable.x_pos = movable.rect.x
+                            player.rect.left = movable.rect.right
+                            player.position.x = player.rect.x
+                            player.velocity.x = 0
+
+
 
 
     def handle_vertical_collision(self, player):
@@ -147,6 +178,8 @@ class GameController:
         for obstacle in collider_group:
             if obstacle.is_goal:
                 self.game_state_manager.set_state('end_menu')
+            #elif obstacle.is_movable:
+             #   pass
             else:
                 # Since it's coming from below, it must stop at the bottom of the obstacle.
                 if player.velocity.y < 0:
@@ -159,6 +192,7 @@ class GameController:
                     player.on_ground = True
                     player.position.y = player.rect.y
                     player.velocity.y = 0
+
 
 
     def run(self):

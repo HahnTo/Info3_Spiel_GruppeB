@@ -47,9 +47,9 @@ class Player(pygame.sprite.Sprite):
         self.network_velocity = Vector2(0, 0)
 
         # Create the rect for the player
-        self.image = pygame.Surface((self.WIDTH, self.HEIGHT))
+        self.image = pygame.image.load('graphics/player/Mole_1.png')
         self.rect = self.image.get_rect(topleft=(self.WIDTH, self.HEIGHT))
-        self.image.fill(color)
+        #self.image.fill(color)
 
         # Set the position to his spawn point
         self.rect.x = start_x

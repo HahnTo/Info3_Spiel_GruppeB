@@ -94,8 +94,11 @@ class Level(State):
         goal_obstacle = Obstacle((255, 0, 0), 50, 50, 0, HEIGHT - 550, True)
         goal_obstacle.add(self.all_sprites, self.obstacles)
 
-        goal_obstacle2 = Obstacle((255, 0, 0), 50, 50, WIDTH -700, HEIGHT - 100, True)
-        goal_obstacle2.add(self.all_sprites, self.obstacles)
+        #goal_obstacle2 = Obstacle((255, 0, 0), 50, 50, WIDTH -700, HEIGHT - 100, True)
+        #goal_obstacle2.add(self.all_sprites, self.obstacles)
+
+        movable_block = Obstacle((0,0,255),30,50,130,HEIGHT-70,False,True)
+        movable_block.add(self.all_sprites, self.obstacles)
 
         if self.is_online:
 

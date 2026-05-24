@@ -68,11 +68,16 @@ class GameController:
 
         self.input_handler = InputHandler()
 
-    def set_game_mode(self, game_mode, is_server):
+    def set_game_mode(self, game_mode, ip_address=""):
         self.game_mode = game_mode
         if game_mode == 'online':
-            if is_server: self.start_server()
-            self.network_client = NetworkClient()
+            # If ip_address is empty, this device starts the server.
+            # Otherwise, the network client uses the IP address of the created server.
+            if ip_address == "":
+                self.start_server()
+                self.network_client = NetworkClient()
+            else:
+                self.network_client = NetworkClient(ip_address)
 
         self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
         self.states['level'] = self.level

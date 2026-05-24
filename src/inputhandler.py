@@ -94,6 +94,22 @@ class InputHandler:
             if event.key == pygame.K_RETURN:
                 menu.buttons[menu.selected_index].on_click()
 
+    def handle_input_field(self, input_field, event):
+        if event.type == pygame.KEYDOWN:
+
+            if event.key == pygame.K_RETURN:
+                input_field.editing = False   # Eingabe abgeschlossen
+
+            elif event.key == pygame.K_BACKSPACE:
+                input_field.value = input_field.value[:-1]
+
+            else:
+                # Nur druckbare Zeichen – bei IP: Ziffern und Punkte
+                char = event.unicode
+                if char and (char.isdigit() or char == "."):
+                    if len(input_field.value) < 15:   # xxx.xxx.xxx.xxx = max 15
+                        input_field.value += char
+
     def save_bindings(self, filepath: str = "config/keybindings.json"):
         """
         Saves the new keybindings.

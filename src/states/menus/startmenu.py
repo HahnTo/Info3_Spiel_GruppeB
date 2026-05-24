@@ -26,7 +26,7 @@ class StartMenu(State):
         self.buttons.append(Button('Multiplayer', 48, (WIDTH/2, HEIGHT/2), lambda: self.game_state_manager.set_state('multiplayer_menu')))
 
     def start_local_game(self):
-        self.game_controller.set_game_mode('local', False)
+        self.game_controller.set_game_mode('local')
         self.game_state_manager.set_state('level')
 
     def update(self, dt):

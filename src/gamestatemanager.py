@@ -12,7 +12,12 @@ class GameStateManager:
         return self.current_state
 
     def set_state(self, state):
-        self.prev_state = self.current_state
+        """ Sets a new state and stores the previous state.
+            Do not store the join_loading state, because it should only be active while connecting to a server.
+        """
+        if self.current_state != 'join_loading':
+            self.prev_state = self.current_state
+
         self.current_state = state
         self.first_entry = True
 

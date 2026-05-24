@@ -27,20 +27,17 @@ class MultiplayerMenu(State):
     def create_buttons(self):
         """ Adds buttons to the menu."""
         self.buttons.append(Button('Spiel beitreten', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.create_input_field()))
-        self.buttons.append(Button('Server hosten', 48, (WIDTH/2, HEIGHT/2 ), lambda: self.start_online_game()))
-        self.buttons.append(Button('Zurück', 48, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_state_manager.go_to_prev_state()))
+        self.buttons.append(Button('Server hosten', 48, (WIDTH/2, HEIGHT/2 ), lambda: self.game_controller.start_host()))
+        self.buttons.append(Button('Zurück', 48, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_state_manager.set_state('start_menu')))
 
     def create_input_field(self):
         self.input_field = InputField("IP Adresse", 32, (WIDTH/2, HEIGHT/2 + 120), "xxx.xxx.xxx.xxx")
 
     def join_online_game(self):
-        self.game_controller.set_game_mode('online', self.ip_address)
-        self.game_state_manager.set_state('level')
-
-    def start_online_game(self):
-        self.game_controller.set_game_mode('online')
-        self.game_state_manager.set_state('level')
-
+        self.game_controller.start_join(self.ip_address)
+        # If you enter the false ip adress, it needs to be resettet
+        self.ip_address = ""
+        self.input_field = None
 
     def update(self, dt):
         pass

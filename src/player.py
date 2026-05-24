@@ -47,7 +47,7 @@ class Player(pygame.sprite.Sprite):
         self.network_velocity = Vector2(0, 0)
 
         # Create the rect for the player
-        self.image = pygame.image.load('graphics/player/Mole_1.png')
+        self.image = pygame.image.load('src/graphics/player/Mole_1.png')
         self.rect = self.image.get_rect(topleft=(self.WIDTH, self.HEIGHT))
         #self.image.fill(color)
 

@@ -8,7 +8,7 @@ from src.server.networkclient import NetworkClient
 from src.server.server import Server
 from src.states.menus.endmenu import EndMenu
 from src.states.level import Level
-from src.states.menus.multyplayermenu import MultiplayerMenu
+from src.states.menus.multiplayermenu import MultiplayerMenu
 from src.states.menus.startmenu import StartMenu
 
 #mögliche Änderungen: Gamestates für Level, Startscreen und Endscreen,
@@ -97,6 +97,7 @@ class GameController:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
 
             self.states[self.game_state_manager.get_state()].handle_event(event)
 

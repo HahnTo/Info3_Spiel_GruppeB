@@ -2,6 +2,8 @@ import pygame
 from pygame import Vector2
 from typing import Literal
 
+from config import GRAPHICS_DIR
+
 
 
 class Player(pygame.sprite.Sprite):
@@ -47,7 +49,7 @@ class Player(pygame.sprite.Sprite):
         self.network_velocity = Vector2(0, 0)
 
         # Create the rect for the player
-        self.image = pygame.image.load('src/graphics/player/Mole_1.png')
+        self.image = pygame.image.load(GRAPHICS_DIR / "player" / "Mole_1.png")
         self.rect = self.image.get_rect(topleft=(self.WIDTH, self.HEIGHT))
         #self.image.fill(color)
 

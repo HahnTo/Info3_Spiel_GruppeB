@@ -2,6 +2,9 @@ import pygame
 from pygame import Vector2
 from typing import Literal
 
+import spritesheet
+from spritesheet import Spritesheet
+
 from config import GRAPHICS_DIR
 
 
@@ -36,6 +39,22 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__()
 
+        #Spritesheets laden
+        run_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR/"player"/"monster"/"Pink_Monster_Walk_6.png"))
+        jump_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Jump_8.png"))
+        idle_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Idle_4.png"))
+
+        self.animations ={
+            "run": [run_sheet.get_image(x,32,32,1,(0,0,0))for x in range (6)],
+            "jump": [jump_sheet.get_image(x,32,32,1,(0,0,0))for x in range(8)],
+            "idle": [idle_sheet.get_image(x,32,32,1,(0,0,0))for x in range(4)],
+        }
+
+        self.state = "idle"
+        self.frame_index = 0
+        self.last_update = pygame.time.get_ticks()
+        self.animation_cooldown = 75
+
         self.start_x = start_x
         self.start_y = start_y
 
@@ -49,9 +68,18 @@ class Player(pygame.sprite.Sprite):
         self.network_velocity = Vector2(0, 0)
 
         # Create the rect for the player
-        self.image = pygame.image.load(GRAPHICS_DIR / "player" / "Mole_1.png")
-        self.rect = self.image.get_rect(topleft=(self.WIDTH, self.HEIGHT))
-        #self.image.fill(color)
+
+
+
+
+
+        self.image = self.animations[self.state][0]
+
+        self.rect = self.image.get_rect(topleft=(start_x, start_y))
+
+        bottom = self.rect.bottom
+        self.rect.inflate_ip(-6, 0)
+        self.rect.bottom = bottom
 
         # Set the position to his spawn point
         self.rect.x = start_x
@@ -64,14 +92,37 @@ class Player(pygame.sprite.Sprite):
         # States
         self.on_ground = False
         self.is_alive = True
+        self.is_moving = False
         self.facing_right = True # Wird später für die Texturen und Interaktion mit Gegenständen o.ä. gebraucht.
 
+
+    def animate(self):
+        current_time = pygame.time.get_ticks()
+        #print(current_time - self.last_update, self.animation_cooldown)
+        if current_time - self.last_update >= self.animation_cooldown:
+            self.frame_index += 1
+            self.last_update = current_time
+            if self.frame_index >= len(self.animations[self.state]):
+                self.frame_index = 0
+                self.last_update = pygame.time.get_ticks()
+        image = self.animations[self.state][self.frame_index]
+        if not self.facing_right:
+            image = pygame.transform.flip(image,True,False)
+            image.set_colorkey((0,0,0))
+        self.image = image
+
+    def set_state(self, new_state):
+        if self.state != new_state:
+            print(f"{self.player_id}:{self.state} ->{new_state}")
+            self.state = new_state
+            self.frame_index = 0
 
     def move(self, direction: Literal[-1, 0, 1]):
         """
         Moves the player when the function is called.
         direction: -1 = left, 0 = stay in place, 1 = right
         """
+        self.is_moving = direction != 0
 
         if not self.is_alive or direction == 0:
             return
@@ -105,11 +156,18 @@ class Player(pygame.sprite.Sprite):
         # Remote players are handled by update_remote(), not here
         if not self.is_local:
             self._update_remote()
+            self.animate()
             return
+
+
+
+
+
 
         # The vertical velocity is increased slightly every frame, which creates the physics of falling
         if not self.on_ground:
             self.velocity.y += self.GRAVITY
+        else:self.velocity.y = 0
 
         # horizontal movement
         self.position.x += self.velocity.x
@@ -123,8 +181,20 @@ class Player(pygame.sprite.Sprite):
         self.on_ground = False
         gc.handle_vertical_collision(self)
 
+        if not self.on_ground and self.velocity.y > 1:
+            self.set_state("jump")
+        elif self.is_moving:
+            self.set_state("run")
+        else:
+            self.set_state("idle")
+
+        self.animate()
+
         # Set the horizontal speed to zero to stop the player when the key is no longer pressed down
         self.velocity.x = 0
+        self.is_moving = False
+
+
 
     def _update_remote(self):
         """ Called every frame for the remote player instead of the normal physics update """

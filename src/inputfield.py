@@ -70,6 +70,7 @@ class InputField:
         text_surf = self.font.render(display_text, False, text_color)
         text_rect = text_surf.get_rect(midleft=(box_rect.left + 10,
                                                  box_rect.centery))
+        screen.blit(text_surf, text_rect)
 
     def update_cursor(self):
         """Makes the cursor blink ca every half second"""

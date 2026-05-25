@@ -100,6 +100,12 @@ class Level(State):
         movable_block = Obstacle((0,0,255),30,50,130,HEIGHT-70,False,True)
         movable_block.add(self.all_sprites, self.obstacles)
 
+        button_obstacle = Obstacle((0,0,0),20,20,400,HEIGHT -120,False,False,True,2)
+        button_obstacle.add(self.all_sprites,self.obstacles)
+
+        moving_obstacle = Obstacle((0,0,0),20,100,250,150,False,False,False,2)
+        moving_obstacle.add(self.all_sprites, self.obstacles)
+
         if self.is_online:
 
             player1 = Player(20, HEIGHT - 20, 'burlywood4', 1, self.local_id == 1)  # If local_id == 1, the player with ID 1 is the local player.

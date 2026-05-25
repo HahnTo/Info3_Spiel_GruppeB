@@ -2,13 +2,15 @@ import threading
 
 import pygame
 
+from obstacle import Obstacle
 from src.inputhandler import InputHandler
 from src.gamestatemanager import GameStateManager
 from src.server.networkclient import NetworkClient
 from src.server.server import Server
+from src.states.joinloadingstate import JoinLoadingState
 from src.states.menus.endmenu import EndMenu
 from src.states.level import Level
-from src.states.menus.multyplayermenu import MultiplayerMenu
+from src.states.menus.multiplayermenu import MultiplayerMenu
 from src.states.menus.startmenu import StartMenu
 
 #mögliche Änderungen: Gamestates für Level, Startscreen und Endscreen,
@@ -54,6 +56,7 @@ class GameController:
 
         self.start_menu = StartMenu(self.screen, self.game_state_manager, self)
         self.multiplayer_menu = MultiplayerMenu(self.screen, self.game_state_manager, self)
+        self.join_loading = None
         # self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
         # Only initialize once it is known whether the game runs online or locally.
         self.level = None
@@ -63,24 +66,41 @@ class GameController:
             'start_menu': self.start_menu,
             'level': self.level ,
             'end_menu': self.end_menu,
-            'multiplayer_menu':  self.multiplayer_menu
+            'multiplayer_menu':  self.multiplayer_menu,
+            'join_loading': self.join_loading
         }
 
         self.input_handler = InputHandler()
 
-    def set_game_mode(self, game_mode, ip_address=""):
-        self.game_mode = game_mode
-        if game_mode == 'online':
-            # If ip_address is empty, this device starts the server.
-            # Otherwise, the network client uses the IP address of the created server.
-            if ip_address == "":
-                self.start_server()
-                self.network_client = NetworkClient()
-            else:
-                self.network_client = NetworkClient(ip_address)
+    def start_local(self):
+        self.game_mode = 'local'
+        self.level = Level(self.screen, self.game_state_manager, self, None)
+        self.states['level'] = self.level
+        self.game_state_manager.set_state('level')
 
+
+    def start_host(self):
+        self.game_mode = 'online'
+        self.start_server()
+        self.network_client = NetworkClient()
         self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
         self.states['level'] = self.level
+        self.game_state_manager.set_state('level')
+
+    def start_join(self, ip_address):
+        """Called when the player wants to join an existing server.
+        Shows the loading screen while the connection is established in a background thread."""
+        self.game_mode = 'online'
+        self.join_loading = JoinLoadingState(self.screen, self.game_state_manager, self, ip_address)
+        self.states['join_loading'] = self.join_loading
+        self.game_state_manager.set_state('join_loading')
+
+    def finish_join(self):
+        """Called by JoinLoadingState once the NetworkClient is connected.
+        Builds the Level with the ready client and switches to it """
+        self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
+        self.states['level'] = self.level
+        self.game_state_manager.set_state('level')
 
     def start_server(self):
         self.server = Server()
@@ -97,6 +117,7 @@ class GameController:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
 
             self.states[self.game_state_manager.get_state()].handle_event(event)
 
@@ -124,6 +145,7 @@ class GameController:
 
         # Get all objects that are colliding with each other
         collider_group = pygame.sprite.spritecollide(player, self.level.obstacles, False)
+        obstacles = self.level.obstacles
         for obstacle in collider_group:
             # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
@@ -139,6 +161,12 @@ class GameController:
                     obstacle.x_pos = obstacle.rect.x
                     player.rect.right = obstacle.rect.left
                     player.position.x = player.rect.x
+            elif obstacle.is_button:
+                button = obstacle
+                for other in self.level.obstacles:
+                    if button.button_id == other.button_id and not other.is_button:
+                        other.move(200)
+
             else:
                 # It moves to the left, so it must stop at the right end of the obstacle.
                 if player.velocity.x < 0:
@@ -185,6 +213,11 @@ class GameController:
                 self.game_state_manager.set_state('end_menu')
             #elif obstacle.is_movable:
              #   pass
+            elif obstacle.is_button:
+                button = obstacle
+                for other in self.level.obstacles:
+                    if button.button_id == other.button_id and not other.is_button:
+                        other.move(200)
             else:
                 # Since it's coming from below, it must stop at the bottom of the obstacle.
                 if player.velocity.y < 0:
@@ -197,6 +230,7 @@ class GameController:
                     player.on_ground = True
                     player.position.y = player.rect.y
                     player.velocity.y = 0
+
 
 
 

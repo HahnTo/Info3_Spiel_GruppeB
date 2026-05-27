@@ -1,9 +1,11 @@
 # Soll die Platformen aus einer JSON oder ähnlichem laden, wenn ein neues Level erstellt wird.
 import pygame
+import pytmx
 
 from src.obstacle import Obstacle
 from src.player import Player
 from src.states.state import State
+from src.level_loader import Level_loader
 
 WIDTH = 1080
 HEIGHT = 720
@@ -31,15 +33,22 @@ class Level(State):
         # self.network_update_timer = 0
 
         self.game_controller = game_controller
+        self.loader = Level_loader("assets/maps/map_1.tmx",self)
 
         # Initialise all sprite groups
         self.all_sprites = pygame.sprite.Group()
         self.players = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
 
-        self.create_sprites()
+        self.create_players()
+        self.load_map()
 
-    def create_sprites(self):
+    def load_map(self):
+        #loader = Level_loader("assets/maps/map_1.tmx",self)
+        self.loader.load()
+
+    def create_players(self):
+        """
         frame_wall_left = Obstacle((255, 0, 0), 10, HEIGHT, -10, 0)
         frame_wall_left.add(self.all_sprites, self.obstacles)
 
@@ -105,6 +114,7 @@ class Level(State):
 
         moving_obstacle = Obstacle((0,0,0),20,100,250,150,False,False,False,2)
         moving_obstacle.add(self.all_sprites, self.obstacles)
+        """
 
         if self.is_online:
 
@@ -176,10 +186,26 @@ class Level(State):
             # remote_player.rect.x = int(remote_player.position.x)
             # remote_player.rect.y = int(remote_player.position.y)
 
+    def draw_tiles(self):
+        tmx = self.loader.tmx
+
+        for layer in tmx.layers:
+            if isinstance(layer, pytmx.TiledTileLayer):
+                for x, y, gid in layer:
+                    image = tmx.get_tile_image_by_gid(gid)
+                    if image:
+                        self.screen.blit(
+                            image,
+                            (x * tmx.tilewidth, y * tmx.tileheight)
+                        )
+
     def draw(self):
         """ Draws all sprites."""
         self.screen.fill(BACKGROUND_COLOR)
+        self.draw_tiles()
         self.all_sprites.draw(self.screen)
+
+
 
         # After drawing the sprites, you need to flip it on the display
         pygame.display.flip()

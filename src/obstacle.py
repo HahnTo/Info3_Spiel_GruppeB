@@ -35,6 +35,9 @@ class Obstacle(pygame.sprite.Sprite):
         if self.button_id is not None and not self.is_button:
             self.move_up()
 
+    def draw(self,screen):
+        screen.blit(self.image,self.rect)
+
 
 
         

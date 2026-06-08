@@ -19,12 +19,17 @@ class Level_loader:
                 continue
 
             if obj_type == "solid":
+                button_id = obj.properties.get("button_id")
                 obstacle = Obstacle(
                     (0,0,255),
                     obj.width,
                     obj.height,
                     obj.x,
-                    obj.y
+                    obj.y,
+                    False,
+                    False,
+                    False,
+                    button_id
                 )
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
 

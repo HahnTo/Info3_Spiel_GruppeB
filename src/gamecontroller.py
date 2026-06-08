@@ -162,10 +162,13 @@ class GameController:
                     player.rect.right = obstacle.rect.left
                     player.position.x = player.rect.x
             elif obstacle.is_button:
+                print("Button gedrückt")
                 button = obstacle
                 for other in self.level.obstacles:
                     if button.button_id == other.button_id and not other.is_button:
                         other.move(200)
+                        print("button gefunden")
+
 
             else:
                 # It moves to the left, so it must stop at the right end of the obstacle.

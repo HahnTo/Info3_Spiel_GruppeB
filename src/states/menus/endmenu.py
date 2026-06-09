@@ -22,8 +22,8 @@ class EndMenu(State):
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        self.buttons.append(Button('Start Menu', 48, (WIDTH/2, HEIGHT/2 -100), lambda: self.go_to_start()))
-        self.buttons.append(Button('Neustart', 48, (WIDTH/2, HEIGHT/2), lambda: self.restart_game()))
+        self.buttons.append(Button('Start Menu', 48, (WIDTH/2, HEIGHT/2), lambda: self.go_to_start()))
+        self.buttons.append(Button('Neustart', 48, (WIDTH/2, HEIGHT/2 + 100), lambda: self.restart_game()))
 
     def go_to_start(self):
         """Set the game state to start"""
@@ -39,6 +39,24 @@ class EndMenu(State):
     def draw(self):
         """ Draws the menu with all buttons."""
         self.screen.fill(MENU_BGCOLOR)
+
+        title_font = pygame.font.Font(None, 72)
+        score_font = pygame.font.Font(None, 46)
+
+        # Texte rendern
+        congrats_text = title_font.render(
+            "Herzlichen Glückwunsch!", True, (255, 255, 255)
+        )
+        score_text = score_font.render(
+            f"Dein Score: 0", True, (255, 255, 255)
+        )
+
+        # Zentriert platzieren
+        congrats_rect = congrats_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 200))
+        score_rect = score_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 130))
+
+        self.screen.blit(congrats_text, congrats_rect)
+        self.screen.blit(score_text, score_rect)
 
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected_index)

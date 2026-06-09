@@ -14,19 +14,27 @@ class Obstacle(pygame.sprite.Sprite):
         self.is_goal = is_goal
         self.is_button = is_button #buttonobstacles dann true
         self.image = pygame.Surface([width, height])
-        self.image.fill(color)
+
+        if color is None and button_id is None:
+            self.image.fill((0,0,0))
+            self.image.set_alpha(0)
+        elif color is None and button_id is not None:
+            self.image.fill((0,0,255))
+        else:
+            self.image.fill(color)
+
         self.rect = self.image.get_rect()
         self.rect.topleft = (x_pos, y_pos)
 
     def move(self,range):
         range = range
-        print("Obstacle bewegt sich runter")
+        #print("Obstacle bewegt sich runter")
         if self.y_pos - self.y_start <= range:
             self.y_pos += 5
         self.rect.topleft = (self.x_pos, self.y_pos)
 
     def move_up(self):
-        print("Obstacle bewegt sich hoch")
+        #print("Obstacle bewegt sich hoch")
         if self.y_pos > self.y_start:
             self.y_pos -= 5
         self.rect.topleft = (self.x_pos, self.y_pos)

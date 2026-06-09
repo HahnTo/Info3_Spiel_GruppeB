@@ -3,6 +3,7 @@ import pygame
 import pytmx
 
 from src.config import ASSETS_DIR
+from src.config import ASSETS_DIR, GRAPHICS_DIR
 from src.obstacle import Obstacle
 from src.player import Player
 from src.states.state import State
@@ -17,6 +18,7 @@ BACKGROUND_COLOR = (0, 255, 0)
 class Level(State):
     def __init__(self, screen, game_state_manager, game_controller, network_client=None):
         super().__init__(screen, game_state_manager, game_controller)
+        # self.background_image = pygame.image.load(GRAPHICS_DIR / "map" / "background2.png").convert()
 
         self.network_client = network_client
         # If network_client is not None, the game is running in online mode.
@@ -29,12 +31,8 @@ class Level(State):
             self.local_id = None
             self.remote_id = None
 
-        # # 20 updates per second are enough for smooth gameplay and prevent too many packets per second
-        # self.network_update_interval = 1 / 20
-        # self.network_update_timer = 0
-
         self.game_controller = game_controller
-        self.loader = Level_loader("assets/maps/map_2.tmx",self)
+        self.loader = Level_loader(ASSETS_DIR / "maps" / "map_2.tmx",self)
 
         # Initialise all sprite groups
         self.all_sprites = pygame.sprite.Group()
@@ -203,6 +201,7 @@ class Level(State):
     def draw(self):
         """ Draws all sprites."""
         self.screen.fill(BACKGROUND_COLOR)
+        # self.screen.blit(self.background_image, (0, 0))
 
 
         self.draw_tiles()

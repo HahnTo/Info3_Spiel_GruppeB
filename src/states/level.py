@@ -2,7 +2,6 @@
 import pygame
 import pytmx
 
-from src.config import ASSETS_DIR
 from src.config import ASSETS_DIR, GRAPHICS_DIR
 from src.obstacle import Obstacle
 from src.player import Player

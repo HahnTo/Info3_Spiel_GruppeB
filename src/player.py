@@ -45,9 +45,9 @@ class Player(pygame.sprite.Sprite):
         idle_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Idle_4.png"))
 
         self.animations ={
-            "run": [run_sheet.get_image(x,32,32,2,(0,0,0))for x in range (6)],
-            "jump": [jump_sheet.get_image(x,32,32,2,(0,0,0))for x in range(8)],
-            "idle": [idle_sheet.get_image(x,32,32,2,(0,0,0))for x in range(4)],
+            "run": [run_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range (6)],
+            "jump": [jump_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range(8)],
+            "idle": [idle_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range(4)],
         }
 
         self.state = "idle"

@@ -203,9 +203,9 @@ class Level(State):
         """ Draws all sprites."""
         self.screen.fill(BACKGROUND_COLOR)
 
-        self.all_sprites.draw(self.screen)
-        self.draw_tiles()
 
+        self.draw_tiles()
+        self.all_sprites.draw(self.screen)
 
 
         # After drawing the sprites, you need to flip it on the display

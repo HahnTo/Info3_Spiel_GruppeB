@@ -21,7 +21,7 @@ class Level_loader:
             if obj_type == "solid":
                 button_id = obj.properties.get("button_id")
                 obstacle = Obstacle(
-                    (0,0,0),
+                    None,
                     obj.width,
                     obj.height,
                     obj.x,

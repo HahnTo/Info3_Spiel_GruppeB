@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
     GRAVITY = 0.8
     MOVE_SPEED = 5.0
     # Must be negative, since the grid starts at (0, 0) in the top-left corner
-    JUMP_HEIGHT = -12.0
+    JUMP_HEIGHT = -18.0
     DUCK_HEIGHT = HEIGHT * 0.8
 
     # How fast the remote player glides toward the target position (0.1 = slow/smooth, 0.3 = fast/snappy)

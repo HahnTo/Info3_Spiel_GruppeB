@@ -2,6 +2,7 @@
 import pygame
 import pytmx
 
+from src.config import ASSETS_DIR
 from src.obstacle import Obstacle
 from src.player import Player
 from src.states.state import State
@@ -33,7 +34,7 @@ class Level(State):
         # self.network_update_timer = 0
 
         self.game_controller = game_controller
-        self.loader = Level_loader("assets/maps/map_2.tmx",self)
+        self.loader = Level_loader(ASSETS_DIR / "maps/map_2.tmx",self)
 
         # Initialise all sprite groups
         self.all_sprites = pygame.sprite.Group()

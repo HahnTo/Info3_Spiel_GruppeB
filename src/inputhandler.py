@@ -98,13 +98,13 @@ class InputHandler:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_RETURN:
-                input_field.editing = False   # Eingabe abgeschlossen
+                input_field.editing = False     # Input finished
 
             elif event.key == pygame.K_BACKSPACE:
                 input_field.value = input_field.value[:-1]
 
             else:
-                # Nur druckbare Zeichen – bei IP: Ziffern und Punkte
+                # Only Numbers and points for IP Address
                 char = event.unicode
                 if char and (char.isdigit() or char == "."):
                     if len(input_field.value) < 15:   # xxx.xxx.xxx.xxx = max 15

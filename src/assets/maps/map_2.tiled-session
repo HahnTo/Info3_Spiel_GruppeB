@@ -1,9 +1,30 @@
 {
-    "activeFile": "",
+    "activeFile": "map_2.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
+        "map_1.tmx": {
+            "scale": 0.4102272727272727,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 528.9750692520776,
+                "y": 352.2437673130194
+            }
+        },
+        "map_2.tmx": {
+            "scale": 0.3923913043478261,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 553.0193905817174,
+                "y": 360.6094182825486
+            }
+        },
         "tileset_x.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tileset_y.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
         }
@@ -15,10 +36,17 @@
     "map.tileWidth": 48,
     "map.width": 23,
     "openFiles": [
+        "map_2.tmx",
+        "tileset_x.tsx",
+        "tileset_y.tsx",
+        "map_1.tmx"
     ],
     "project": "map_2.tiled-project",
     "recentFiles": [
-        "tileset_x.tsx"
+        "map_1.tmx",
+        "tileset_y.tsx",
+        "tileset_x.tsx",
+        "map_2.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

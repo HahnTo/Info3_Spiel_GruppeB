@@ -1,6 +1,7 @@
 # Soll die Platformen aus einer JSON oder ähnlichem laden, wenn ein neues Level erstellt wird.
 import pygame
 import pytmx
+from pygame.pixelcopy import map_array
 
 from src.config import ASSETS_DIR
 from src.obstacle import Obstacle
@@ -13,9 +14,13 @@ HEIGHT = 720
 
 BACKGROUND_COLOR = (0, 255, 0)
 
+# Level 1: easy
+# Level 2: mid
+# Level 3: hard
+# Level 4: server
 
 class Level(State):
-    def __init__(self, screen, game_state_manager, game_controller, network_client=None):
+    def __init__(self, screen, game_state_manager, game_controller, level_id, network_client=None):
         super().__init__(screen, game_state_manager, game_controller)
 
         self.network_client = network_client
@@ -29,12 +34,11 @@ class Level(State):
             self.local_id = None
             self.remote_id = None
 
-        # # 20 updates per second are enough for smooth gameplay and prevent too many packets per second
-        # self.network_update_interval = 1 / 20
-        # self.network_update_timer = 0
+        self.level_id = level_id
+        map_location = ASSETS_DIR / f"maps/map_{level_id}.tmx"
 
         self.game_controller = game_controller
-        self.loader = Level_loader(ASSETS_DIR / "maps/map_2.tmx",self)
+        self.loader = Level_loader(map_location,self)
 
         # Initialise all sprite groups
         self.all_sprites = pygame.sprite.Group()
@@ -164,11 +168,6 @@ class Level(State):
         local_player = self.get_player(self.local_id)
         remote_player = self.get_player(self.remote_id)
 
-        # Limit update rate: send only one packet every 50ms (20x/s).
-        # The game loop continues running at 60 FPS – only the network is throttled.
-        # self.network_update_timer += dt
-        # if self.network_update_timer >= self.network_update_interval:
-        #     self.network_update_timer = 0
         if local_player:
             data = {
                 "type": "update",
@@ -180,6 +179,7 @@ class Level(State):
 
         if update and update.get("type") == "state" and remote_player:
             remote_player.set_data(update["data"])
+        # elif update.get("type") == "game_start"
             # # Client-side interpolation: the remote player moves between received positions instead of freezing.
             # # Continue using velocity from the last received state.
             # remote_player.position.x += remote_player.velocity.x

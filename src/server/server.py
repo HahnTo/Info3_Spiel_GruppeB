@@ -30,6 +30,8 @@ class Server:
 
         print(f"Server gestartet auf {self.host}:{self.port}")
 
+        self.game_started = False
+
         self.clients = [None, None]
         self.lock = threading.Lock()
         # Initialize only the player data, not a Player() object
@@ -108,12 +110,27 @@ class Server:
             with self.lock:
                 self.clients[player_id] = client
 
+            if self.clients[0] and self.clients[1]:
+                self.game_started = True
+                self.broadcast_start()
+
             thread = threading.Thread(
                 target=self.handle_client,
                 args=(client, player_id),
                 daemon=True,
             )
             thread.start()
+
+    def broadcast_start(self):
+        """Send game_start to all connected clients. Then they show the level"""
+        data = {
+            "type": "game_start",
+            "level_id": 4
+        }
+
+        for c in self.clients:
+            if c and c != "reserved":
+                self.send(c, data)
 
     def handle_client(self, client, player_id):
         """Runs in a separate thread for each connected client. It is called when a new thread is created."""

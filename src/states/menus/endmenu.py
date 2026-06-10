@@ -11,10 +11,14 @@ class EndMenu(State):
     def __init__(self, screen, game_state_manager, game_controller):
         super().__init__(screen, game_state_manager, game_controller)
 
+        self.level_id = None
         self.input_handler = InputHandler()
         self.selected_index = 0
         self.buttons = []
         self.create_buttons()
+
+    def set_level_id(self, level_id):
+        self.level_id = level_id
 
     def run(self, dt):
         self.update(dt)
@@ -40,10 +44,14 @@ class EndMenu(State):
         """ Draws the menu with all buttons."""
         self.screen.fill(MENU_BGCOLOR)
 
+        level_font = pygame.font.Font(None, 60)
         title_font = pygame.font.Font(None, 72)
         score_font = pygame.font.Font(None, 46)
 
         # Texte rendern
+        level_text = level_font.render(
+            f"Level {self.level_id}", True, (255, 255, 255)
+        )
         congrats_text = title_font.render(
             "Herzlichen Glückwunsch!", True, (255, 255, 255)
         )
@@ -52,9 +60,11 @@ class EndMenu(State):
         )
 
         # Zentriert platzieren
+        level_rect = level_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 300))
         congrats_rect = congrats_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 200))
         score_rect = score_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 130))
 
+        self.screen.blit(level_text, level_rect)
         self.screen.blit(congrats_text, congrats_rect)
         self.screen.blit(score_text, score_rect)
 

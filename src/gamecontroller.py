@@ -2,14 +2,15 @@ import threading
 
 import pygame
 
-from obstacle import Obstacle
 from src.inputhandler import InputHandler
 from src.gamestatemanager import GameStateManager
 from src.server.networkclient import NetworkClient
 from src.server.server import Server
-from src.states.joinloadingstate import JoinLoadingState
+from src.states.loadings.joinloadingstate import JoinLoadingState
+from src.states.loadings.waitforclientstate import WaitForClientState
 from src.states.menus.endmenu import EndMenu
 from src.states.level import Level
+from src.states.menus.levechoosermenu import LevelChooser
 from src.states.menus.multiplayermenu import MultiplayerMenu
 from src.states.menus.startmenu import StartMenu
 
@@ -55,37 +56,43 @@ class GameController:
         self.game_state_manager = GameStateManager('start_menu')
 
         self.start_menu = StartMenu(self.screen, self.game_state_manager, self)
+        self.level_chooser = LevelChooser(self.screen, self.game_state_manager, self)
         self.multiplayer_menu = MultiplayerMenu(self.screen, self.game_state_manager, self)
+        self.wait_for_client = None
         self.join_loading = None
-        # self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
+
         # Only initialize once it is known whether the game runs online or locally.
         self.level = None
         self.end_menu = EndMenu(self.screen, self.game_state_manager, self)
 
         self.states = {
             'start_menu': self.start_menu,
+            'level_chooser': self.level_chooser,
             'level': self.level ,
             'end_menu': self.end_menu,
             'multiplayer_menu':  self.multiplayer_menu,
+            'waiting_for_client': self.wait_for_client,
             'join_loading': self.join_loading
         }
 
         self.input_handler = InputHandler()
 
-    def start_local(self):
+    def start_local(self, level_id):
         self.game_mode = 'local'
-        self.level = Level(self.screen, self.game_state_manager, self, None)
+        self.level = Level(self.screen, self.game_state_manager, self, level_id)
         self.states['level'] = self.level
         self.game_state_manager.set_state('level')
 
 
     def start_host(self):
         self.game_mode = 'online'
-        self.start_server()
         self.network_client = NetworkClient()
-        self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
-        self.states['level'] = self.level
-        self.game_state_manager.set_state('level')
+        self.start_server()
+        self.wait_for_client = WaitForClientState(self.screen, self.game_state_manager, self)
+        self.states['waiting_for_client'] = self.wait_for_client
+        self.game_state_manager.set_state('waiting_for_client')
+        # self.level = Level(self.screen, self.game_state_manager, self, 4, self.network_client)
+        # self.states['level'] = self.level
 
     def start_join(self, ip_address):
         """Called when the player wants to join an existing server.
@@ -98,7 +105,7 @@ class GameController:
     def finish_join(self):
         """Called by JoinLoadingState once the NetworkClient is connected.
         Builds the Level with the ready client and switches to it """
-        self.level = Level(self.screen, self.game_state_manager, self, self.network_client)
+        self.level = Level(self.screen, self.game_state_manager, self, 4, self.network_client)
         self.states['level'] = self.level
         self.game_state_manager.set_state('level')
 
@@ -149,6 +156,7 @@ class GameController:
         for obstacle in collider_group:
             # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
+                self.end_menu.set_level_id(self.level.level_id)
                 self.game_state_manager.set_state('end_menu')
             elif obstacle.is_movable:
                 if player.velocity.x < 0:
@@ -213,6 +221,7 @@ class GameController:
         collider_group = pygame.sprite.spritecollide(player, self.level.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
+                self.end_menu.set_level_id(self.level.level_id)
                 self.game_state_manager.set_state('end_menu')
             #elif obstacle.is_movable:
              #   pass

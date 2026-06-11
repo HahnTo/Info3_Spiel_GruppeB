@@ -2,6 +2,8 @@ import math
 import threading
 import pygame
 
+from src.button import Button
+from src.inputhandler import InputHandler
 from src.states.state import State
 from src.server.networkclient import NetworkClient
 from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
@@ -19,7 +21,8 @@ class WaitForClientState(State):
         super().__init__(screen, game_state_manager, game_controller)
 
         # --- connection state ---
-        self.waiting = True
+        self.waiting_for_connection = True
+        self.waiting_for_start = False
         self.lock = threading.Lock()
 
         # --- animation ---
@@ -31,23 +34,38 @@ class WaitForClientState(State):
         self.font_sub    = pygame.font.SysFont("Courier New", 22)
         self.font_ip     = pygame.font.SysFont("Courier New", 18)
 
+        self.input_handler = InputHandler()
+        self.selected_index = 0
+        self.buttons = []
+        self.create_buttons()
+
+        self.is_host = self.game_controller.network_client.player_id == 1
+
         # waiting in background
         # threading.Thread(target=self.listen, daemon=True).start()
+
+    def run(self, dt):
+        self.update(dt)
+        self.draw()
+
+    def create_buttons(self):
+        """ Adds buttons to the menu."""
+        # self.buttons.append(Button('Lokales Spiel', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_controller.start_local()))
+        self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_controller.start_online(4)))
 
     def update(self, dt):
         self.elapsed += dt
 
         msg = self.game_controller.network_client.get_update()
 
-        if msg and msg.get("type") == "game_start":
-            self.game_controller.finish_join()
-            return
-
-        # # Automatically returns to the multiplayer menu after 3 seconds.
-        # if status == "failed":
-        #     self.error_timer += dt
-        #     if self.error_timer >= self.ERROR_DISPLAY_TIME:
-        #         self.game_state_manager.set_state("multiplayer_menu")
+        if msg:
+            if msg.get("type") == "connected":
+                self.waiting_for_connection = False
+                self.waiting_for_start = True
+            elif msg.get("type") == "game_start":
+                if not self.is_host:  # only the joiner should start this
+                    self.game_controller.start_online(4)
+                    return
 
     def draw(self):
         ACCENT  = (0, 200, 255)
@@ -59,24 +77,27 @@ class WaitForClientState(State):
 
         cx, cy = WIDTH // 2, HEIGHT // 2
 
-        if self.waiting:
+        if self.waiting_for_connection:
             self._draw_spinner(cx, cy - 60, ACCENT)
 
             title = self.font_title.render("Warte auf zweiten Spieler …", True, WHITE)
             self.screen.blit(title, title.get_rect(center=(cx, cy + 30)))
+        elif self.waiting_for_start:
+            title1 = self.font_title.render("Zwei Spieler sind verbunden", True, WHITE)
+            self.screen.blit(title1, title1.get_rect(center=(cx, cy + 30)))
 
-            # ip_surf = self.font_ip.render(f"Server: {self.ip_address}", True, DIM)
-            # self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy + 75)))
-
-        # elif status == "failed":
-        #     # pulsating red X
-        #     pulse = 0.5 + 0.5 * math.sin(self.elapsed * 6)
-        #     r = int(RED[0]), int(RED[1] + pulse * 20), int(RED[2] + pulse * 20)
-        #     err = self.font_title.render("VERBINDUNG FEHLGESCHLAGEN", True, r)
-        #     self.screen.blit(err, err.get_rect(center=(cx, cy - 20)))
-        #
-        #     hint = self.font_sub.render("Zurück zum Menü …", True, DIM)
-        #     self.screen.blit(hint, hint.get_rect(center=(cx, cy + 30)))
+            if self.is_host:
+                # Only the Host can start the Game
+                title2 = self.font_title.render("Startet jetzt das Spiel", True, WHITE)
+                self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
+                for i, button in enumerate(self.buttons):
+                    button.selected = (i == self.selected_index)
+                for button in self.buttons:
+                    button.draw(self.screen)
+            else:
+                # Joiner waits
+                title2 = self.font_title.render("Warte auf Host …", True, WHITE)
+                self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
 
         pygame.display.flip()
 
@@ -98,6 +119,5 @@ class WaitForClientState(State):
             pygame.draw.circle(self.screen, c, (dot_x, dot_y), size)
 
     def handle_event(self, event):
-        # Allow ESC to cancel
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            self.game_state_manager.set_state("multiplayer_menu")
+        if self.is_host:
+            self.input_handler.handle_menu_input(self, event)

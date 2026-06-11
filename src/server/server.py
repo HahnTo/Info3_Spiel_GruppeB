@@ -115,6 +115,17 @@ class Server:
             )
             thread.start()
 
+    def broadcast_connected(self):
+        """Send game_start to all connected clients. Then they show the level"""
+        data = {
+            "type": "connected"
+        }
+
+        for c in self.clients:
+            if c and c != "reserved":
+                print(c)
+                self.send(c, data)
+
     def broadcast_start(self):
         """Send game_start to all connected clients. Then they show the level"""
         data = {
@@ -140,7 +151,7 @@ class Server:
                         self.clients[1] is not None and self.clients[1] != "reserved"
                 )
             if both_connected:
-                self.broadcast_start()
+                self.broadcast_connected()
 
             while True:
                 # Receives data every frame from the client socket.
@@ -169,10 +180,14 @@ class Server:
                         "type": "state",
                         "data": self.players[other_id]
                     })
+                elif data.get("type") == "game_start":
+                    if other_client and other_client != "reserved":
+                        self.send(other_client, {"type": "game_start"})
                 elif data.get("type") == "game_over":
                     # Einfach an den anderen Client weiterleiten
                     if other_client and other_client != "reserved":
                         self.send(other_client, {"type": "game_over"})
+
 
         except Exception as e:
             print(f"[CLIENT ERROR] player_id={player_id}: {e}")

@@ -83,14 +83,17 @@ class GameController:
         self.states['level'] = self.level
         self.game_state_manager.set_state('level')
 
+    def start_online(self, level_id):
+        self.network_client.send({"type": "game_start"})
+        self.level = Level(self.screen, self.game_state_manager, self, level_id, self.network_client)
+        self.states['level'] = self.level
+        self.game_state_manager.set_state('level')
 
     def start_host(self):
         self.game_mode = 'online'
         self.start_server()
         self.network_client = NetworkClient()
-        self.wait_for_client = WaitForClientState(self.screen, self.game_state_manager, self)
-        self.states['waiting_for_client'] = self.wait_for_client
-        self.game_state_manager.set_state('waiting_for_client')
+        self.go_to_waiting_for_client()
         # self.level = Level(self.screen, self.game_state_manager, self, 4, self.network_client)
         # self.states['level'] = self.level
 
@@ -101,6 +104,11 @@ class GameController:
         self.join_loading = JoinLoadingState(self.screen, self.game_state_manager, self, ip_address)
         self.states['join_loading'] = self.join_loading
         self.game_state_manager.set_state('join_loading')
+
+    def go_to_waiting_for_client(self):
+        self.wait_for_client = WaitForClientState(self.screen, self.game_state_manager, self)
+        self.states['waiting_for_client'] = self.wait_for_client
+        self.game_state_manager.set_state('waiting_for_client')
 
     def finish_join(self):
         """Called by JoinLoadingState once the NetworkClient is connected.

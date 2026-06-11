@@ -91,11 +91,17 @@ class NetworkClient:
             print(f"[SEND ERROR] {e}")
 
     def get_update(self):
-        """Returns the latest message from the queue, or None if no new message is available."""
-        latest = None
         try:
-            while True:
-                latest = self._recv_queue.get_nowait()
+            return self._recv_queue.get_nowait()
         except queue.Empty:
-            pass
-        return latest
+            return None
+
+    # def get_update(self):
+    #     """Returns the latest message from the queue, or None if no new message is available."""
+    #     latest = None
+    #     try:
+    #         while True:
+    #             latest = self._recv_queue.get_nowait()
+    #     except queue.Empty:
+    #         pass
+    #     return latest

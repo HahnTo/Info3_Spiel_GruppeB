@@ -175,13 +175,23 @@ class Level(State):
             }
             self.network_client.send(data)
 
-        update = self.network_client.get_update()
-
-        if update:
-            if update.get("type") == "state" and remote_player:
-                remote_player.set_data(update["data"])
-            elif update.get("type") == "game_over":
+        while True:
+            msg = self.network_client.get_update()
+            if msg is None:
+                break
+            if msg.get("type") == "state" and remote_player:
+                remote_player.set_data(msg["data"])
+            elif msg.get("type") == "game_over":
                 self.game_controller.trigger_goal()
+                return  # sofort raus, kein weiteres Processing nötig
+
+        # update = self.network_client.get_update()
+        #
+        # if update:
+        #     if update.get("type") == "state" and remote_player:
+        #         remote_player.set_data(update["data"])
+        #     elif update.get("type") == "game_over":
+        #         self.game_controller.trigger_goal()
 
     def draw_tiles(self):
         tmx = self.loader.tmx

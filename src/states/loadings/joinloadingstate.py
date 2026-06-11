@@ -62,7 +62,8 @@ class JoinLoadingState(State):
 
         if status == "success":
             # finish setup and switch to level
-            self.game_controller.finish_join()
+            # self.game_controller.finish_join()
+            self.game_controller.go_to_waiting_for_client()
             return
 
         # Automatically returns to the multiplayer menu after 3 seconds.

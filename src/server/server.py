@@ -7,6 +7,7 @@ import socket
 import threading
 import json
 import struct
+from typing import Literal
 
 
 class Server:
@@ -15,23 +16,21 @@ class Server:
         Each client runs in its own thread to handle communication in the background.
     """
     def __init__(self, host="0.0.0.0", port=5555):
-        """Initializes the server with its IP address and port and starts it."""
-        self.host = host
-        self.port = port
-        # Create a TCP/IPv4 socket for the server to accept client connections
+        """ Initializes the server with its IP address and port and starts it.
+            Create a TCP/IPv4 socket for the server to accept client connections """
         self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        # Packets are forwarded immediately to minimize latency and prevent stuttering.
         self.server.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        self.server.bind((host, port))
 
-        self.server.bind((self.host, self.port))
         # Allows up to 2 clients to connect.
         self.server.listen(2)
 
-        print(f"Server gestartet auf {self.host}:{self.port}")
+        print(f"Server gestartet auf {host}:{port}")
 
-        self.clients = [None, None]
+        self.clients: list[socket.socket | Literal["reserved"] | None] = [None, None]
         self.lock = threading.Lock()
+
         # Initialize only the player data, not a Player() object
         self.players = [
             {"x": 20,  "y": 700, "vx": 0, "vy": 0, "facing_right": True, "on_ground": False},
@@ -51,16 +50,17 @@ class Server:
             print(f"[SEND ERROR] {e}")
 
     def receive(self, client):
-        """Receives a message with a 4-byte length prefix."""
+        """ Receives a message with a 4-byte length prefix.
+            Returns the decoded message"""
         try:
             # read length
-            raw_len = self._recv_exact(client, 4)
+            raw_len = self.recv_exact(client, 4)
             if raw_len is None:
                 return None
             length = struct.unpack(">I", raw_len)[0]
 
-            # 2) read payload
-            raw_data = self._recv_exact(client, length)
+            # read payload
+            raw_data = self.recv_exact(client, length)
             if raw_data is None:
                 return None
 
@@ -70,7 +70,7 @@ class Server:
             print(f"[RECEIVE ERROR] {e}")
             return None
 
-    def _recv_exact(self, client, n):
+    def recv_exact(self, client, n):
         """Reads exactly n bytes from the socket – waits for additional chunks if necessary."""
         buf = b""
         while len(buf) < n:
@@ -101,6 +101,7 @@ class Server:
 
             if player_id is None:
                 print("Server voll – Verbindung abgelehnt.")
+                self.send(client, {"type": "server_full"})
                 client.close()
                 continue
 
@@ -116,7 +117,7 @@ class Server:
             thread.start()
 
     def broadcast_connected(self):
-        """Send game_start to all connected clients. Then they show the level"""
+        """Send connected to all connected clients. Then they show waiting state"""
         data = {
             "type": "connected"
         }
@@ -138,11 +139,12 @@ class Server:
                 self.send(c, data)
 
     def handle_client(self, client, player_id):
-        """Runs in a separate thread for each connected client. It is called when a new thread is created."""
+        """ Runs in a separate thread for each connected client. It is called when a new thread is created.
+            All the communication is handled in here."""
         try:
             self.send(client, {
                 "type": "init",
-                "player_id": player_id + 1  # 0 -> 1,  1 -> 2
+                "player_id": player_id + 1  # 0 -> 1,  1 -> 2 in the Level, the player_ids are 1 and 2
             })
 
             with self.lock:
@@ -150,6 +152,7 @@ class Server:
                         self.clients[0] is not None and self.clients[0] != "reserved" and
                         self.clients[1] is not None and self.clients[1] != "reserved"
                 )
+            # If both clients are connected, server sends connected to every client
             if both_connected:
                 self.broadcast_connected()
 
@@ -181,6 +184,7 @@ class Server:
                         "data": self.players[other_id]
                     })
 
+                # Always send the exact message to the other client. Its to communicate the game states
                 elif data.get("type") == "game_start":
                     if other_client and other_client != "reserved":
                         self.send(other_client, {"type": "game_start"})
@@ -204,7 +208,7 @@ class Server:
             client.close()
 
     def shutdown(self):
-        """Schließt alle Client-Verbindungen und den Server-Socket."""
+        """Closes all client connections and the server socket."""
         with self.lock:
             for i, client in enumerate(self.clients):
                 if client and client != "reserved":
@@ -217,7 +221,3 @@ class Server:
             self.server.close()
         except Exception:
             pass
-
-# if __name__ == "__main__":
-#     server = Server()
-#     server.start()

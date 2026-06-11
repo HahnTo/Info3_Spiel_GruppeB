@@ -30,10 +30,6 @@ class JoinLoadingState(State):
         self.elapsed = 0.0
         self.error_timer = 0.0
 
-        self.font_title  = pygame.font.SysFont("Courier New", 36, bold=True)
-        self.font_sub    = pygame.font.SysFont("Courier New", 22)
-        self.font_ip     = pygame.font.SysFont("Courier New", 18)
-
         # Start connecting in background
         threading.Thread(target=self.connect, daemon=True).start()
 
@@ -78,33 +74,37 @@ class JoinLoadingState(State):
         white   = (230, 230, 240)
         red     = (255, 80, 80)
 
+        font_title = pygame.font.SysFont("Courier New", 36, bold=True)
+        font_sub = pygame.font.SysFont("Courier New", 22)
+        font_ip = pygame.font.SysFont("Courier New", 18)
+
         self.screen.fill(bg)
 
         cx = WIDTH / 2
         cy = HEIGHT / 2
 
         if self.status == "connecting":
-            self._draw_spinner(cx, cy - 60, accent)
+            self.draw_spinner(cx, cy - 60, accent)
 
-            title = self.font_title.render("VERBINDE …", True, white)
+            title = font_title.render("VERBINDE …", True, white)
             self.screen.blit(title, title.get_rect(center=(cx, cy + 30)))
 
-            ip_surf = self.font_ip.render(f"Server: {self.ip_address}", True, dim)
+            ip_surf = font_ip.render(f"Server: {self.ip_address}", True, dim)
             self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy + 75)))
 
         elif self.status == "failed":
             # pulsating red X
             pulse = 0.5 + 0.5 * math.sin(self.elapsed * 6)
             r = int(red[0]), int(red[1] + pulse * 20), int(red[2] + pulse * 20)
-            err = self.font_title.render("VERBINDUNG FEHLGESCHLAGEN", True, r)
+            err = font_title.render("VERBINDUNG FEHLGESCHLAGEN", True, r)
             self.screen.blit(err, err.get_rect(center=(cx, cy - 20)))
 
-            hint = self.font_sub.render("Zurück zum Menü …", True, dim)
+            hint = font_sub.render("Zurück zum Menü …", True, dim)
             self.screen.blit(hint, hint.get_rect(center=(cx, cy + 30)))
 
         pygame.display.flip()
 
-    def _draw_spinner(self, cx, cy, color):
+    def draw_spinner(self, cx, cy, color):
         """Draws an arc-based spinner that rotates over time."""
         t      = self.elapsed
         radius = 38

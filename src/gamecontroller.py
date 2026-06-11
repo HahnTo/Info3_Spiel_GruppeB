@@ -7,7 +7,7 @@ from src.gamestatemanager import GameStateManager
 from src.server.networkclient import NetworkClient
 from src.server.server import Server
 from src.states.loadings.joinloadingstate import JoinLoadingState
-from src.states.loadings.waitforclientstate import WaitForClientState
+from src.states.loadings.waitingstate import WaitingState
 from src.states.menus.endmenu import EndMenu
 from src.states.level import Level
 from src.states.menus.levechoosermenu import LevelChooserMenu
@@ -106,7 +106,7 @@ class GameController:
         self.game_state_manager.set_state('join_loading')
 
     def go_to_waiting_for_client(self):
-        self.wait_for_client = WaitForClientState(self.screen, self.game_state_manager, self)
+        self.wait_for_client = WaitingState(self.screen, self.game_state_manager, self)
         self.states['waiting_for_client'] = self.wait_for_client
         self.game_state_manager.set_state('waiting_for_client')
 

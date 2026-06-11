@@ -17,7 +17,7 @@ class NetworkClient:
         self.socket.settimeout(5)
         self.addr = (server, port)
 
-        self.player_id = None
+        self.player_id: int | None = None
 
         # Incoming messages are stored in this queue.
         # The game loop reads from it without blocking.

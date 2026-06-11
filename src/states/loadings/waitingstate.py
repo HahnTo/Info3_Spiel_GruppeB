@@ -8,7 +8,7 @@ from src.states.state import State
 from src.config import WIDTH, HEIGHT, MENU_BGCOLOR, get_local_ip
 
 
-class WaitForClientState(State):
+class WaitingState(State):
     """ Shown while waiting for the second client."""
 
     # How long to show the error message before going back (in seconds)
@@ -24,9 +24,6 @@ class WaitForClientState(State):
 
         self.elapsed = 0.0
         self.error_timer = 0.0
-
-        self.font_title  = pygame.font.SysFont("Courier New", 36, bold=True)
-        self.font_ip    = pygame.font.SysFont("Courier New", 22, bold=True)
 
         self.input_handler = InputHandler()
         self.selected_index = 0
@@ -60,40 +57,44 @@ class WaitForClientState(State):
         accent  = (0, 200, 255)
         white   = (230, 230, 240)
 
+        font_title = pygame.font.SysFont("Courier New", 36, bold=True)
+        font_ip = pygame.font.SysFont("Courier New", 22, bold=True)
+
         self.screen.fill(MENU_BGCOLOR)
 
         cx, cy = WIDTH // 2, HEIGHT // 2
 
         if self.waiting_for_connection:
-            self._draw_spinner(cx, cy - 60, accent)
+            self.draw_spinner(cx, cy - 60, accent)
 
-            title = self.font_title.render("Warte auf zweiten Spieler …", True, white)
+            title = font_title.render("Warte auf zweiten Spieler …", True, white)
             self.screen.blit(title, title.get_rect(center=(cx, cy + 30)))
+
+            # Print the ip if the joiner needs it.
+            ip = get_local_ip()
+            ip_surf = font_ip.render(f"Deine IP: {ip}", True, white)
+            self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy + 120)))
         elif self.waiting_for_start:
-            title1 = self.font_title.render("Zwei Spieler sind verbunden", True, white)
+            title1 = font_title.render("Zwei Spieler sind verbunden", True, white)
             self.screen.blit(title1, title1.get_rect(center=(cx, cy + 30)))
 
             if self.is_host:
                 # Only the Host can start the Game
-                title2 = self.font_title.render("Startet jetzt das Spiel", True, white)
+                title2 = font_title.render("Startet jetzt das Spiel", True, white)
                 self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
                 for i, button in enumerate(self.buttons):
                     button.selected = (i == self.selected_index)
                 for button in self.buttons:
                     button.draw(self.screen)
-                # Print the ip if the joiner needs it.
-                ip = get_local_ip()
-                ip_surf = self.font_ip.render(f"Deine IP: {ip}", True, white)
-                self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy + 120)))
             else:
                 # Joiner waits
-                title2 = self.font_title.render("Warte auf Host …", True, white)
+                title2 = font_title.render("Warte auf Host …", True, white)
                 self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
 
 
         pygame.display.flip()
 
-    def _draw_spinner(self, cx, cy, color):
+    def draw_spinner(self, cx, cy, color):
         """Draws an arc-based spinner that rotates over time."""
         t      = self.elapsed
         radius = 38

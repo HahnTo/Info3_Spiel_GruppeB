@@ -155,14 +155,9 @@ class Player(pygame.sprite.Sprite):
 
         # Remote players are handled by update_remote(), not here
         if not self.is_local:
-            self._update_remote()
+            self.update_remote()
             self.animate()
             return
-
-
-
-
-
 
         # The vertical velocity is increased slightly every frame, which creates the physics of falling
         if not self.on_ground:
@@ -196,7 +191,7 @@ class Player(pygame.sprite.Sprite):
 
 
 
-    def _update_remote(self):
+    def update_remote(self):
         """ Called every frame for the remote player instead of the normal physics update """
 
         # Extrapolation
@@ -258,25 +253,6 @@ class Player(pygame.sprite.Sprite):
             "facing_right": self.facing_right,
             "on_ground": self.on_ground
         }
-
-    # def set_data(self, data):
-    #     """Apply network state to player."""
-    #
-    #     if not data:
-    #         return
-    #
-    #     self.position.x = data["x"]
-    #     self.position.y = data["y"]
-    #
-    #     self.velocity.x = data["vx"]
-    #     self.velocity.y = data["vy"]
-    #
-    #     self.facing_right = data["facing_right"]
-    #     self.on_ground = data["on_ground"]
-    #
-    #     # Sync rect with position
-    #     self.rect.x = int(self.position.x)
-    #     self.rect.y = int(self.position.y)
 
     def set_data(self, data):
         """ Apply a network state update to the remote player """

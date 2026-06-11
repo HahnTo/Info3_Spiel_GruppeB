@@ -117,6 +117,24 @@ class GameController:
         self.states['level'] = self.level
         self.game_state_manager.set_state('level')
 
+    def restart_online(self, send=True):
+        if send:
+            self.network_client.send({"type": "restart"})
+        self.clear_network_queue()
+        self.level = Level(
+            self.screen, self.game_state_manager, self,
+            self.level.level_id, self.network_client
+        )
+        self.states['level'] = self.level
+        self.game_state_manager.set_state('level')
+
+    def clear_network_queue(self):
+        """Leert die komplette recv_queue, damit alte game_over/state-Pakete
+        das neue Level nicht sofort wieder beenden."""
+        if self.network_client:
+            while self.network_client.get_update() is not None:
+                pass
+
     def start_server(self):
         self.server = Server()
 
@@ -125,22 +143,30 @@ class GameController:
             daemon=True
         ).start()
 
+    def disconnect(self):
+        if self.network_client:
+            try:
+                self.network_client.socket.close()
+            except Exception:
+                pass
+            self.network_client = None
+
+        if self.server:
+            self.server.shutdown()  # ← neu
+            self.server = None
+
+        self.game_mode = 'local'
+        self.game_state_manager.set_state('start_menu')
+
     def events(self):
         """Reacts to all pygame.events, like keyboard input and closing the Window"""
         for event in pygame.event.get():
             # Ends the script if window gets closed
             if event.type == pygame.QUIT:
-                pygame.quit()
-                exit()
+                self.shutdown()
 
 
             self.states[self.game_state_manager.get_state()].handle_event(event)
-
-        # if self.game_state_manager.get_state() == 'end_menu':
-        #     if self.end_menu.buttons[0].is_pressed():
-        #         self.game_state_manager.set_state('level')
-        #         for player in self.level.players.sprites():
-        #             player.respawn()
 
         # If it is running in online mode, the local ID is required.
         if self.game_state_manager.get_state() == 'level':
@@ -249,10 +275,10 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
-    def trigger_goal(self):
+    def trigger_goal(self, send_to_server=True):
         """Called when any player reaches the goal."""
-        self.end_menu.set_level_id(self.level.level_id)
-        if self.network_client is not None:
+        self.end_menu.build_menu(self.level.level_id)
+        if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "game_over"})
         self.game_state_manager.set_state('end_menu')
 
@@ -280,6 +306,21 @@ class GameController:
                 self.game_state_manager.set_first_entry(False)
             self.states[self.game_state_manager.get_state()].run(self.dt)
 
+    def shutdown(self):
+        """Räumt alles auf und beendet das Spiel sauber."""
+        if self.network_client:
+            try:
+                self.network_client.socket.close()
+            except Exception:
+                pass
+            self.network_client = None
+
+        if self.server:
+            self.server.shutdown()
+            self.server = None
+
+        pygame.quit()
+        exit()
 
 if __name__ == "__main__":
     gc = GameController()

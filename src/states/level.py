@@ -182,8 +182,11 @@ class Level(State):
             if msg.get("type") == "state" and remote_player:
                 remote_player.set_data(msg["data"])
             elif msg.get("type") == "game_over":
-                self.game_controller.trigger_goal()
+                self.game_controller.trigger_goal(send_to_server=False)
                 return  # sofort raus, kein weiteres Processing nötig
+            elif msg.get("type") == "restart":
+                self.game_controller.restart_online()
+                return
 
         # update = self.network_client.get_update()
         #

@@ -180,14 +180,19 @@ class Server:
                         "type": "state",
                         "data": self.players[other_id]
                     })
+
                 elif data.get("type") == "game_start":
                     if other_client and other_client != "reserved":
                         self.send(other_client, {"type": "game_start"})
+
                 elif data.get("type") == "game_over":
                     # Einfach an den anderen Client weiterleiten
                     if other_client and other_client != "reserved":
                         self.send(other_client, {"type": "game_over"})
 
+                elif data.get("type") == "restart":
+                    if other_client and other_client != "reserved":
+                        self.send(other_client, {"type": "restart"})
 
         except Exception as e:
             print(f"[CLIENT ERROR] player_id={player_id}: {e}")
@@ -198,6 +203,20 @@ class Server:
                 self.clients[player_id] = None
             client.close()
 
+    def shutdown(self):
+        """Schließt alle Client-Verbindungen und den Server-Socket."""
+        with self.lock:
+            for i, client in enumerate(self.clients):
+                if client and client != "reserved":
+                    try:
+                        client.close()
+                    except Exception:
+                        pass
+                self.clients[i] = None
+        try:
+            self.server.close()
+        except Exception:
+            pass
 
 # if __name__ == "__main__":
 #     server = Server()

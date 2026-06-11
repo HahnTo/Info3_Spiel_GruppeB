@@ -9,6 +9,7 @@ class EndMenu(State):
     """ Creates the end menu that appears after the game."""
 
     def __init__(self, screen, game_state_manager, game_controller):
+        """ Initialises the end menu screen."""
         super().__init__(screen, game_state_manager, game_controller)
 
         self.level_id = None
@@ -17,11 +18,12 @@ class EndMenu(State):
         self.buttons = []
 
     def build_menu(self, level_id):
+        """ Creates Level id and buttons. """
         self.level_id = level_id
-        # Buttons erst HIER erstellen, game_mode ist jetzt bekannt
-        self._build_buttons()
+        self.create_buttons()
 
-    def _build_buttons(self):
+    def create_buttons(self):
+        """ Create buttons depending on the game mode."""
         self.buttons = []
         self.selected_index = 0
         is_online = self.game_controller.game_mode == 'online'
@@ -35,7 +37,7 @@ class EndMenu(State):
                     lambda: self.game_controller.restart_online()
                 ))
             else:
-                # Joiner sieht nur Text, kein Restart-Button – er wartet auf Host
+                # The joiner only sees the text and not the restart button, they wait for the host.
                 pass
             self.buttons.append(Button(
                 'Server verlassen', 48, (WIDTH / 2, HEIGHT / 2 + 100),
@@ -44,35 +46,22 @@ class EndMenu(State):
         else:
             self.buttons.append(Button(
                 'Neustart', 48, (WIDTH / 2, HEIGHT / 2),
-                lambda: self.restart_game()
+                lambda: self.game_state_manager.set_state('level')
             ))
             self.buttons.append(Button(
                 'Start Menu', 48, (WIDTH / 2, HEIGHT / 2 + 100),
-                lambda: self.go_to_start()
+                lambda: self.game_state_manager.set_state('start_menu')
             ))
 
     def run(self, dt):
         self.update(dt)
         self.draw()
 
-    def create_buttons(self):
-        """ Adds buttons to the menu."""
-        self.buttons.append(Button('Start Menu', 48, (WIDTH/2, HEIGHT/2), lambda: self.go_to_start()))
-        self.buttons.append(Button('Neustart', 48, (WIDTH/2, HEIGHT/2 + 100), lambda: self.restart_game()))
-
-    def go_to_start(self):
-        """Set the game state to start"""
-        self.game_state_manager.set_state('start_menu')
-
-    def restart_game(self):
-        """Set the game state to level"""
-        self.game_state_manager.set_state('level')
-
     def update(self, dt):
+        """ Waits for a message from the server. """
         if self.game_controller.game_mode == 'online' and self.game_controller.network_client:
             msg = self.game_controller.network_client.get_update()
             if msg and msg.get("type") == "restart":
-                # self.game_controller.clear_network_queue()  # ← Queue leeren
                 self.game_controller.restart_online(send=False)
 
     def draw(self):
@@ -83,7 +72,6 @@ class EndMenu(State):
         title_font = pygame.font.Font(None, 72)
         score_font = pygame.font.Font(None, 46)
 
-        # Texte rendern
         level_text = level_font.render(
             f"Level {self.level_id}", True, (255, 255, 255)
         )
@@ -94,7 +82,6 @@ class EndMenu(State):
             f"Dein Score: 0", True, (255, 255, 255)
         )
 
-        # Zentriert platzieren
         level_rect = level_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 300))
         congrats_rect = congrats_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 200))
         score_rect = score_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 130))
@@ -112,7 +99,7 @@ class EndMenu(State):
             hint = hint_font.render("Warte auf Host …", True, (180, 180, 180))
             self.screen.blit(hint, hint.get_rect(center=(WIDTH / 2, HEIGHT / 2)))
 
-        # Buttons zeichnen (nur Host hat Restart-Button)
+        # Draw buttons (only the host has the restart button)
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected_index)
         for button in self.buttons:

@@ -1,6 +1,8 @@
 
 
 class State:
+    """ The abstract class for all states. Implements the abstract methods"""
+
     def __init__(self, screen, game_state_manager, game_controller):
         self.screen = screen
         self.game_state_manager = game_state_manager

@@ -10,7 +10,7 @@ from src.states.loadings.joinloadingstate import JoinLoadingState
 from src.states.loadings.waitforclientstate import WaitForClientState
 from src.states.menus.endmenu import EndMenu
 from src.states.level import Level
-from src.states.menus.levechoosermenu import LevelChooser
+from src.states.menus.levechoosermenu import LevelChooserMenu
 from src.states.menus.multiplayermenu import MultiplayerMenu
 from src.states.menus.startmenu import StartMenu
 
@@ -56,7 +56,7 @@ class GameController:
         self.game_state_manager = GameStateManager('start_menu')
 
         self.start_menu = StartMenu(self.screen, self.game_state_manager, self)
-        self.level_chooser = LevelChooser(self.screen, self.game_state_manager, self)
+        self.level_chooser = LevelChooserMenu(self.screen, self.game_state_manager, self)
         self.multiplayer_menu = MultiplayerMenu(self.screen, self.game_state_manager, self)
         self.wait_for_client = None
         self.join_loading = None

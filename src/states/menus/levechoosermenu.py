@@ -5,10 +5,11 @@ from src.inputhandler import InputHandler
 from src.states.state import State
 from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
 
-class LevelChooser(State):
-    """ Creates the end menu that appears after the game."""
+class LevelChooserMenu(State):
+    """ Creates the Level Chooser Menu that appears for Level selection."""
 
     def __init__(self, screen, game_state_manager, game_controller):
+        """ Initialises the Menu"""
         super().__init__(screen, game_state_manager, game_controller)
 
         self.input_handler = InputHandler()
@@ -22,14 +23,10 @@ class LevelChooser(State):
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        # self.buttons.append(Button('Lokales Spiel', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_controller.start_local()))
-        self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_controller.start_local(1)))
-        self.buttons.append(Button('Level 2', 48, (WIDTH/2, HEIGHT/2), lambda: self.game_controller.start_local(2)))
-        self.buttons.append(Button('Level 3', 48, (WIDTH/2, HEIGHT/2 + 100), lambda: self.game_controller.start_local(3)))
-
-    def start_local_game(self):
-        self.game_controller.set_game_mode('local')
-        self.game_state_manager.set_state('level')
+        self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 150), lambda: self.game_controller.start_local(1)))
+        self.buttons.append(Button('Level 2', 48, (WIDTH/2, HEIGHT/2 - 50), lambda: self.game_controller.start_local(2)))
+        self.buttons.append(Button('Level 3', 48, (WIDTH/2, HEIGHT/2 + 50), lambda: self.game_controller.start_local(3)))
+        self.buttons.append(Button('Zurück', 40, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_state_manager.set_state('start_menu')))
 
     def update(self, dt):
         pass

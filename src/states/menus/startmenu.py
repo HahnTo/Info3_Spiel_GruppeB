@@ -6,9 +6,10 @@ from src.states.state import State
 from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
 
 class StartMenu(State):
-    """ Creates the end menu that appears after the game."""
+    """ Creates the start menu that appears after starting the application."""
 
     def __init__(self, screen, game_state_manager, game_controller):
+        """ Initialises the Menu"""
         super().__init__(screen, game_state_manager, game_controller)
 
         self.input_handler = InputHandler()
@@ -16,23 +17,11 @@ class StartMenu(State):
         self.buttons = []
         self.create_buttons()
 
-    def run(self, dt):
-        self.update(dt)
-        self.draw()
-
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        # self.buttons.append(Button('Lokales Spiel', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_controller.start_local()))
         self.buttons.append(Button('Lokales Spiel', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_state_manager.set_state('level_chooser')))
         self.buttons.append(Button('Multiplayer', 48, (WIDTH/2, HEIGHT/2), lambda: self.game_state_manager.set_state('multiplayer_menu')))
         self.buttons.append(Button('Spiel verlassen', 48, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_controller.shutdown()))
-
-    def start_local_game(self):
-        self.game_controller.set_game_mode('local')
-        self.game_state_manager.set_state('level')
-
-    def update(self, dt):
-        pass
 
     def draw(self):
         """ Draws the menu with all buttons."""

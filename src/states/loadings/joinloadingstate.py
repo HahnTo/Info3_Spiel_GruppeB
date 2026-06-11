@@ -46,9 +46,11 @@ class JoinLoadingState(State):
                 with self.lock:
                     self.status = "success"
             else:
+                print("Test failed")
                 with self.lock:
                     self.status = "failed"
         except Exception:
+            print("Test keine ID")
             with self.lock:
                 self.status = "failed"
 

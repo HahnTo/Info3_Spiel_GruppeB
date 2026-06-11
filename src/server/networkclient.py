@@ -10,7 +10,7 @@ class NetworkClient:
     NetworkClient handles TCP communication between the game client and server.
     It uses a JSON protocol to transfer player data and game states.
     """
-    def __init__(self, server="192.168.0.237", port=5555):
+    def __init__(self, server="127.0.0.1", port=5555):
         """Initialize the network client and connect it to the server with given IP address."""
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Packets are forwarded immediately to minimize latency and prevent stuttering.
@@ -27,7 +27,6 @@ class NetworkClient:
         # The game loop reads from it without blocking.
         self._recv_queue = queue.Queue()
         self._connected = False
-
         self.connect()
 
     def _send_message(self, data):
@@ -75,8 +74,8 @@ class NetworkClient:
                 self.player_id = init["player_id"]
                 print(f"[CONNECTED] Spieler-ID: {self.player_id}")
 
+            self.socket.settimeout(None)  # Set the timeout to none after connecting
             self._connected = True
-
             # Start background thread (daemon=True -> automatically terminates when the main program ends)
             t = threading.Thread(target=self._recv_loop, daemon=True)
             t.start()

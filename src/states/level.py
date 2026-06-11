@@ -177,15 +177,11 @@ class Level(State):
 
         update = self.network_client.get_update()
 
-        if update and update.get("type") == "state" and remote_player:
-            remote_player.set_data(update["data"])
-        # elif update.get("type") == "game_start"
-            # # Client-side interpolation: the remote player moves between received positions instead of freezing.
-            # # Continue using velocity from the last received state.
-            # remote_player.position.x += remote_player.velocity.x
-            # remote_player.position.y += remote_player.velocity.y
-            # remote_player.rect.x = int(remote_player.position.x)
-            # remote_player.rect.y = int(remote_player.position.y)
+        if update:
+            if update.get("type") == "state" and remote_player:
+                remote_player.set_data(update["data"])
+            elif update.get("type") == "game_over":
+                self.game_controller.trigger_goal()
 
     def draw_tiles(self):
         tmx = self.loader.tmx

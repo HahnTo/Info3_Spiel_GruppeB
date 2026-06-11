@@ -14,7 +14,7 @@ class Server:
         It uses a JSON protocol to transfer player data and game states between two clients.
         Each client runs in its own thread to handle communication in the background.
     """
-    def __init__(self, host="192.168.0.237", port=5555):
+    def __init__(self, host="0.0.0.0", port=5555):
         """Initializes the server with its IP address and port and starts it."""
         self.host = host
         self.port = port
@@ -29,8 +29,6 @@ class Server:
         self.server.listen(2)
 
         print(f"Server gestartet auf {self.host}:{self.port}")
-
-        self.game_started = False
 
         self.clients = [None, None]
         self.lock = threading.Lock()
@@ -110,10 +108,6 @@ class Server:
             with self.lock:
                 self.clients[player_id] = client
 
-            if self.clients[0] and self.clients[1]:
-                self.game_started = True
-                self.broadcast_start()
-
             thread = threading.Thread(
                 target=self.handle_client,
                 args=(client, player_id),
@@ -124,12 +118,12 @@ class Server:
     def broadcast_start(self):
         """Send game_start to all connected clients. Then they show the level"""
         data = {
-            "type": "game_start",
-            "level_id": 4
+            "type": "game_start"
         }
 
         for c in self.clients:
             if c and c != "reserved":
+                print(c)
                 self.send(c, data)
 
     def handle_client(self, client, player_id):
@@ -137,12 +131,23 @@ class Server:
         try:
             self.send(client, {
                 "type": "init",
-                "player_id": player_id + 1   # 0 -> 1,  1 -> 2
+                "player_id": player_id + 1  # 0 -> 1,  1 -> 2
             })
+
+            with self.lock:
+                both_connected = (
+                        self.clients[0] is not None and self.clients[0] != "reserved" and
+                        self.clients[1] is not None and self.clients[1] != "reserved"
+                )
+            if both_connected:
+                self.broadcast_start()
 
             while True:
                 # Receives data every frame from the client socket.
                 data = self.receive(client)
+                other_id = 1 - player_id
+                with self.lock:
+                    other_client = self.clients[other_id]
 
                 # If None, the connection is not working.
                 if data is None:
@@ -152,12 +157,7 @@ class Server:
                     # save own data
                     self.players[player_id] = data["data"]
 
-                    other_id = 1 - player_id
-
                     # Send own state to the other client (direct update)
-                    with self.lock:
-                        other_client = self.clients[other_id]
-
                     if other_client and other_client != "reserved":
                         self.send(other_client, {
                             "type": "state",
@@ -169,6 +169,10 @@ class Server:
                         "type": "state",
                         "data": self.players[other_id]
                     })
+                elif data.get("type") == "game_over":
+                    # Einfach an den anderen Client weiterleiten
+                    if other_client and other_client != "reserved":
+                        self.send(other_client, {"type": "game_over"})
 
         except Exception as e:
             print(f"[CLIENT ERROR] player_id={player_id}: {e}")

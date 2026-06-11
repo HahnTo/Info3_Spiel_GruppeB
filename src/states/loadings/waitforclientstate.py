@@ -19,9 +19,8 @@ class WaitForClientState(State):
         super().__init__(screen, game_state_manager, game_controller)
 
         # --- connection state ---
-        self.status = "waiting"   #
+        self.waiting = True
         self.lock = threading.Lock()
-        self.running = True
 
         # --- animation ---
         self.elapsed = 0.0
@@ -60,10 +59,7 @@ class WaitForClientState(State):
 
         cx, cy = WIDTH // 2, HEIGHT // 2
 
-        with self.lock:
-            status = self.status
-
-        if status == "waiting":
+        if self.waiting:
             self._draw_spinner(cx, cy - 60, ACCENT)
 
             title = self.font_title.render("Warte auf zweiten Spieler …", True, WHITE)

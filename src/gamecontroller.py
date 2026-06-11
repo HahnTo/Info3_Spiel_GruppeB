@@ -86,8 +86,8 @@ class GameController:
 
     def start_host(self):
         self.game_mode = 'online'
-        self.network_client = NetworkClient()
         self.start_server()
+        self.network_client = NetworkClient()
         self.wait_for_client = WaitForClientState(self.screen, self.game_state_manager, self)
         self.states['waiting_for_client'] = self.wait_for_client
         self.game_state_manager.set_state('waiting_for_client')
@@ -156,8 +156,7 @@ class GameController:
         for obstacle in collider_group:
             # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
-                self.end_menu.set_level_id(self.level.level_id)
-                self.game_state_manager.set_state('end_menu')
+                self.trigger_goal()
             elif obstacle.is_movable:
                 if player.velocity.x < 0:
                     obstacle.rect.right = player.rect.left
@@ -221,8 +220,7 @@ class GameController:
         collider_group = pygame.sprite.spritecollide(player, self.level.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
-                self.end_menu.set_level_id(self.level.level_id)
-                self.game_state_manager.set_state('end_menu')
+                self.trigger_goal()
             #elif obstacle.is_movable:
              #   pass
             elif obstacle.is_button:
@@ -243,8 +241,12 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
-
-
+    def trigger_goal(self):
+        """Called when any player reaches the goal."""
+        self.end_menu.set_level_id(self.level.level_id)
+        if self.network_client is not None:
+            self.network_client.send({"type": "game_over"})
+        self.game_state_manager.set_state('end_menu')
 
     def run(self):
         """ This is the main function.

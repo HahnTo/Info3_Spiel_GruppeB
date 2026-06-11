@@ -6,7 +6,7 @@ from src.button import Button
 from src.inputhandler import InputHandler
 from src.states.state import State
 from src.server.networkclient import NetworkClient
-from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
+from src.config import WIDTH, HEIGHT, MENU_BGCOLOR, get_local_ip
 
 
 class WaitForClientState(State):
@@ -31,8 +31,7 @@ class WaitForClientState(State):
 
         # --- fonts ---
         self.font_title  = pygame.font.SysFont("Courier New", 36, bold=True)
-        self.font_sub    = pygame.font.SysFont("Courier New", 22)
-        self.font_ip     = pygame.font.SysFont("Courier New", 18)
+        self.font_ip    = pygame.font.SysFont("Courier New", 22, bold=True)
 
         self.input_handler = InputHandler()
         self.selected_index = 0
@@ -99,6 +98,9 @@ class WaitForClientState(State):
                 title2 = self.font_title.render("Warte auf Host …", True, WHITE)
                 self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
 
+        ip = get_local_ip()
+        ip_surf = self.font_ip.render(f"Deine IP: {ip}", True, WHITE)
+        self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy + 120)))
         pygame.display.flip()
 
     def _draw_spinner(self, cx, cy, color):

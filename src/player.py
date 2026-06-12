@@ -30,12 +30,12 @@ class Player(pygame.sprite.Sprite):
     # If the remote player is further away than this, teleport instead of interpolating (e.g. after respawn)
     SNAP_THRESHOLD = 50
 
-    def __init__(self, start_x, start_y, color, player_id, is_local):
+    def __init__(self, start_x, start_y, player_id, is_local):
         """
         Initializes the player.
 
-        Sets the starting point and color.
-        Until the textures are ready, simple colors are used.
+        Sets the starting point.
+        Loads the spritesheets and initialize the animations.
         """
         super().__init__()
 

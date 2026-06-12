@@ -74,3 +74,19 @@ class LevelLoader:
                     button_id
                 )
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
+
+            # Deadly obstacle
+            elif obj_type == "deadly":
+                obstacle = Obstacle(
+                    (255, 255, 0),
+                    obj.width,
+                    obj.height,
+                    obj.x,
+                    obj.y,
+                    False,
+                    False,
+                    False,
+                    None,
+                    True
+                )
+                obstacle.add(self.level.all_sprites, self.level.obstacles)

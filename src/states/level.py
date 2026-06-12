@@ -10,7 +10,7 @@ from src.levelloader import LevelLoader
 WIDTH = 1080
 HEIGHT = 720
 
-BACKGROUND_COLOR = (0, 255, 0)
+BACKGROUND_COLOR = (50, 50, 50)
 
 # Level 1: easy
 # Level 2: mid
@@ -58,16 +58,16 @@ class Level(State):
         """ Create the players with their spawnpoint and physics"""
         if self.is_online:
             # If local_id == 1, the player with ID 1 is the local player
-            player1 = Player(30, HEIGHT - 20, 'burlywood4', 1, self.local_id == 1)
+            player1 = Player(30, HEIGHT - 20, 1, self.local_id == 1)
             player1.add(self.all_sprites, self.players)
 
-            player2 = Player(60, HEIGHT - 20, 'burlywood', 2, self.local_id == 2)
+            player2 = Player(60, HEIGHT - 20, 2, self.local_id == 2)
             player2.add(self.all_sprites, self.players)
         else:
-            player1 = Player(20, HEIGHT - 400, 'burlywood4', 1, True)
+            player1 = Player(20, HEIGHT - 20, 1, True)
             player1.add(self.all_sprites, self.players)
 
-            player2 = Player(60, HEIGHT - 20, 'burlywood', 2, True)
+            player2 = Player(60, HEIGHT - 20, 2, True)
             player2.add(self.all_sprites, self.players)
 
     def get_player(self, player_id):
@@ -93,6 +93,14 @@ class Level(State):
                 local_player.update(dt, self.game_controller)
             if remote_player:
                 remote_player.update(dt, self.game_controller)
+
+    def reset(self):
+        """ Reset all obstacles and players to their start position."""
+        for obstacle in self.obstacles.sprites():
+            obstacle.reset()
+
+        for player in self.players.sprites():
+            player.respawn()
 
     def sync_network(self):
         """Sends local player state to the server and applies received remote updates"""
@@ -120,7 +128,10 @@ class Level(State):
                 self.game_controller.trigger_goal(send_to_server=False)
                 return
             elif msg.get("type") == "restart":
-                self.game_controller.restart_online()
+                self.game_controller.restart_online(send=False)
+                return
+            elif msg.get("type") == "died":
+                self.game_controller.trigger_death(send_to_server=False)
                 return
 
     def draw_tiles(self):
@@ -139,13 +150,33 @@ class Level(State):
 
     def draw(self):
         """ Draws all sprites."""
-        self.screen.fill(BACKGROUND_COLOR)
+        self.screen.fill((0, 255, 0))
         self.draw_tiles()
         self.all_sprites.draw(self.screen)
+
+        if self.game_controller.is_paused:
+            self.draw_dead()
+
         pygame.display.flip()
+
+    def draw_dead(self):
+        """ Transparent surface as an overlay"""
+        overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
+        overlay.fill((0, 0, 0, 150))  # schwarz, 150/255 Transparenz
+        self.screen.blit(overlay, (0, 0))
+
+        font = pygame.font.SysFont("Courier New", 36, bold=True)
+        text1 = font.render("Ein Spieler ist gestorben!", True, (255, 255, 255))
+        self.screen.blit(text1, text1.get_rect(center=(WIDTH / 2, HEIGHT / 2 - 20)))
+
+        text2 = font.render("Neuer Versuch ...", True, (200, 200, 200))
+        self.screen.blit(text2, text2.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30)))
+
+
 
     def run(self, dt):
         """ Overrides and extends the base method to synchronize the data from the server on every frame."""
-        self.update(dt)
+        if not self.game_controller.is_paused:  # ← fehlt
+            self.update(dt)
         self.sync_network()
         self.draw()

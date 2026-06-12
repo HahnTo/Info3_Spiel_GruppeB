@@ -62,7 +62,7 @@ class WaitingState(State):
 
         self.screen.fill(MENU_BGCOLOR)
 
-        cx, cy = WIDTH // 2, HEIGHT // 2
+        cx, cy = WIDTH / 2, HEIGHT / 2
 
         if self.waiting_for_connection:
             self.draw_spinner(cx, cy - 60, accent)

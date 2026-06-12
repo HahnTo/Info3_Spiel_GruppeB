@@ -4,9 +4,10 @@ class Obstacle(pygame.sprite.Sprite):
     """ Creates Obstacle to build the map. """
     
 
-    def __init__(self, color, width, height,x_pos, y_pos, is_goal=False, is_movable= False, is_button = False,button_id = None):
+    def __init__(self, color, width, height,x_pos, y_pos, is_goal=False, is_movable= False, is_button = False,button_id = None, is_deadly=None):
         super().__init__()
         self.is_movable = is_movable
+        self.is_deadly = is_deadly
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.y_start = y_pos
@@ -46,6 +47,7 @@ class Obstacle(pygame.sprite.Sprite):
     def draw(self,screen):
         screen.blit(self.image,self.rect)
 
-
-
-        
+    def reset(self):
+        """ Reset the obstacle to its start position."""
+        self.y_pos = self.y_start
+        self.rect.topleft = (self.x_pos, self.y_pos)

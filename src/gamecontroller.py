@@ -46,6 +46,11 @@ class GameController:
         self.clock = pygame.time.Clock()
         self.dt = 0
 
+        self.pause_timer = 0.0
+        self.pause_duration = 1.5
+        self.is_paused = False
+        self.pause_callback = None
+
         # local or online mode
         self.game_mode = ''
         # Only initialize a network client if the mode is online.
@@ -110,15 +115,19 @@ class GameController:
         self.states['waiting_for_client'] = self.waiting_state
         self.game_state_manager.set_state('waiting_for_client')
 
+    def restart_game(self):
+        self.is_paused = False
+        if self.game_mode == 'online':
+            self.restart_online()
+        else:
+            self.level.reset()
+            self.game_state_manager.set_state('level')
+
     def restart_online(self, send=True):
         if send:
             self.network_client.send({"type": "restart"})
         self.clear_network_queue()
-        self.level = Level(
-            self.screen, self.game_state_manager, self,
-            self.level.level_id, self.network_client
-        )
-        self.states['level'] = self.level
+        self.level.reset()
         self.game_state_manager.set_state('level')
 
     def clear_network_queue(self):
@@ -184,6 +193,8 @@ class GameController:
             # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
                 self.trigger_goal()
+            elif obstacle.is_deadly:
+                self.trigger_death()
             elif obstacle.is_movable:
                 if player.velocity.x < 0:
                     obstacle.rect.right = player.rect.left
@@ -248,8 +259,8 @@ class GameController:
         for obstacle in collider_group:
             if obstacle.is_goal:
                 self.trigger_goal()
-            #elif obstacle.is_movable:
-             #   pass
+            elif obstacle.is_deadly:
+                self.trigger_death()
             elif obstacle.is_button:
                 button = obstacle
                 for other in self.level.obstacles:
@@ -275,6 +286,20 @@ class GameController:
             self.network_client.send({"type": "game_over"})
         self.game_state_manager.set_state('end_menu')
 
+    def trigger_death(self, send_to_server=True):
+        """Startet die Pause bei deadly-Kollision und informiert den anderen Client."""
+        if send_to_server and self.network_client is not None:
+            self.network_client.send({"type": "died"})
+        self.start_pause(callback=self.restart_game)
+
+    def start_pause(self, callback=None):
+        """ Starts a short pause."""
+        if self.is_paused:  # only one at a time
+            return
+        self.pause_timer = 0.0
+        self.is_paused = True
+        self.pause_callback = callback
+
     def run(self):
         """ This is the main function.
             It initializes all objects and runs the game loop.
@@ -292,11 +317,17 @@ class GameController:
             current_state = self.game_state_manager.get_state()
             first_entry = self.game_state_manager.is_first_entry()
 
-            # Einmalige Transition um player zurückzusetzten
             if current_state == 'level' and first_entry:
-                for player in self.level.players.sprites():
-                    player.respawn()
+                self.level.reset()
                 self.game_state_manager.set_first_entry(False)
+
+            if self.is_paused:
+                self.pause_timer += self.dt
+                if self.pause_timer >= self.pause_duration:
+                    self.is_paused = False
+                    if self.pause_callback:
+                        self.pause_callback()
+
             self.states[self.game_state_manager.get_state()].run(self.dt)
 
     def shutdown(self):

@@ -29,5 +29,5 @@ class Button:
 
     
     def on_click(self):
-        """ Returns the event function """
+        """ Runs the event function """
         self.event_function()

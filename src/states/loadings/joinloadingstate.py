@@ -57,7 +57,7 @@ class JoinLoadingState(State):
 
         if self.status == "success":
             # now wait for other client
-            self.game_controller.go_to_waiting_for_client()
+            self.game_controller.go_to_waiting_state()
             return
 
         # Automatically returns to the multiplayer menu after 3 seconds.

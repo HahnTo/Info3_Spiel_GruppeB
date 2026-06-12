@@ -58,8 +58,8 @@ class GameController:
         self.start_menu = StartMenu(self.screen, self.game_state_manager, self)
         self.level_chooser = LevelChooserMenu(self.screen, self.game_state_manager, self)
         self.multiplayer_menu = MultiplayerMenu(self.screen, self.game_state_manager, self)
-        self.wait_for_client = None
-        self.join_loading = None
+        self.waiting_state = None
+        self.join_loading_state = None
 
         # Only initialize once it is known whether the game runs online or locally.
         self.level = None
@@ -71,8 +71,8 @@ class GameController:
             'level': self.level ,
             'end_menu': self.end_menu,
             'multiplayer_menu':  self.multiplayer_menu,
-            'waiting_for_client': self.wait_for_client,
-            'join_loading': self.join_loading
+            'waiting_for_client': self.waiting_state,
+            'join_loading': self.join_loading_state
         }
 
         self.input_handler = InputHandler()
@@ -93,7 +93,7 @@ class GameController:
         self.game_mode = 'online'
         self.start_server()
         self.network_client = NetworkClient()
-        self.go_to_waiting_for_client()
+        self.go_to_waiting_state()
         # self.level = Level(self.screen, self.game_state_manager, self, 4, self.network_client)
         # self.states['level'] = self.level
 
@@ -101,21 +101,14 @@ class GameController:
         """Called when the player wants to join an existing server.
         Shows the loading screen while the connection is established in a background thread."""
         self.game_mode = 'online'
-        self.join_loading = JoinLoadingState(self.screen, self.game_state_manager, self, ip_address)
-        self.states['join_loading'] = self.join_loading
+        self.join_loading_state = JoinLoadingState(self.screen, self.game_state_manager, self, ip_address)
+        self.states['join_loading'] = self.join_loading_state
         self.game_state_manager.set_state('join_loading')
 
-    def go_to_waiting_for_client(self):
-        self.wait_for_client = WaitingState(self.screen, self.game_state_manager, self)
-        self.states['waiting_for_client'] = self.wait_for_client
+    def go_to_waiting_state(self):
+        self.waiting_state = WaitingState(self.screen, self.game_state_manager, self)
+        self.states['waiting_for_client'] = self.waiting_state
         self.game_state_manager.set_state('waiting_for_client')
-
-    def finish_join(self):
-        """Called by JoinLoadingState once the NetworkClient is connected.
-        Builds the Level with the ready client and switches to it """
-        self.level = Level(self.screen, self.game_state_manager, self, 4, self.network_client)
-        self.states['level'] = self.level
-        self.game_state_manager.set_state('level')
 
     def restart_online(self, send=True):
         if send:

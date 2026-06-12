@@ -41,12 +41,12 @@ class InputHandler:
                     # remote player is not controlled here
                     continue
 
-                self._handle_player_input(player, mode, player.player_id)
+                self.handle_player_input(player, mode, player.player_id)
                 continue
 
-            self._handle_player_input(player, mode, player.player_id)
+            self.handle_player_input(player, mode, player.player_id)
 
-    def _handle_player_input(self, player, mode, player_id):
+    def handle_player_input(self, player, mode, player_id):
         """Handles movement and jump for a single player."""
         # Get all pressed keys
         keys = pygame.key.get_pressed()

@@ -21,14 +21,8 @@ class GameStateManager:
         self.current_state = state
         self.first_entry = True
 
-    def get_prev_state(self):
-        return self.prev_state
-
     def is_first_entry(self):
         return self.first_entry
 
     def set_first_entry(self, is_first):
         self.first_entry = is_first
-
-    def go_to_prev_state(self):
-        self.set_state(self.get_prev_state())

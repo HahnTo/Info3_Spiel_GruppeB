@@ -4,7 +4,7 @@ from src.obstacle import Obstacle
 
 
 
-class Level_loader:
+class LevelLoader:
 
     def __init__(self,path,level):
         self.tmx = pytmx.load_pygame(path)

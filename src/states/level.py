@@ -5,7 +5,7 @@ import pytmx
 from src.config import ASSETS_DIR
 from src.player import Player
 from src.states.state import State
-from src.level_loader import Level_loader
+from src.levelloader import LevelLoader
 
 WIDTH = 1080
 HEIGHT = 720
@@ -40,7 +40,7 @@ class Level(State):
         map_location = ASSETS_DIR / f"maps/map_{level_id}.tmx"
 
         self.game_controller = game_controller
-        self.loader = Level_loader(map_location,self)
+        self.loader = LevelLoader(map_location, self)
 
         # Initialise all sprite groups
         self.all_sprites = pygame.sprite.Group()

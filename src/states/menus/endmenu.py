@@ -53,10 +53,6 @@ class EndMenu(State):
                 lambda: self.game_state_manager.set_state('start_menu')
             ))
 
-    def run(self, dt):
-        self.update(dt)
-        self.draw()
-
     def update(self, dt):
         """ Waits for a message from the server. """
         if self.game_controller.game_mode == 'online' and self.game_controller.network_client:

@@ -21,10 +21,6 @@ class MultiplayerMenu(State):
         self.input_field = None
         self.create_buttons()
 
-    def run(self, dt):
-        self.update(dt)
-        self.draw()
-
     def create_buttons(self):
         """ Adds buttons to the menu."""
         self.buttons.append(Button('Spiel beitreten', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.create_input_field()))

@@ -31,7 +31,8 @@ class Level(State):
 
         if self.is_online:
             self.local_id = self.network_client.player_id
-            self.remote_id = 3 - self.local_id      # # It returns 1 or 2 when 3 is subtracted
+            # It returns 1 or 2 when 3 is subtracted
+            self.remote_id = 3 - self.local_id
         else:
             self.local_id = None
             self.remote_id = None
@@ -103,7 +104,7 @@ class Level(State):
             player.respawn()
 
     def sync_network(self):
-        """Sends local player state to the server and applies received remote updates"""
+        """ Sends local player state to the server and applies received remote updates"""
         if not self.is_online:
             return
 

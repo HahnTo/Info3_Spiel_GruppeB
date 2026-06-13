@@ -1,5 +1,4 @@
 
-
 class GameStateManager:
     def __init__(self, current_state):
         self.current_state = current_state

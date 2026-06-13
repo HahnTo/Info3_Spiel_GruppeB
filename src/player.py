@@ -6,14 +6,9 @@ from src.spritesheet import Spritesheet
 
 from src.config import GRAPHICS_DIR
 
-
-
 class Player(pygame.sprite.Sprite):
-    """
-    Creates the players in Mole Escape.
-    The physics and movement are implemented here.
-    """
-
+    """ Creates the players in Mole Escape.
+        The physics and movement are implemented here. """
     # Physics of the player
     WIDTH = 30
     HEIGHT = 40
@@ -24,9 +19,8 @@ class Player(pygame.sprite.Sprite):
     JUMP_HEIGHT = -18.0
     DUCK_HEIGHT = HEIGHT * 0.8
 
-    # How fast the remote player glides toward the target position (0.1 = slow/smooth, 0.3 = fast/snappy)
+    # Values to generate a smoother feeling for the remote player
     INTERP_ALPHA = 0.5
-    # If the remote player is further away than this, teleport instead of interpolating (e.g. after respawn)
     SNAP_THRESHOLD = 50
 
     def __init__(self, start_x, start_y, player_id, is_local):
@@ -38,11 +32,12 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__()
 
-        #Spritesheets laden
+        # Load Spritesheets
         run_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR/"player"/"monster"/"Pink_Monster_Walk_6.png"))
         jump_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Jump_8.png"))
         idle_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Idle_4.png"))
 
+        # set the animations
         self.animations ={
             "run": [run_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range (6)],
             "jump": [jump_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range(8)],
@@ -60,22 +55,19 @@ class Player(pygame.sprite.Sprite):
         self.player_id = player_id
 
         self.is_local = is_local
+
         # The target position received from the last network packet.
         self.network_target = Vector2(start_x, start_y)
+
         # The velocity received from the last network packet.
         # Used to extrapolate movement between packets.
         self.network_velocity = Vector2(0, 0)
-
-        # Create the rect for the player
-
-
-
-
 
         self.image = self.animations[self.state][0]
 
         self.rect = self.image.get_rect(topleft=(start_x, start_y))
 
+        # Rect gets a little bit smaller
         bottom = self.rect.bottom
         self.rect.inflate_ip(-6, 0)
         self.rect.bottom = bottom
@@ -92,12 +84,11 @@ class Player(pygame.sprite.Sprite):
         self.on_ground = False
         self.is_alive = True
         self.is_moving = False
-        self.facing_right = True # Wird später für die Texturen und Interaktion mit Gegenständen o.ä. gebraucht.
-
+        self.facing_right = True
 
     def animate(self):
+        """ Animates the Player. """
         current_time = pygame.time.get_ticks()
-        #print(current_time - self.last_update, self.animation_cooldown)
         if current_time - self.last_update >= self.animation_cooldown:
             self.frame_index += 1
             self.last_update = current_time
@@ -111,6 +102,7 @@ class Player(pygame.sprite.Sprite):
         self.image = image
 
     def set_state(self, new_state):
+        """ Sets the state of the player for the animations. """
         if self.state != new_state:
             print(f"{self.player_id}:{self.state} ->{new_state}")
             self.state = new_state
@@ -126,15 +118,13 @@ class Player(pygame.sprite.Sprite):
         if not self.is_alive or direction == 0:
             return
 
-        # Multiplikation mit direction, um velocity.x positiv oder negativ zu erhalten
-        # Multiplying the SPEED by direction determines the sign, and thus the direction.
+        # Multiplying the SPEED by direction determines the sign and therefore the direction of velocity.x
         self.velocity.x = direction * self.MOVE_SPEED
 
         if direction == 1:
             self.facing_right = True
         else:
             self.facing_right = False
-
 
     def jump(self):
         """ The player jumps when standing on the ground. """
@@ -187,8 +177,6 @@ class Player(pygame.sprite.Sprite):
         # Set the horizontal speed to zero to stop the player when the key is no longer pressed down
         self.velocity.x = 0
         self.is_moving = False
-
-
 
     def update_remote(self):
         """ Called every frame for the remote player instead of the normal physics update """
@@ -265,7 +253,7 @@ class Player(pygame.sprite.Sprite):
 
         if not self.is_local:
             # Save the authoritative position as the new target.
-            # _update_remote() will glide toward it over the next frames.
+            # update_remote() will glide toward it over the next frames.
             self.network_target.x = data["x"]
             self.network_target.y = data["y"]
 

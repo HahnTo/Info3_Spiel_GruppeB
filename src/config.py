@@ -14,7 +14,7 @@ ASSETS_DIR = BASE_DIR / "assets"
 
 
 def get_local_ip():
-    """Gibt die lokale Netzwerk-IP zurück (nicht 127.0.0.1)."""
+    """ Returns the local ip address"""
     try:
         # Verbindet sich nicht wirklich, nutzt nur das Routing um die richtige IP zu finden
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

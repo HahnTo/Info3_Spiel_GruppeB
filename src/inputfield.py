@@ -4,12 +4,10 @@ from src.inputhandler import InputHandler
 
 
 class InputField:
-    """
-    Textfield for input
-    """
+    """ Textfield for input. """
 
     def __init__(self, label, font_size, position, placeholder=""):
-        """Initializes the input field with its components"""
+        """ Initializes the input field with its components """
         self.label = label
         self.font_size = font_size
         self.position = position
@@ -25,21 +23,20 @@ class InputField:
         self.input_handler = InputHandler()
 
     def handle_event(self, event):
-        """If it is in editing mode, it delegates the event to the input handler."""
+        """ If it is in editing mode, it delegates the event to the input handler."""
         if not self.editing:
             return
 
         self.input_handler.handle_input_field(self, event)
 
     def get_value(self):
-        """Returns the final value"""
+        """ Returns the final value if editing is over. """
         if not self.editing: return self.value
 
         return ""
 
-
     def draw(self, screen):
-        """Draws the complete field"""
+        """ Draws the complete field. """
         border_color = (0, 200, 255)
 
         # Field label
@@ -73,7 +70,7 @@ class InputField:
         screen.blit(text_surf, text_rect)
 
     def update_cursor(self):
-        """Makes the cursor blink ca every half second"""
+        """ Makes the cursor blink ca every half second"""
         if self.editing:
             self.cursor_timer += 1
             if self.cursor_timer >= 30:

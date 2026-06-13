@@ -1,7 +1,5 @@
 import pygame
 
-
-
 class Button:
     """ Creats a button which reacts to the function is_pressed() """
 
@@ -27,7 +25,6 @@ class Button:
             )
         screen.blit(self.text_surf, self.text_rect)
 
-    
     def on_click(self):
         """ Runs the event function """
         self.event_function()

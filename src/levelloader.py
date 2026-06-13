@@ -1,16 +1,16 @@
-import pygame
 import pytmx
 from src.obstacle import Obstacle
 
-
-
 class LevelLoader:
+    """ Loads the map from tmx files and converts it to the actual obstacles. """
 
     def __init__(self,path,level):
         self.tmx = pytmx.load_pygame(path)
         self.level = level
 
     def load(self):
+        """ Generates the obstacles from the tmx objects.
+            Sets all different flags which where set in the Tiled editor. """
         print("Map wird geladen")
         for obj in self.tmx.objects:
             print(obj)
@@ -33,7 +33,7 @@ class LevelLoader:
                 )
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
 
-                # GOAL
+            # GOAL
             elif obj_type == "goal":
                 obstacle = Obstacle(
                     (255, 0, 0),

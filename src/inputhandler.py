@@ -1,4 +1,3 @@
-# Hier sollten alle Inputs behandelt werden. Eventuell auch custom keybindings
 
 import pygame
 
@@ -19,10 +18,8 @@ class InputHandler:
     }
 
     def __init__(self):
-        """
-        Initializes the input handler.
-        Sets the default bindings
-        """
+        """ Initializes the input handler.
+            Sets the default bindings """
         self.key_bindings = self.BINDINGS
         # Später: self.key_bindings = self.load_bindings(path)
 
@@ -47,7 +44,7 @@ class InputHandler:
             self.handle_player_input(player, mode, player.player_id)
 
     def handle_player_input(self, player, mode, player_id):
-        """Handles movement and jump for a single player."""
+        """ Handles movement and jump for a single player."""
         # Get all pressed keys
         keys = pygame.key.get_pressed()
 
@@ -69,7 +66,6 @@ class InputHandler:
         else:
             return
 
-
         direction = 0
         # If both buttons are pressed, the direction remains at 0 so that no movement occurs
         if left and not right:
@@ -78,8 +74,6 @@ class InputHandler:
             direction = 1
 
         player.move(direction)
-
-        # Jump
         if jump:
             player.jump()
     
@@ -95,10 +89,12 @@ class InputHandler:
                 menu.buttons[menu.selected_index].on_click()
 
     def handle_input_field(self, input_field, event):
+        """ Handles the input in the input_field. """
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_RETURN:
-                input_field.editing = False     # Input finished
+                # Input finished
+                input_field.editing = False
 
             elif event.key == pygame.K_BACKSPACE:
                 input_field.value = input_field.value[:-1]
@@ -107,7 +103,8 @@ class InputHandler:
                 # Only Numbers and points for IP Address
                 char = event.unicode
                 if char and (char.isdigit() or char == "."):
-                    if len(input_field.value) < 15:   # xxx.xxx.xxx.xxx = max 15
+                    # xxx.xxx.xxx.xxx = max 15 characters
+                    if len(input_field.value) < 15:
                         input_field.value += char
 
     def save_bindings(self, filepath: str = "config/keybindings.json"):

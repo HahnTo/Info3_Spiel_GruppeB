@@ -21,7 +21,6 @@ def player():
     return Player(
         start_x=100,
         start_y=200,
-        color=(255, 0, 0),
         player_id = 1,
         is_local = True
     )
@@ -83,19 +82,6 @@ def test_update(player):
 
     assert player.velocity.x == 0
     assert player.position.x == old_x + player.MOVE_SPEED
-
-
-# # Sollte sich nicht bewegen können
-# def test_die(player):
-#     player.die()
-#
-#     player.on_ground = True
-#     player.jump()
-#     player.move(1)
-#
-#     assert player.is_alive is False
-#     assert player.velocity == Vector2(0, 0)
-
 
 def test_respawn(player):
     player.position = Vector2(500, 500)

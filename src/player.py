@@ -2,10 +2,9 @@ import pygame
 from pygame import Vector2
 from typing import Literal
 
-import spritesheet
-from spritesheet import Spritesheet
+from src.spritesheet import Spritesheet
 
-from config import GRAPHICS_DIR
+from src.config import GRAPHICS_DIR
 
 
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="26">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="29">
+ <tileset firstgid="1" source="tileset_xy.tsx"/>
  <objectgroup id="2" name="Objektebene 1">
   <object id="9" x="0" y="640" width="1056" height="64">
    <properties>
@@ -26,7 +27,7 @@
     <property name="obj_type" value="goal"/>
    </properties>
   </object>
-  <object id="15" x="544" y="576" width="64" height="64">
+  <object id="15" x="544" y="582" width="58" height="58">
    <properties>
     <property name="obj_type" value="movable"/>
    </properties>
@@ -54,13 +55,10 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="23" x="-320" y="-224"/>
-  <object id="24" x="256" y="-352"/>
-  <object id="25" x="-384" y="-448"/>
  </objectgroup>
  <layer id="3" name="Kachelebene 1" width="33" height="22">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20IX6AAAIDXAAtYAAE=
+   eJztzDkOACAIBVFc4nL/C/tJrI1iOy+Z0ABmAAAAQFxSWZU9b3rZPf3wqmqqfzaCN95UC38UATM=
   </data>
  </layer>
 </map>

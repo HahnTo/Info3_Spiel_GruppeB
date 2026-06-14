@@ -17,8 +17,8 @@ from src.states.menus.startmenu import StartMenu
 class GameController:
     """Initializes the game and creates the game loop"""
 
-    WIDTH = 1080
-    HEIGHT = 720
+    WIDTH = 1056
+    HEIGHT = 704
 
     TITLE = "Mole Escape"
 

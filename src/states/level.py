@@ -2,15 +2,18 @@
 import pygame
 import pytmx
 
+from config import GRAPHICS_DIR
 from src.config import ASSETS_DIR
 from src.player import Player
 from src.states.state import State
 from src.levelloader import LevelLoader
 
-WIDTH = 1080
-HEIGHT = 720
+WIDTH = 1056
+HEIGHT = 704
 
 BACKGROUND_COLOR = (50, 50, 50)
+background_image = pygame.image.load(GRAPHICS_DIR/"map"/"Background.png")
+
 
 # Level 1: easy
 # Level 2: mid
@@ -45,11 +48,12 @@ class Level(State):
 
         # Initialise all sprite groups
         self.all_sprites = pygame.sprite.Group()
-        self.players = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
+        self.players = pygame.sprite.Group()
 
-        self.create_players()
         self.load_map()
+        self.create_players()
+
 
     def load_map(self):
         """ Load the map from the Level loader"""
@@ -151,7 +155,7 @@ class Level(State):
 
     def draw(self):
         """ Draws all sprites."""
-        self.screen.fill((0, 255, 0))
+        self.screen.blit(background_image,(0,0))
         self.draw_tiles()
         self.all_sprites.draw(self.screen)
 

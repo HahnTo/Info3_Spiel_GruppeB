@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="29">
+<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="31">
  <tileset firstgid="1" source="tileset_xy.tsx"/>
+ <tileset firstgid="26" source="Stacheln_3.tsx"/>
  <objectgroup id="2" name="Objektebene 1">
   <object id="9" x="0" y="640" width="1056" height="64">
    <properties>
@@ -49,16 +50,21 @@
     <property name="obj_type" value="button"/>
    </properties>
   </object>
-  <object id="20" x="192" y="66.6667" width="32" height="280">
+  <object id="20" x="192" y="66.6667" width="32" height="32">
    <properties>
     <property name="button_id" value="1"/>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
+  <object id="30" x="832" y="608" width="64" height="32">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="3" name="Kachelebene 1" width="33" height="22">
   <data encoding="base64" compression="zlib">
-   eJztzDkOACAIBVFc4nL/C/tJrI1iOy+Z0ABmAAAAQFxSWZU9b3rZPf3wqmqqfzaCN95UC38UATM=
+   eJztzDcKACAQBVEThivo/e/pF2wVQzsPBovd1RgAAABgr6q2mFnllJ/vSTe7uz9GQUWVPsuPN6OiOrscAWg=
   </data>
  </layer>
 </map>

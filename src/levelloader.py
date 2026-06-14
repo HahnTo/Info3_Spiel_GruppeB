@@ -23,6 +23,11 @@ class LevelLoader:
 
             if obj_type == "solid":
                 button_id = obj.properties.get("button_id")
+                if button_id is not None:
+                    image = pygame.image.load(GRAPHICS_DIR / "map" / "movable.png").convert_alpha()
+                else:
+                    image = pygame.Surface([obj.width, obj.height])
+                    image.set_alpha(0)
                 obstacle = Obstacle(
                     obj.width,
                     obj.height,
@@ -32,25 +37,39 @@ class LevelLoader:
                     False,
                     False,
                     button_id,
-                    image = pygame.Surface([obj.width, obj.height])
+                    image = image
                 )
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
-                obstacle.image.set_alpha(0)
+
 
             # GOAL
             elif obj_type == "goal":
-                obstacle = Obstacle(
+                image = pygame.image.load(GRAPHICS_DIR / "map" / "Flagge_2.png").convert_alpha()
+                scaled_image = pygame.transform.scale(image, (57, 51))
+                scaled_image.set_colorkey((254, 254, 254))
+                image = scaled_image
+
+                obstacle_g = Obstacle(
                     obj.width,
                     obj.height,
                     obj.x,
                     obj.y,
                     is_goal=True,
-                    image = pygame.Surface([obj.width, obj.height])
+                    image = image
+
                 )
-                obstacle.add(self.level.all_sprites, self.level.obstacles)
+                obstacle_g.add(self.level.all_sprites, self.level.obstacles)
+
+
+
+
+
 
             # MOVABLE
             elif obj_type == "movable":
+
+                image = pygame.image.load(GRAPHICS_DIR/"map"/"Block_3.png").convert_alpha()
+                image.set_colorkey((255, 255, 255))
                 obstacle = Obstacle(
                     obj.width,
                     obj.height,
@@ -59,7 +78,7 @@ class LevelLoader:
                     False,
                     True,
                     False,
-                    image = pygame.image.load(GRAPHICS_DIR/"map"/"Block_3.png").convert_alpha()
+                    image = image
                 )
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
                 obstacle.image.set_colorkey((255,255,255))
@@ -67,23 +86,25 @@ class LevelLoader:
             # BUTTON
             elif obj_type == "button":
                 button_id = obj.properties.get("button_id")
-
+                image = pygame.image.load(GRAPHICS_DIR / "map" / "Button.png").convert_alpha()
                 obstacle = Obstacle(
                     obj.width,
                     obj.height,
                     obj.x,
-                    obj.y,
+                    obj.y+28,
                     False,
                     False,
                     True,
                     button_id,
-                    image = pygame.Surface([obj.width, obj.height])
+                    image = image
                 )
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
 
 
             # Deadly obstacle
             elif obj_type == "deadly":
+                image = pygame.Surface([obj.width, obj.height])
+                image.set_alpha(0)
                 obstacle = Obstacle(
                     obj.width,
                     obj.height,
@@ -94,6 +115,6 @@ class LevelLoader:
                     False,
                     None,
                     True,
-                    image = pygame.Surface([obj.width, obj.height])
+                    image = image
                 )
                 obstacle.add(self.level.all_sprites, self.level.obstacles)

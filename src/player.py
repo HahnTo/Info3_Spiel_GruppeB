@@ -69,8 +69,9 @@ class Player(pygame.sprite.Sprite):
 
         # Rect gets a little bit smaller
         bottom = self.rect.bottom
-        self.rect.inflate_ip(-6, 0)
+        self.rect.inflate_ip(-10, 0)
         self.rect.bottom = bottom
+
 
         # Set the position to his spawn point
         self.rect.x = start_x

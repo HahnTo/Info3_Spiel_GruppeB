@@ -3,15 +3,31 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "Stacheln.tsx": {
+            "dynamicWrapping": false
+        },
+        "Stacheln2.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "map_1.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 568.0909090909091,
+                "y": 608.4545454545455
+            }
+        },
         "map_2.tmx": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.5,
-            "selectedLayer": 1,
+            "scale": 0.75,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 361,
-                "y": 543
+                "x": 989.9999999999999,
+                "y": 467.33333333333326
             }
         },
         "map_4.tmx": {
@@ -27,7 +43,7 @@
             "scaleInEditor": 1
         }
     },
-    "last.imagePath": "C:/Studium/info3/info3_spiel/src/assets/maps",
+    "last.imagePath": "C:/Studium/info3/info3_spiel/src/graphics/map",
     "map.height": 15,
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 48,
@@ -37,11 +53,13 @@
     ],
     "project": "map_2.tiled-project",
     "recentFiles": [
+        "Stacheln2.tsx",
         "tileset_x.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
         "height": 32,
         "width": 32
-    }
+    },
+    "tileset.type": 0
 }

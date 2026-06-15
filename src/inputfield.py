@@ -46,7 +46,7 @@ class InputField:
         screen.blit(label_surf, label_rect)
 
         # text box
-        box_rect = pygame.Rect(0, 0, 220, self.font_size + 16)
+        box_rect = pygame.Rect(0, 0, 270, self.font_size + 16)
         box_rect.center = self.position
         pygame.draw.rect(screen, (40, 40, 40), box_rect, border_radius=6)
         pygame.draw.rect(screen, border_color, box_rect, 2, border_radius=6)

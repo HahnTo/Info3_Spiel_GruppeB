@@ -56,6 +56,14 @@
                 "y": 351.9091847265222
             }
         },
+        "map_3.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 834.8484848484848,
+                "y": 1050
+            }
+        },
         "map_4.tmx": {
             "scale": 0.8630887681159419,
             "selectedLayer": 0,

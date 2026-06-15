@@ -2,18 +2,16 @@
 import pygame
 import pytmx
 
-from config import GRAPHICS_DIR
-from src.config import ASSETS_DIR
+from src.config import ASSETS_DIR, HEIGHT, WIDTH, GRAPHICS_DIR
 from src.player import Player
 from src.states.state import State
 from src.levelloader import LevelLoader
 
-WIDTH = 1056
-HEIGHT = 704
-
-
-background_image = pygame.image.load(GRAPHICS_DIR/"map"/"Background.png")
-
+BACKGROUND_COLOR = (50, 50, 50)
+try:
+    background_image = pygame.image.load(GRAPHICS_DIR/"map"/"Background.png")
+except Exception as e:
+    print(f"Fehler beim laden vom Bild: {e}")
 
 # Level 1: easy
 # Level 2: mid
@@ -46,7 +44,7 @@ class Level(State):
         self.game_controller = game_controller
         self.loader = LevelLoader(map_location, self)
 
-        # Initialise all sprite groups
+        # Initialize all sprite groups
         self.all_sprites = pygame.sprite.Group()
         self.obstacles = pygame.sprite.Group()
         self.players = pygame.sprite.Group()

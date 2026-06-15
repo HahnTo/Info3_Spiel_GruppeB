@@ -2,8 +2,11 @@
 from pathlib import Path
 import socket
 
-WIDTH = 1080
-HEIGHT = 720
+TITLE = "Mole Escape"
+FPS = 60
+
+WIDTH = 1056
+HEIGHT = 704
 
 MENU_BGCOLOR = (216, 161, 123)
 
@@ -22,5 +25,5 @@ def get_local_ip():
         ip = s.getsockname()[0]
         s.close()
         return ip
-    except Exception:
-        return "IP nicht gefunden"
+    except Exception as e:
+        return f"IP nicht gefunden: {e}"

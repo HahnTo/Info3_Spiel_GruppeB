@@ -10,6 +10,7 @@ class Obstacle(pygame.sprite.Sprite):
         self.is_movable = is_movable
         self.is_deadly = is_deadly
         self.x_pos = x_pos
+        self.x_start = x_pos
         self.y_pos = y_pos
         self.y_start = y_pos
         # Buttons and related obstacles get the same id
@@ -50,5 +51,6 @@ class Obstacle(pygame.sprite.Sprite):
 
     def reset(self):
         """ Reset the obstacle to its start position."""
+        self.x_pos = self.x_start
         self.y_pos = self.y_start
         self.rect.topleft = (self.x_pos, self.y_pos)

@@ -2,6 +2,7 @@ import threading
 
 import pygame
 
+from src.config import WIDTH, HEIGHT, TITLE, FPS
 from src.inputhandler import InputHandler
 from src.gamestatemanager import GameStateManager
 from src.server.networkclient import NetworkClient
@@ -17,22 +18,15 @@ from src.states.menus.startmenu import StartMenu
 class GameController:
     """Initializes the game and creates the game loop"""
 
-    WIDTH = 1056
-    HEIGHT = 704
-
-    TITLE = "Mole Escape"
-
     pygame.font.init()
     FONT = pygame.font.SysFont("Arial", 48)
-
-    FPS = 60
 
     def __init__(self):
         pygame.init()
 
-        self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-        pygame.display.set_caption(self.TITLE)
+        pygame.display.set_caption(TITLE)
 
         # The tick speed is set to 60 in the game loop to limit the frame rate to 60 FPS
         self.clock = pygame.time.Clock()
@@ -147,8 +141,8 @@ class GameController:
         if self.network_client:
             try:
                 self.network_client.socket.close()
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Fehler beim Disconnect: {e}")
             self.network_client = None
 
         if self.server:
@@ -301,7 +295,7 @@ class GameController:
         # Game loop with the different game states. In each frame, events are checked and all elements are updated.
         while True:
             # Delta time ensures that movement and timers stay consistent regardless of the frame rate.
-            self.dt = self.clock.tick(self.FPS) / 1000
+            self.dt = self.clock.tick(FPS) / 1000
 
             # Handle all events
             self.events()
@@ -329,8 +323,8 @@ class GameController:
         if self.network_client:
             try:
                 self.network_client.socket.close()
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Fehler beim Disconnect: {e}")
             self.network_client = None
 
         if self.server:

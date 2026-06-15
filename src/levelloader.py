@@ -8,7 +8,11 @@ class LevelLoader:
     """ Loads the map from tmx files and converts it to the actual obstacles. """
 
     def __init__(self,path,level):
-        self.tmx = pytmx.load_pygame(path)
+        try:
+            self.tmx = pytmx.load_pygame(path)
+        except Exception as e:
+            print(f"Fehler beim laden der Map: {e}")
+
         self.level = level
 
     def load(self):
@@ -24,7 +28,10 @@ class LevelLoader:
             if obj_type == "solid":
                 button_id = obj.properties.get("button_id")
                 if button_id is not None:
-                    image = pygame.image.load(GRAPHICS_DIR / "map" / "movable.png").convert_alpha()
+                    try:
+                        image = pygame.image.load(GRAPHICS_DIR / "map" / "movable.png").convert_alpha()
+                    except Exception as e:
+                        print(f"Fehler beim laden vom Bild: {e}")
                 else:
                     image = pygame.Surface([obj.width, obj.height])
                     image.set_alpha(0)
@@ -44,7 +51,11 @@ class LevelLoader:
 
             # GOAL
             elif obj_type == "goal":
-                image = pygame.image.load(GRAPHICS_DIR / "map" / "Flagge_2.png").convert_alpha()
+                try:
+                    image = pygame.image.load(GRAPHICS_DIR / "map" / "Flagge_2.png").convert_alpha()
+                except Exception as e:
+                    print(f"Fehler beim laden vom Bild: {e}")
+
                 scaled_image = pygame.transform.scale(image, (57, 51))
                 scaled_image.set_colorkey((254, 254, 254))
                 image = scaled_image
@@ -67,8 +78,11 @@ class LevelLoader:
 
             # MOVABLE
             elif obj_type == "movable":
+                try:
+                    image = pygame.image.load(GRAPHICS_DIR/"map"/"Block_3.png").convert_alpha()
+                except Exception as e:
+                    print(f"Fehler beim laden vom Bild: {e}")
 
-                image = pygame.image.load(GRAPHICS_DIR/"map"/"Block_3.png").convert_alpha()
                 image.set_colorkey((255, 255, 255))
                 obstacle = Obstacle(
                     obj.width,
@@ -86,7 +100,11 @@ class LevelLoader:
             # BUTTON
             elif obj_type == "button":
                 button_id = obj.properties.get("button_id")
-                image = pygame.image.load(GRAPHICS_DIR / "map" / "Button.png").convert_alpha()
+                try:
+                    image = pygame.image.load(GRAPHICS_DIR / "map" / "Button.png").convert_alpha()
+                except Exception as e:
+                    print(f"Fehler beim laden vom Bild: {e}")
+
                 obstacle = Obstacle(
                     obj.width,
                     obj.height,

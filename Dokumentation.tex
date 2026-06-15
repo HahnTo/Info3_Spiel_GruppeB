@@ -1,0 +1,486 @@
+% ============================================================
+%  Projektdokumentation – Informatik 3 – 2D Spiel
+%  Vorlage für 3 Personen
+% ============================================================
+\documentclass[12pt, a4paper, twoside]{article}
+
+% ── Encoding & Sprache ──────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+
+% ── Schrift ─────────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── Seitenlayout ────────────────────────────────────────────
+\usepackage[
+  a4paper,
+  top=3cm,
+  bottom=3cm,
+  left=2.5cm,
+  right=2.5cm,
+  headheight=15pt
+]{geometry}
+
+% ── Header & Footer ─────────────────────────────────────────
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+\pagestyle{fancy}
+\fancyhf{} % alles zurücksetzen
+
+% Header
+\fancyhead[L]{\small\textit{\ProjectTitle}}
+\fancyhead[C]{\small\textit{Informatik 3 – \Semester}}
+\fancyhead[R]{\small\textit{\GroupName}}
+
+% Footer
+\fancyfoot[L]{\small\AuthorOne \, | \, \AuthorTwo \, | \, \AuthorThree}
+\fancyfoot[C]{}
+\fancyfoot[R]{\small Seite \thepage\ von \pageref{LastPage}}
+
+% Trennlinie Header/Footer
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Erste Seite (Titelseite) ohne Header/Footer
+\fancypagestyle{plain}{
+  \fancyhf{}
+  \renewcommand{\headrulewidth}{0pt}
+  \renewcommand{\footrulewidth}{0pt}
+}
+
+% ── Farben ──────────────────────────────────────────────────
+\usepackage[dvipsnames, table]{xcolor}
+\definecolor{primaryblue}{RGB}{30, 80, 160}
+\definecolor{lightgray}{RGB}{245, 245, 245}
+\definecolor{midgray}{RGB}{180, 180, 180}
+\definecolor{codebg}{RGB}{248, 248, 248}
+
+% ── Grafiken & Tabellen ─────────────────────────────────────
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{colortbl}
+
+% ── Code-Listings ───────────────────────────────────────────
+\usepackage{listings}
+\lstset{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{primaryblue}\bfseries,
+  commentstyle=\color{gray}\itshape,
+  stringstyle=\color{BrickRed},
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{midgray},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=8pt,
+  breaklines=true,
+  captionpos=b,
+  tabsize=2,
+  showstringspaces=false
+}
+
+% ── Links & PDF-Meta ────────────────────────────────────────
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primaryblue,
+  urlcolor=primaryblue,
+  citecolor=primaryblue,
+  pdftitle={Projektdokumentation - Informatik 3},
+  pdfauthor={Gruppenname},
+  pdfsubject={2D Spieleprojekt}
+}
+
+% ── Sonstige Pakete ─────────────────────────────────────────
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{tocbibind}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{pifont}   % für \checkmark / \ding
+\usepackage{amssymb}
+
+% ── Abschnitts-Formatierung ─────────────────────────────────
+\titleformat{\section}
+  {\Large\bfseries\color{primaryblue}}
+  {\thesection}{1em}{}[\color{primaryblue}\titlerule]
+
+\titleformat{\subsection}
+  {\large\bfseries\color{primaryblue!80!black}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries}
+  {\thesubsubsection}{1em}{}
+
+% ── Projektdaten (hier anpassen!) ───────────────────────────
+\newcommand{\ProjectTitle}{[Spieltitel]}
+\newcommand{\GroupName}{[Gruppenname]}
+\newcommand{\Semester}{SoSe 2025}
+\newcommand{\Subject}{Informatik 3}
+\newcommand{\Lecturer}{[Name der Dozentin]}
+\newcommand{\SubmissionDate}{TT.MM.JJJJ}
+\newcommand{\DocVersion}{1.0}
+
+% Mitglieder
+\newcommand{\AuthorOne}{Vorname Nachname}
+\newcommand{\AuthorOneMatr}{123456}
+\newcommand{\AuthorTwo}{Vorname Nachname}
+\newcommand{\AuthorTwoMatr}{123457}
+\newcommand{\AuthorThree}{Vorname Nachname}
+\newcommand{\AuthorThreeMatr}{123458}
+
+% ============================================================
+\begin{document}
+
+% ── Titelseite ──────────────────────────────────────────────
+\begin{titlepage}
+  \centering
+  \vspace*{1.5cm}
+
+  % Obere Linie
+  {\color{primaryblue}\rule{\linewidth}{2pt}}
+  \vspace{0.5cm}
+
+  {\Huge\bfseries\color{primaryblue} \ProjectTitle}\\[0.4cm]
+  {\Large Projektdokumentation}
+
+  \vspace{0.4cm}
+  {\color{primaryblue}\rule{\linewidth}{2pt}}
+  \vspace{1.5cm}
+
+  {\large\Subject{} $\cdot$ \Semester}\\[0.3cm]
+  {\large Dozentin: \Lecturer}
+
+  \vfill
+
+  % Gruppenmitglieder
+  \begin{tabular}{lll}
+    \toprule
+    \textbf{Name} & \textbf{Matr. Nr.} & \textbf{Rolle} \\
+    \midrule
+    \AuthorOne  & \AuthorOneMatr  & [Rolle, z.\,B. Projektleitung] \\
+    \AuthorTwo  & \AuthorTwoMatr  & [Rolle, z.\,B. Entwicklung]    \\
+    \AuthorThree & \AuthorThreeMatr & [Rolle, z.\,B. Design/Doku]   \\
+    \bottomrule
+  \end{tabular}
+
+  \vspace{1cm}
+
+  \begin{tabular}{ll}
+    \textbf{Gruppenname:}    & \GroupName      \\
+    \textbf{Abgabedatum:}    & \SubmissionDate \\
+    \textbf{Version:}        & \DocVersion     \\
+  \end{tabular}
+
+  \vspace{1.5cm}
+  {\color{primaryblue}\rule{\linewidth}{1pt}}
+\end{titlepage}
+
+% ── Inhaltsverzeichnis ──────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ── Abbildungsverzeichnis (optional auskommentieren) ────────
+% \listoffigures
+% \newpage
+
+% ============================================================
+\section{Projektbeschreibung}
+
+Kurze Beschreibung des Spielkonzepts: Genre, Spielmechaniken, Zielgruppe
+und Besonderheiten des Projekts.
+
+\begin{description}
+  \item[Genre:] z.\,B. Platformer, Top-Down-Shooter, Puzzle
+  \item[Technologie/Engine:] z.\,B. Java + LibGDX, Python + Pygame
+  \item[Kurzbeschreibung:] Lorem ipsum – Beschreibung des Spiels in
+    3–5~Sätzen.
+\end{description}
+
+% ============================================================
+\section{Spielreferenzen und Inspiration}
+
+Beschreibung der Spiele, die als Referenz und Inspiration genutzt wurden.
+
+\subsection{[Referenzspiel 1]}
+\begin{itemize}
+  \item \textbf{Genre / Plattform:} \ldots
+  \item \textbf{Was wurde übernommen / inspiriert:} \ldots
+\end{itemize}
+
+\subsection{[Referenzspiel 2]}
+\begin{itemize}
+  \item \textbf{Genre / Plattform:} \ldots
+  \item \textbf{Was wurde übernommen / inspiriert:} \ldots
+\end{itemize}
+
+\subsection{[Referenzspiel 3 – optional]}
+\begin{itemize}
+  \item \textbf{Genre / Plattform:} \ldots
+  \item \textbf{Was wurde übernommen / inspiriert:} \ldots
+\end{itemize}
+
+% ============================================================
+\section{Zeitplan und Aufgabenverteilung}
+
+\textbf{Hinweis:} Die Modellierung mit Sparx Enterprise Architect muss
+bis \textbf{01.06.2026} abgeschlossen sein. Für die Nutzung von Sparx EA
+wurde Prof.\,Dr. Kücherer kontaktiert (siehe Anhang~\ref{sec:sparx}).
+
+\subsection{Meilensteine}
+
+\begin{table}[H]
+  \centering
+  \rowcolors{2}{lightgray}{white}
+  \begin{tabularx}{\textwidth}{X l l l}
+    \toprule
+    \rowcolor{primaryblue!20}
+    \textbf{Meilenstein} & \textbf{Datum} & \textbf{Verantwortlich} & \textbf{Status} \\
+    \midrule
+    Projektkonzept \& Anforderungen       & TT.MM.JJJJ & [Name] & $\square$ Offen \\
+    Kontakt zu Prof.\,Dr.\ Kücherer (EA)  & TT.MM.JJJJ & [Name] & $\square$ Offen \\
+    UML-Klassendiagramm (Entwurf)         & TT.MM.JJJJ & [Name] & $\square$ Offen \\
+    \textbf{Modellierung Sparx EA fertig} & \textbf{01.06.2026} & [Name] & $\square$ Offen \\
+    Prototyp / spielbare Demo             & TT.MM.JJJJ & [Name] & $\square$ Offen \\
+    Implementierung abgeschlossen         & TT.MM.JJJJ & [Name] & $\square$ Offen \\
+    Dokumentation abgeschlossen           & TT.MM.JJJJ & [Name] & $\square$ Offen \\
+    Abgabe                                & TT.MM.JJJJ & Alle   & $\square$ Offen \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Projektmeilensteine}
+\end{table}
+
+\subsection{Aufgabenverteilung}
+
+\begin{table}[H]
+  \centering
+  \rowcolors{2}{lightgray}{white}
+  \begin{tabularx}{\textwidth}{X l r}
+    \toprule
+    \rowcolor{primaryblue!20}
+    \textbf{Aufgabe} & \textbf{Verantwortlich} & \textbf{Aufwand (h)} \\
+    \midrule
+    Spiellogik / Game Loop         & [Name] & ca.\ X \\
+    Grafik / Asset-Integration     & [Name] & ca.\ X \\
+    UML \& Modellierung (Sparx EA) & [Name] & ca.\ X \\
+    Physik / Kollisionserkennung   & [Name] & ca.\ X \\
+    Sound \& Musik                 & [Name] & ca.\ X \\
+    Dokumentation                  & [Name] & ca.\ X \\
+    Testing \& Bugfixing           & Alle   & ca.\ X \\
+    \bottomrule
+  \end{tabularx}
+  \caption{Aufgabenverteilung im Team}
+\end{table}
+
+% ============================================================
+\section{Systemdesign und Architektur}
+
+Alle Modelle wurden mit \textbf{Sparx Enterprise Architect} erstellt.
+
+\subsection{UML-Klassendiagramm}
+
+Das UML-Klassendiagramm ist ein Pflichtbestandteil der Dokumentation
+und wurde mit Sparx Enterprise Architect modelliert.
+
+\begin{figure}[H]
+  \centering
+  % Exportiertes Diagramm einfügen:
+  % \includegraphics[width=\textwidth]{diagrams/klassendiagramm.png}
+  \fbox{\parbox{0.9\textwidth}{\centering\vspace{3cm}
+    \textit{[Exportiertes UML-Klassendiagramm aus Sparx EA hier einfügen]}
+  \vspace{3cm}}}
+  \caption{UML-Klassendiagramm – erstellt mit Sparx Enterprise Architect}
+  \label{fig:klassendiagramm}
+\end{figure}
+
+\subsection{Weitere UML-Diagramme}
+
+% Beispiel für ein weiteres Diagramm:
+\begin{figure}[H]
+  \centering
+  % \includegraphics[width=0.8\textwidth]{diagrams/sequenzdiagramm.png}
+  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2cm}
+    \textit{[Weiteres Diagramm, z.\,B. Sequenz- oder Zustandsdiagramm]}
+  \vspace{2cm}}}
+  \caption{[Diagrammtyp und Beschreibung]}
+  \label{fig:weiteres}
+\end{figure}
+
+\subsection{Architekturübersicht}
+
+Kurze textuelle Beschreibung der gewählten Architektur (z.\,B.\ MVC,
+Entity-Component-System) und Begründung der Wahl.
+
+% ============================================================
+\section{API-Dokumentation}
+
+Kurze Dokumentation der wichtigsten Klassen und ihrer öffentlichen
+Schnittstellen.
+
+\subsection{Klasse: \texttt{[KlassenName]}}
+
+\textbf{Beschreibung:} Kurze Beschreibung, was diese Klasse macht.
+
+\begin{table}[H]
+  \centering
+  \rowcolors{2}{lightgray}{white}
+  \begin{tabularx}{\textwidth}{l l l X}
+    \toprule
+    \rowcolor{primaryblue!20}
+    \textbf{Methode} & \textbf{Parameter} & \textbf{Rückgabe} & \textbf{Beschreibung} \\
+    \midrule
+    \texttt{methodenName(p)} & \texttt{p: Typ}  & \texttt{Typ}  & Beschreibung der Methode. \\
+    \texttt{weitereMethode()} & –               & \texttt{void} & Beschreibung der Methode. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{API -- \texttt{[KlassenName]}}
+\end{table}
+
+\subsection{Klasse: \texttt{[KlassenName]}}
+
+\textbf{Beschreibung:} Kurze Beschreibung, was diese Klasse macht.
+
+\begin{table}[H]
+  \centering
+  \rowcolors{2}{lightgray}{white}
+  \begin{tabularx}{\textwidth}{l l l X}
+    \toprule
+    \rowcolor{primaryblue!20}
+    \textbf{Methode} & \textbf{Parameter} & \textbf{Rückgabe} & \textbf{Beschreibung} \\
+    \midrule
+    \texttt{methodenName(p)} & \texttt{p: Typ} & \texttt{Typ} & Beschreibung der Methode. \\
+    \bottomrule
+  \end{tabularx}
+  \caption{API -- \texttt{[KlassenName]}}
+\end{table}
+
+% Weitere Klassen analog ergänzen
+
+% ============================================================
+\section{Quellcode-Metriken}
+
+Gemessen zum Zeitpunkt der Abgabe.
+
+\begin{table}[H]
+  \centering
+  \rowcolors{2}{lightgray}{white}
+  \begin{tabular}{ll}
+    \toprule
+    \rowcolor{primaryblue!20}
+    \textbf{Metrik} & \textbf{Wert} \\
+    \midrule
+    Anzahl Dateien (\#Files)   & XX          \\
+    Lines of Code (LOC)        & XXXX        \\
+    Anzahl Klassen             & XX          \\
+    Anzahl Methoden            & XX          \\
+    Anzahl Pakete / Module     & XX          \\
+    Testabdeckung (optional)   & XX\,\%      \\
+    Verwendete Bibliotheken    & Lib1, Lib2  \\
+    \bottomrule
+  \end{tabular}
+  \caption{Quellcode-Metriken (ermittelt mit [Tool, z.\,B. cloc])}
+\end{table}
+
+% ============================================================
+\section{Herausforderungen und Lösungsdesign}
+
+\subsection{Herausforderung: [Bezeichnung]}
+
+\textbf{Beschreibung des Problems:}\\
+\ldots
+
+\textbf{Gewähltes Lösungsdesign:}\\
+\ldots
+
+\textbf{Begründung:}\\
+\ldots
+
+\subsection{Herausforderung: [Bezeichnung]}
+
+\textbf{Beschreibung des Problems:}\\
+\ldots
+
+\textbf{Gewähltes Lösungsdesign:}\\
+\ldots
+
+\textbf{Begründung:}\\
+\ldots
+
+\subsection{Herausforderung: [Bezeichnung – optional]}
+
+\textbf{Beschreibung des Problems:}\\
+\ldots
+
+\textbf{Gewähltes Lösungsdesign:}\\
+\ldots
+
+% ============================================================
+\section{Retrospektive}
+
+\subsection{Was hat gut funktioniert?}
+\begin{itemize}
+  \item \ldots
+  \item \ldots
+  \item \ldots
+\end{itemize}
+
+\subsection{Was würden wir beim nächsten Mal anders machen?}
+\begin{itemize}
+  \item \ldots
+  \item \ldots
+  \item \ldots
+\end{itemize}
+
+\subsection{Persönliche Lerneffekte}
+
+\textbf{\AuthorOne:}\\
+\ldots
+
+\medskip
+\textbf{\AuthorTwo:}\\
+\ldots
+
+\medskip
+\textbf{\AuthorThree:}\\
+\ldots
+
+% ============================================================
+\appendix
+\section{Anhang}
+
+\subsection{Verwendete Quellen und Literatur}
+
+\begin{enumerate}
+  \item Autor, \textit{Titel}, Jahr, \url{https://beispiel.de}
+  \item \ldots
+\end{enumerate}
+
+\subsection{Sparx Enterprise Architect – Kontakt zu Prof.\,Dr.\,Kücherer}
+\label{sec:sparx}
+
+\begin{description}
+  \item[Datum der Anfrage:] TT.MM.JJJJ
+  \item[Betreff:] \ldots
+  \item[Antwort erhalten am:] TT.MM.JJJJ
+\end{description}
+
+\subsection{Glossar}
+
+\begin{description}
+  \item[Begriff:] Erklärung \ldots
+  \item[Begriff:] Erklärung \ldots
+\end{description}
+
+% ============================================================
+\end{document}

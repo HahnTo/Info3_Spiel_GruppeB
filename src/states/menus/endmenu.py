@@ -17,9 +17,12 @@ class EndMenu(State):
         self.selected_index = 0
         self.buttons = []
 
-    def build_menu(self, level_id):
+        self.timer = 0.0
+
+    def build_menu(self, level_id, timer):
         """ Creates Level id and buttons. """
         self.level_id = level_id
+        self.timer = timer
         self.create_buttons()
 
     def create_buttons(self):
@@ -74,8 +77,14 @@ class EndMenu(State):
         congrats_text = title_font.render(
             "Herzlichen Glückwunsch!", True, (255, 255, 255)
         )
+
+        minutes = int(self.timer // 60)
+        seconds = int(self.timer % 60)
+
+        time_string = f"{minutes:02}:{seconds:02}"
+
         score_text = score_font.render(
-            f"Dein Score: 0", True, (255, 255, 255)
+            f"Eure Zeit: {time_string}", True, (255, 255, 255)
         )
 
         level_rect = level_text.get_rect(center=(WIDTH/2, HEIGHT/2 - 300))

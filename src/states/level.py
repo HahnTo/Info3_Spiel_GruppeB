@@ -51,6 +51,8 @@ class Level(State):
 
         self.load_map()
         self.create_players()
+        self.timer = 0.0
+        self.timer_running = True
 
 
     def load_map(self):
@@ -99,7 +101,10 @@ class Level(State):
                 remote_player.update(dt, self.game_controller)
 
     def reset(self):
-        """ Reset all obstacles and players to their start position."""
+        """ Reset all obstacles and players to their start position. Resets the Timer"""
+        self.timer = 0.0
+        self.timer_running = True
+
         for obstacle in self.obstacles.sprites():
             obstacle.reset()
 
@@ -157,6 +162,7 @@ class Level(State):
         self.screen.blit(background_image,(0,0))
         self.draw_tiles()
         self.all_sprites.draw(self.screen)
+        self.draw_timer()
 
         if self.game_controller.is_paused:
             self.draw_dead()
@@ -176,11 +182,26 @@ class Level(State):
         text2 = font.render("Neuer Versuch ...", True, (200, 200, 200))
         self.screen.blit(text2, text2.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30)))
 
+    def draw_timer(self):
+        font = pygame.font.SysFont("Courier New", 36, bold=True)
 
+        minutes = int(self.timer // 60)
+        seconds = int(self.timer % 60)
+
+        timer_string = f"{minutes:02}:{seconds:02}"
+
+        text = font.render(timer_string,True,(255, 255, 255)
+        )
+
+        self.screen.blit(text, (20, 20))
+
+    def stop_timer(self):
+        self.timer_running = False
 
     def run(self, dt):
         """ Overrides and extends the base method to synchronize the data from the server on every frame."""
-        if not self.game_controller.is_paused:  # ← fehlt
+        if not self.game_controller.is_paused:
+            if self.timer_running: self.timer += dt
             self.update(dt)
         self.sync_network()
         self.draw()

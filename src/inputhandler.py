@@ -1,5 +1,8 @@
 
 import pygame
+import re
+
+PARTIAL_IP_REGEX = re.compile(r"^\d{0,3}(\.\d{0,3}){0,3}$")
 
 
 class InputHandler:
@@ -93,19 +96,21 @@ class InputHandler:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_RETURN:
-                # Input finished
                 input_field.editing = False
 
             elif event.key == pygame.K_BACKSPACE:
                 input_field.value = input_field.value[:-1]
 
             else:
-                # Only Numbers and points for IP Address
                 char = event.unicode
+
+                # only numbers and points
                 if char and (char.isdigit() or char == "."):
-                    # xxx.xxx.xxx.xxx = max 15 characters
-                    if len(input_field.value) < 15:
-                        input_field.value += char
+                    new_value = input_field.value + char
+
+                    # check the regex
+                    if len(new_value) <= 15 and PARTIAL_IP_REGEX.fullmatch(new_value):
+                        input_field.value = new_value
 
     def save_bindings(self, filepath: str = "config/keybindings.json"):
         """

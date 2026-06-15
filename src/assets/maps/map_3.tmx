@@ -1,74 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.1" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="33">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="70">
  <tileset firstgid="1" source="tileset_xy.tsx"/>
  <tileset firstgid="26" source="Stacheln_3.tsx"/>
  <objectgroup id="2" name="Objektebene 1">
-  <object id="9" x="0" y="640" width="1056" height="64">
+  <object id="9" name="Boden" x="0" y="640" width="1056" height="64">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="10" x="736" y="480" width="96" height="32">
+  <object id="31" name="Linker Rand" x="-32" y="0" width="32" height="704">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="12" x="352" y="384" width="288" height="32">
+  <object id="32" name="Rechter Rand" x="1056" y="0" width="32" height="704">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="13" x="320" y="160" width="320" height="64">
+  <object id="33" name="platform" x="576" y="352" width="224" height="32">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="14" x="320" y="111.333" width="64" height="55.3333">
-   <properties>
-    <property name="obj_type" value="goal"/>
-   </properties>
-  </object>
-  <object id="15" x="544" y="582" width="58" height="58">
+  <object id="36" name="movable" x="640" y="582" width="64" height="58">
    <properties>
     <property name="obj_type" value="movable"/>
    </properties>
   </object>
-  <object id="16" x="768" y="352" width="192" height="32">
+  <object id="42" name="Stacheln" x="800" y="584" width="101" height="1">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
+  <object id="51" name="Solid unter Stacheln" x="800" y="585" width="128" height="4">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="19" x="384" y="608" width="32" height="32">
+  <object id="62" name="Solid 1" x="928" y="576" width="64" height="16">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="63" name="Solid 2" x="992" y="512" width="16" height="80">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="65" name="Goal" x="192" y="480" width="64" height="64">
+   <properties>
+    <property name="obj_type" value="goal"/>
+   </properties>
+  </object>
+  <object id="66" name="Button 1" x="960" y="544" width="32" height="32">
    <properties>
     <property name="button_id" value="1"/>
     <property name="obj_type" value="button"/>
    </properties>
   </object>
-  <object id="20" x="704" y="160" width="32" height="32">
+  <object id="68" name="Lift 1" x="128" y="416" width="32" height="32">
    <properties>
     <property name="button_id" value="1"/>
-    <property name="obj_type" value="solid"/>
-   </properties>
-  </object>
-  <object id="30" x="832" y="608" width="64" height="32">
-   <properties>
-    <property name="obj_type" value="deadly"/>
-   </properties>
-  </object>
-  <object id="31" x="-32" y="0" width="32" height="704">
-   <properties>
-    <property name="obj_type" value="solid"/>
-   </properties>
-  </object>
-  <object id="32" x="1056" y="0" width="32" height="704">
-   <properties>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
  </objectgroup>
  <layer id="3" name="Kachelebene 1" width="33" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2BoAkYgZgJiZjw0C43dIADEgkAshEYLIvGFaeyGUTAKqAFEgVgMiMWRaAkqmwejKTV7FNAWwOJuNI5GATqQAmJpHHLodTIxmBS1+MyA1fdsQMxOIeYgUw8IcwIxAIpCA8Q=
+   eJxjYBgFo2AUjIJRMFKAKBCLAbE4FMPYEgPpqFEwCkgEjAPtACBgA2JhBgYHetglBcTSSDTI/0xAzAHEPPRwABBwMjA08EDt44TSMCyM5CZmKE0MJkUtPjNAmIUBEifsFGIOMvVwQMMFAFYqA40=
   </data>
  </layer>
 </map>

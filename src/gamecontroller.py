@@ -180,7 +180,8 @@ class GameController:
         for obstacle in collider_group:
             # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
-                self.trigger_goal()
+                if self.both_players_in_goal():
+                    self.trigger_goal()
             # If the obstacle is deadly, trigger the death und restart the level.
             elif obstacle.is_deadly:
                 self.trigger_death()
@@ -244,7 +245,8 @@ class GameController:
         collider_group = pygame.sprite.spritecollide(player, self.level.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
-                self.trigger_goal()
+                if self.both_players_in_goal():
+                    self.trigger_goal()
             elif obstacle.is_deadly:
                 self.trigger_death()
             elif obstacle.is_button:
@@ -265,9 +267,31 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
+    def both_players_in_goal(self):
+        """ Returns true if both players are colliding with goal obstacles. Otherwise, it returns false"""
+        goal_rects = [o.rect for o in self.level.obstacles if o.is_goal]
+
+        if len(goal_rects) == 1:
+            return all(
+                any(p.rect.colliderect(g) for g in goal_rects)
+                for p in self.level.players
+            )
+        elif len(goal_rects) == 2:
+            p1, p2 = self.level.players
+            g1, g2 = goal_rects
+
+            return (
+                    (p1.rect.colliderect(g1) and p2.rect.colliderect(g2))
+                    or
+                    (p1.rect.colliderect(g2) and p2.rect.colliderect(g1))
+            )
+        else:
+            return False
+
     def trigger_goal(self, send_to_server=True):
         """ Called when any player reaches the goal."""
-        self.end_menu.build_menu(self.level.level_id)
+        self.level.stop_timer()
+        self.end_menu.build_menu(self.level.level_id, self.level.timer)
         if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "game_over"})
         self.game_state_manager.set_state('end_menu')

@@ -23,6 +23,7 @@ class Player(pygame.sprite.Sprite):
     INTERP_ALPHA = 0.5
     SNAP_THRESHOLD = 50
 
+
     def __init__(self, start_x, start_y, player_id, is_local):
         """
         Initializes the player.
@@ -97,9 +98,11 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(topleft=(start_x, start_y))
 
+
         # Rect gets a little bit smaller
         bottom = self.rect.bottom
-        self.rect.inflate_ip(-10, 0)
+        self.rect.width -= 10
+        self.rect.x = start_x
         self.rect.bottom = bottom
 
 
@@ -132,6 +135,7 @@ class Player(pygame.sprite.Sprite):
                 self.frame_index = 0
                 self.last_update = pygame.time.get_ticks()
         image = self.animations[self.state][self.frame_index]
+
         if not self.facing_right:
             image = pygame.transform.flip(image,True,False)
             image.set_colorkey((0,0,0))

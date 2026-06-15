@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="58">
+ <tileset firstgid="1" source="tileset_xy.tsx"/>
+ <tileset firstgid="26" source="Stacheln_3.tsx"/>
+ <objectgroup id="2" name="Objektebene 1">
+  <object id="9" x="0" y="640" width="1056" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="13" x="32" y="128" width="320" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="14" x="32" y="75" width="64" height="64">
+   <properties>
+    <property name="obj_type" value="goal"/>
+   </properties>
+  </object>
+  <object id="31" x="-32" y="0" width="32" height="704">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="32" x="1056" y="0" width="32" height="704">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="40" x="704" y="128" width="320" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="41" x="961" y="75" width="64" height="64">
+   <properties>
+    <property name="obj_type" value="goal"/>
+   </properties>
+  </object>
+  <object id="42" x="640" y="608" width="64" height="32">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
+  <object id="43" x="256" y="256" width="160" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="44" x="160" y="448" width="128" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="45" x="352" y="544" width="128" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="46" x="256" y="352" width="96" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="47" x="480" y="256" width="128" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="48" x="416" y="160" width="128" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="49" x="544" y="384" width="128" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="50" x="736" y="448" width="128" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="51" x="640" y="544" width="128" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="52" x="608" y="96" width="32" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="54" x="672" y="288" width="64" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="55" x="704" y="256" width="32" height="32">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
+  <object id="56" x="768" y="416" width="32" height="32">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
+  <object id="57" x="480" y="128" width="32" height="32">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <layer id="3" name="Kachelebene 1" width="33" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztVl0LwyAMvM3N2r30ya3t/v//3IuBEOJH2s7B6EFQrLlcE5UAJ/4R9x2+FwBXAC6NNHdsflP8VgOnq3B6AAOAkGxgI81Htj8CeAJ4AZgzGrzgCQr/mPE9oYPyTjYr37SavDvrlIhJ0+MgvinZLxGVGvRGSx7kuTiqBjz+pGjJrUvwd2wxxI7iHmhaSvokT+ktk2iNxWO25qM17p49uX+waqiZrJHGJfO/MOsJy5n5Btb0TufukQatd6iZZW+Jg3oIz/qErRY2+lAP8QExBgqY
+  </data>
+ </layer>
+</map>

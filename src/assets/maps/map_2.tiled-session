@@ -1,22 +1,32 @@
 {
-    "activeFile": "",
+    "activeFile": "map_1.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "fileStates": {
         "Stacheln.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 3,
+            "scaleInEditor": 1
         },
         "Stacheln2.tsx": {
             "dynamicWrapping": true,
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Stacheln_3.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
         "map_1.tmx": {
-            "scale": 5.5,
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 568.0909090909091,
-                "y": 608.4545454545455
+                "x": 642.5,
+                "y": 304.5
             }
         },
         "map_2.tmx": {
@@ -41,6 +51,13 @@
         "tileset_x.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "tileset_xy.tsx": {
+            "scaleInDock": 2,
+            "scaleInEditor": 1
+        },
+        "tileset_y.tsx": {
+            "scaleInDock": 1
         }
     },
     "last.imagePath": "C:/Studium/info3/info3_spiel/src/graphics/map",
@@ -50,9 +67,21 @@
     "map.tileWidth": 48,
     "map.width": 23,
     "openFiles": [
+        "map_2.tmx",
+        "map_4.tmx",
+        "map_1.tmx",
+        "tileset_xy.tsx",
+        "Stacheln.tsx",
+        "Stacheln_3.tsx"
     ],
     "project": "map_2.tiled-project",
     "recentFiles": [
+        "map_2.tmx",
+        "map_4.tmx",
+        "Stacheln_3.tsx",
+        "Stacheln.tsx",
+        "tileset_xy.tsx",
+        "map_1.tmx",
         "Stacheln2.tsx",
         "tileset_x.tsx"
     ],

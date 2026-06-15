@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="70">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="105">
  <tileset firstgid="1" source="tileset_xy.tsx"/>
  <tileset firstgid="26" source="Stacheln_3.tsx"/>
  <objectgroup id="2" name="Objektebene 1">
@@ -18,6 +18,11 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
+  <object id="101" name="Oberer Rand" x="1088" y="-32" width="32" height="1120" rotation="90">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
   <object id="33" name="platform" x="576" y="352" width="224" height="32">
    <properties>
     <property name="obj_type" value="solid"/>
@@ -28,7 +33,7 @@
     <property name="obj_type" value="movable"/>
    </properties>
   </object>
-  <object id="42" name="Stacheln" x="800" y="584" width="101" height="1">
+  <object id="42" name="Stacheln" x="800" y="584" width="128" height="1">
    <properties>
     <property name="obj_type" value="deadly"/>
    </properties>
@@ -48,27 +53,127 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="65" name="Goal" x="192" y="480" width="64" height="64">
-   <properties>
-    <property name="obj_type" value="goal"/>
-   </properties>
-  </object>
   <object id="66" name="Button 1" x="960" y="544" width="32" height="32">
    <properties>
     <property name="button_id" value="1"/>
     <property name="obj_type" value="button"/>
    </properties>
   </object>
-  <object id="68" name="Lift 1" x="128" y="416" width="32" height="32">
+  <object id="68" name="Lift 1" x="224" y="224" width="32" height="32">
    <properties>
     <property name="button_id" value="1"/>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
+  <object id="73" name="Lift 1.5" x="256" y="224" width="32" height="32">
+   <properties>
+    <property name="button_id" value="1"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="76" name="Block movable" x="384" y="576" width="64" height="16">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="78" name="Goal" x="0" y="576" width="64" height="64">
+   <properties>
+    <property name="obj_type" value="goal"/>
+   </properties>
+  </object>
+  <object id="80" name="Button 2" x="0" y="192" width="32" height="32">
+   <properties>
+    <property name="button_id" value="2"/>
+    <property name="obj_type" value="button"/>
+   </properties>
+  </object>
+  <object id="82" name="Lift 2" x="0" y="64" width="32" height="32">
+   <properties>
+    <property name="button_id" value="2"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="83" name="Button 3" x="352" y="64" width="32" height="32">
+   <properties>
+    <property name="button_id" value="3"/>
+    <property name="obj_type" value="button"/>
+   </properties>
+  </object>
+  <object id="84" name="Wand 1" x="288" y="96" width="96" height="352">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="90" name="Wand 2" x="384" y="0" width="64" height="160">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="92" name="Wand 3" x="384" y="160" width="32" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="91" name="Wand 4" x="304" y="0" width="80" height="16">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="93" name="Platform dick 1" x="0" y="512" width="128" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="94" name="Platform dick 2" x="128" y="544" width="32" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="95" name="Platform 1" x="64" y="416" width="184" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="96" name="Platform 2" x="72" y="224" width="152" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="97" name="Platform 3" x="0" y="224" width="28" height="128">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="98" name="Platfomorm 4" x="32" y="64" width="192" height="18">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="99" name="Platform4.5" x="32" y="82" width="48" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="102" name="Lift 3" x="512" y="224" width="32" height="32">
+   <properties>
+    <property name="button_id" value="2"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="103" name="Part 2 Stachel 1" x="136" y="392" width="48" height="24">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
+  <object id="104" name="Part 2 Stachel 2" x="136" y="200" width="48" height="24">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="3" name="Kachelebene 1" width="33" height="22">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMFKAKBCLAbE4FMPYEgPpqFEwCkgEjAPtACBgA2JhBgYHetglBcTSSDTI/0xAzAHEPPRwABBwMjA08EDt44TSMCyM5CZmKE0MJkUtPjNAmIUBEifsFGIOMvVwQMMFAFYqA40=
+   eJzlVlsSgjAMjIAWBnREfHsZj9ajm2gisWJ5Ff1wZ3YKnaRNm2QBoB0zZIQskDEyUfOpmluwXcrM1BoxU78btvNhy9SIORbCGrlkVhxTwe8Uy0r5rdlGkKsz6XPukQfmEXlqiEv2aFqbnkvkhlnBZ2jbphhdUIyGY0453k+YK4bEAuoc0P6+eKcC7W3gPQ8EyVtInJEXZw5ryxqoay80MNeWx/s9Sw8lykZ6LnOdAyFpN6G9rejDFFi1mzz73tcPY9Alv6Qnru59G3IPvhh28Kpx8jykZ5r6QnS1S+2MgXsOrdeiq7/Qpn9CBLU2TZ1vFzMeS3j93obWfh9If7HGrn398K5s3/uSXpNRvgukOUO0N3/Q9vEhrS+g1phCUf6/pB6ijuxj61tD/4eakUwH+oj+3wA8YgwE
   </data>
  </layer>
 </map>

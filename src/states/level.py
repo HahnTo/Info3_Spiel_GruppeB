@@ -65,6 +65,7 @@ class Level(State):
             player1.add(self.all_sprites, self.players)
 
             player2 = Player(60, HEIGHT - 20, 2, self.local_id == 2)
+
             player2.add(self.all_sprites, self.players)
         else:
             player1 = Player(20, HEIGHT - 20, 1, True)

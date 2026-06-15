@@ -32,16 +32,46 @@ class Player(pygame.sprite.Sprite):
         """
         super().__init__()
 
-        # Load Spritesheets
-        run_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR/"player"/"monster"/"Pink_Monster_Walk_6.png"))
-        jump_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Jump_8.png"))
-        idle_sheet = Spritesheet(pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Idle_4.png"))
+        self.player_id = player_id
+
+        #load spritesheets
+        run_sheet_image = pygame.image.load(GRAPHICS_DIR/"player"/"monster"/"Pink_Monster_Walk_6.png")
+        jump_sheet_image = pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Jump_8.png")
+        idle_sheet_image = pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Idle_4.png")
+        if player_id == 2:
+            pixels = pygame.PixelArray(run_sheet_image)
+            pixels.replace(
+                jump_sheet_image.map_rgb((37, 150, 190)),
+                jump_sheet_image.map_rgb((255,255,255))
+            )
+            del pixels
+            pixels = pygame.PixelArray(run_sheet_image)
+            pixels.replace(
+                jump_sheet_image.map_rgb((37, 150, 190)),
+                jump_sheet_image.map_rgb((255, 255, 255))
+            )
+            del pixels
+            pixels = pygame.PixelArray(idle_sheet_image)
+            pixels.replace(
+                idle_sheet_image.map_rgb((37, 150, 190)),
+                idle_sheet_image.map_rgb((255, 255, 255))
+            )
+            del pixels
+
+        run_sheet = Spritesheet(run_sheet_image)
+
+
+        jump_sheet = Spritesheet(jump_sheet_image)
+
+
+        idle_sheet = Spritesheet(idle_sheet_image)
+
 
         # set the animations
-        self.animations ={
-            "run": [run_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range (6)],
-            "jump": [jump_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range(8)],
-            "idle": [idle_sheet.get_image(x,32,32,1.5,(0,0,0))for x in range(4)],
+        self.animations = {
+            "run": [run_sheet.get_image(x, 32, 32, 1.5, (0, 0, 0)) for x in range(6)],
+            "jump": [jump_sheet.get_image(x, 32, 32, 1.5, (0, 0, 0)) for x in range(8)],
+            "idle": [idle_sheet.get_image(x, 32, 32, 1.5, (0, 0, 0)) for x in range(4)],
         }
 
         self.state = "idle"
@@ -52,7 +82,7 @@ class Player(pygame.sprite.Sprite):
         self.start_x = start_x
         self.start_y = start_y
 
-        self.player_id = player_id
+
 
         self.is_local = is_local
 
@@ -86,6 +116,11 @@ class Player(pygame.sprite.Sprite):
         self.is_alive = True
         self.is_moving = False
         self.facing_right = True
+
+
+
+
+
 
     def animate(self):
         """ Animates the Player. """

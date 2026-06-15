@@ -1,6 +1,5 @@
 % ============================================================
-%  Projektdokumentation – Informatik 3 – 2D Spiel
-%  Vorlage für 3 Personen
+%  Projektdokumentation – Informatik 3
 % ============================================================
 \documentclass[12pt, a4paper, twoside]{article}
 
@@ -12,6 +11,10 @@
 % ── Schrift ─────────────────────────────────────────────────
 \usepackage{lmodern}
 \usepackage{microtype}
+
+% ── Checkbox ────────────────────────────────────────────────
+\usepackage{amssymb}
+
 
 % ── Seitenlayout ────────────────────────────────────────────
 \usepackage[
@@ -31,7 +34,7 @@
 \fancyhf{} % alles zurücksetzen
 
 % Header
-\fancyhead[L]{\small\textit{\ProjectTitle}}
+\fancyhead[L]{\small\textit{Monster Escape}}
 \fancyhead[C]{\small\textit{Informatik 3 – \Semester}}
 \fancyhead[R]{\small\textit{\GroupName}}
 
@@ -66,6 +69,7 @@
 \usepackage{multirow}
 \usepackage{array}
 \usepackage{colortbl}
+
 
 % ── Code-Listings ───────────────────────────────────────────
 \usepackage{listings}
@@ -124,21 +128,21 @@
   {\thesubsubsection}{1em}{}
 
 % ── Projektdaten (hier anpassen!) ───────────────────────────
-\newcommand{\ProjectTitle}{[Spieltitel]}
-\newcommand{\GroupName}{[Gruppenname]}
-\newcommand{\Semester}{SoSe 2025}
+\newcommand{\ProjectTitle}{Monster Escape}
+\newcommand{\GroupName}{Gruppe B}
+\newcommand{\Semester}{SoSe 2026}
 \newcommand{\Subject}{Informatik 3}
-\newcommand{\Lecturer}{[Name der Dozentin]}
-\newcommand{\SubmissionDate}{TT.MM.JJJJ}
+\newcommand{\Lecturer}{Aysun Cetinalp}
+\newcommand{\SubmissionDate}{16.06.2026}
 \newcommand{\DocVersion}{1.0}
 
 % Mitglieder
-\newcommand{\AuthorOne}{Vorname Nachname}
-\newcommand{\AuthorOneMatr}{123456}
-\newcommand{\AuthorTwo}{Vorname Nachname}
-\newcommand{\AuthorTwoMatr}{123457}
-\newcommand{\AuthorThree}{Vorname Nachname}
-\newcommand{\AuthorThreeMatr}{123458}
+\newcommand{\AuthorOne}{Tobias Hahn}
+\newcommand{\AuthorOneMatr}{817616}
+\newcommand{\AuthorTwo}{Lutz Morath}
+\newcommand{\AuthorTwoMatr}{818145}
+\newcommand{\AuthorThree}{Jonas Uzelac}
+\newcommand{\AuthorThreeMatr}{804756}
 
 % ============================================================
 \begin{document}
@@ -152,7 +156,7 @@
   {\color{primaryblue}\rule{\linewidth}{2pt}}
   \vspace{0.5cm}
 
-  {\Huge\bfseries\color{primaryblue} \ProjectTitle}\\[0.4cm]
+  {\Huge\bfseries\color{primaryblue} Monster Escape}\\[0.4cm]
   {\Large Projektdokumentation}
 
   \vspace{0.4cm}
@@ -160,18 +164,18 @@
   \vspace{1.5cm}
 
   {\large\Subject{} $\cdot$ \Semester}\\[0.3cm]
-  {\large Dozentin: \Lecturer}
+  {\large Dozentin: Aysun Cetinalp}
 
   \vfill
 
-  % Gruppenmitglieder
-  \begin{tabular}{lll}
+% Gruppenmitglieder
+  \begin{tabular}{l@{\hspace{30pt}}l}
     \toprule
-    \textbf{Name} & \textbf{Matr. Nr.} & \textbf{Rolle} \\
+    \textbf{Name} & \textbf{Matr. Nr.} \\
     \midrule
-    \AuthorOne  & \AuthorOneMatr  & [Rolle, z.\,B. Projektleitung] \\
-    \AuthorTwo  & \AuthorTwoMatr  & [Rolle, z.\,B. Entwicklung]    \\
-    \AuthorThree & \AuthorThreeMatr & [Rolle, z.\,B. Design/Doku]   \\
+    \AuthorOne  & \AuthorOneMatr  \\
+    \AuthorTwo  & \AuthorTwoMatr  \\
+    \AuthorThree & \AuthorThreeMatr \\
     \bottomrule
   \end{tabular}
 
@@ -180,7 +184,7 @@
   \begin{tabular}{ll}
     \textbf{Gruppenname:}    & \GroupName      \\
     \textbf{Abgabedatum:}    & \SubmissionDate \\
-    \textbf{Version:}        & \DocVersion     \\
+    % \textbf{Version:}        & \DocVersion     \\
   \end{tabular}
 
   \vspace{1.5cm}
@@ -198,47 +202,75 @@
 % ============================================================
 \section{Projektbeschreibung}
 
-Kurze Beschreibung des Spielkonzepts: Genre, Spielmechaniken, Zielgruppe
-und Besonderheiten des Projekts.
 
 \begin{description}
-  \item[Genre:] z.\,B. Platformer, Top-Down-Shooter, Puzzle
-  \item[Technologie/Engine:] z.\,B. Java + LibGDX, Python + Pygame
-  \item[Kurzbeschreibung:] Lorem ipsum – Beschreibung des Spiels in
-    3–5~Sätzen.
+  \item[Genre:] Koop 2D Platformer
+  \item[Technologie/Engine:] Python + PyGame
+  \item[Kurzbeschreibung:] Monster Escape ist ein 2D-Platformer,
+  bei dem zwei Spieler gemeinsam an einer Tastatur oder im Multiplayer gemeinsam spielen.
+  Ziel ist es, kooperativ einen Ausweg aus dem Level zu finden, indem Rätsel gelöst und
+  Hindernisse überwunden werden.
 \end{description}
 
 % ============================================================
 \section{Spielreferenzen und Inspiration}
 
-Beschreibung der Spiele, die als Referenz und Inspiration genutzt wurden.
 
-\subsection{[Referenzspiel 1]}
+\subsection{Fireboy and Watergirl}
 \begin{itemize}
-  \item \textbf{Genre / Plattform:} \ldots
-  \item \textbf{Was wurde übernommen / inspiriert:} \ldots
+  \item \textbf{Genre / Plattform:} Koop 2D Platformer
+  \item \textbf{Was wurde übernommen / inspiriert:} \newline Grundspielprinzip, Level Aufbau, Spieldynamik
 \end{itemize}
 
-\subsection{[Referenzspiel 2]}
+\subsection{Super Mario Bros}
 \begin{itemize}
-  \item \textbf{Genre / Plattform:} \ldots
-  \item \textbf{Was wurde übernommen / inspiriert:} \ldots
+  \item \textbf{Genre / Plattform:} 2D Platformer
+  \item \textbf{Was wurde übernommen / inspiriert:} \newline Movement, Grafik
 \end{itemize}
 
-\subsection{[Referenzspiel 3 – optional]}
-\begin{itemize}
-  \item \textbf{Genre / Plattform:} \ldots
-  \item \textbf{Was wurde übernommen / inspiriert:} \ldots
-\end{itemize}
 
+\newpage
+% ============================================================
+\section{Herausforderungen und Lösungsdesign}
+
+\subsection{Grafische Oberfläche}
+Um überhaupt ein Window zeichnen zu können und Objekte grafisch darzustellen
+haben wir uns dazu entschieden die Bibliothek PyGame zu verwenden, da diese
+perfekt zu unserem Anwendungsgebiet passt.
+
+\subsection{Objektplatzierung}
+Um Objekte nicht explizit mittels Koordinaten im Code platzieren zu müssen,
+nutzen wir den Editor Tiled und die Bibliothek Pytmx. So kann man im Editor
+die Objekte grafisch platzieren und mit der entstandenen tmx Datei sowohl Objekte als auch
+Grafiken platzieren bzw. darstellen.
+
+\subsection{Inputhandling}
+Um eine gute seperation of concerns einzuhalten, wird das komplette Inputhandling in eine
+dedizierte InputHandler Klasse ausgelagert. Dort wird der Spieler Input sowie der Input für
+für die Menüs verarbeitet.
+
+\subsection{Kollisionsbehandlung}
+Da PyGame auch für diese Probleme Lösungen anbietet, verwenden wir die eingebaute Kollisionsbehandlung.
+Mit der Klasse pygame.Rect lassen sich Kollisionen leicht überprüfen und weiterverarbeiten
+
+\subsection{Multiplayer}
+Hier haben wir uns dazu entschieden, ein Server Client System umzusetzten.
+Dafür benutzen wir die Bibliothek socket, um einen TCP Server aufzusetzen.
+Ein Spieler ist der Host und startet den Server, der andere muss über die lokale IP Adresse
+im gleichen Netzwerk beitreten.
+
+\subsection{Animation}
+Für die Animation des Charakters gibt es je nach Bewegungsstatus verschiedene Bilddateien,
+durch die Frameweise iteriert wird. So entsteht eine flüssige Animation des Charakters.
+
+\subsection{Verschiedene Menüs}
+Um zwischen allen Menüs und Level zu wechseln, nutzen wir einen Game State Manager, welcher
+alle Zustände kennt und zwischen ihnen wechselt. Je nach Zustand wird eine andere grafische Oberfläche
+dargestellt.
+
+\newpage
 % ============================================================
 \section{Zeitplan und Aufgabenverteilung}
-
-\textbf{Hinweis:} Die Modellierung mit Sparx Enterprise Architect muss
-bis \textbf{01.06.2026} abgeschlossen sein. Für die Nutzung von Sparx EA
-wurde Prof.\,Dr. Kücherer kontaktiert (siehe Anhang~\ref{sec:sparx}).
-
-\subsection{Meilensteine}
 
 \begin{table}[H]
   \centering
@@ -246,81 +278,67 @@ wurde Prof.\,Dr. Kücherer kontaktiert (siehe Anhang~\ref{sec:sparx}).
   \begin{tabularx}{\textwidth}{X l l l}
     \toprule
     \rowcolor{primaryblue!20}
-    \textbf{Meilenstein} & \textbf{Datum} & \textbf{Verantwortlich} & \textbf{Status} \\
+    \textbf{Zeitplan} & \textbf{Datum} & \textbf{Verantwortlich} & \textbf{Status} \\
     \midrule
-    Projektkonzept \& Anforderungen       & TT.MM.JJJJ & [Name] & $\square$ Offen \\
-    Kontakt zu Prof.\,Dr.\ Kücherer (EA)  & TT.MM.JJJJ & [Name] & $\square$ Offen \\
-    UML-Klassendiagramm (Entwurf)         & TT.MM.JJJJ & [Name] & $\square$ Offen \\
-    \textbf{Modellierung Sparx EA fertig} & \textbf{01.06.2026} & [Name] & $\square$ Offen \\
-    Prototyp / spielbare Demo             & TT.MM.JJJJ & [Name] & $\square$ Offen \\
-    Implementierung abgeschlossen         & TT.MM.JJJJ & [Name] & $\square$ Offen \\
-    Dokumentation abgeschlossen           & TT.MM.JJJJ & [Name] & $\square$ Offen \\
-    Abgabe                                & TT.MM.JJJJ & Alle   & $\square$ Offen \\
+    Projektkonzept \& Anforderungen       & 20.04.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+    Kontakt zu Prof.\,Dr.\ Kücherer (EA)  & 20.04.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+    UML-Klassendiagramm (Entwurf)         & 20.04.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+
+    Fenster Aufbau                        & 27.04.2026 & Lutz Morath & $\checkmark$ Erledigt \\
+
+    Spieler Physik, Input, Bewegung       & 27.04.2026 & Tobias Hahn & $\checkmark$ Erledigt \\
+
+    Prototyp: Level                       & 04.05.2026 & Jonas Uzelac & $\checkmark$ Erledigt \\
+
+    Kollisionsbehandlung                 & 04.05.2026 & Tobias Hahn & $\checkmark$ Erledigt \\
+
+    Zweiter Spieler lokal                 & 11.05.2026 & Jonas Uzelac & $\checkmark$ Erledigt \\
+
+    Level Mechanik (Start, Ziel, Menu)    & 11.05.2026 & Lutz Morath & $\checkmark$ Erledigt \\
+
+    Tests                                 & 11.05.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+
+    \textbf{Prototyp / spielbare Demo}    & 11.05.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+
+    \textbf{Modellierung Sparx EA fertig} & 01.06.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+
+    Server Client System                  & 20.05.2026 & Tobias Hahn & $\checkmark$ Erledigt \\
+
+    Erweiterte Spielmechaniken            & 02.06.2026 & Jonas Uzelac & $\checkmark$ Erledigt \\
+
+    Tests                                 & 02.06.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+
+    Charakterdesign (Grafik, Animation)   & 02.06.2026 & Lutz Morath & $\checkmark$ Erledigt \\
+
+    Leveldesign (Grafik, Sound)           & 02.06.2026 & Lutz Morath & $\checkmark$ Erledigt \\
+
+    Levelaufbau                           & 02.06.2026 & Jonas Uzelac & $\checkmark$ Erledigt \\
+
+
+    \textbf{Implementierung abgeschlossen} & 02.06.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+    \textbf{Dokumentation abgeschlossen}   & 09.06.2026 & Gemeinsam & $\checkmark$ Erledigt \\
+    \textbf{Abgabe}                        & 16.06.2026 & Gemeinsam   & $\checkmark$ Erledigt \\
     \bottomrule
   \end{tabularx}
-  \caption{Projektmeilensteine}
+  \caption{Zeitplan}
 \end{table}
 
-\subsection{Aufgabenverteilung}
-
-\begin{table}[H]
-  \centering
-  \rowcolors{2}{lightgray}{white}
-  \begin{tabularx}{\textwidth}{X l r}
-    \toprule
-    \rowcolor{primaryblue!20}
-    \textbf{Aufgabe} & \textbf{Verantwortlich} & \textbf{Aufwand (h)} \\
-    \midrule
-    Spiellogik / Game Loop         & [Name] & ca.\ X \\
-    Grafik / Asset-Integration     & [Name] & ca.\ X \\
-    UML \& Modellierung (Sparx EA) & [Name] & ca.\ X \\
-    Physik / Kollisionserkennung   & [Name] & ca.\ X \\
-    Sound \& Musik                 & [Name] & ca.\ X \\
-    Dokumentation                  & [Name] & ca.\ X \\
-    Testing \& Bugfixing           & Alle   & ca.\ X \\
-    \bottomrule
-  \end{tabularx}
-  \caption{Aufgabenverteilung im Team}
-\end{table}
+\newpage
 
 % ============================================================
-\section{Systemdesign und Architektur}
+\section{UML-Klassendiagramm}
 
-Alle Modelle wurden mit \textbf{Sparx Enterprise Architect} erstellt.
+Erstellt mit Sparx Enterprise Architect
 
-\subsection{UML-Klassendiagramm}
-
-Das UML-Klassendiagramm ist ein Pflichtbestandteil der Dokumentation
-und wurde mit Sparx Enterprise Architect modelliert.
-
-\begin{figure}[H]
-  \centering
-  % Exportiertes Diagramm einfügen:
-  % \includegraphics[width=\textwidth]{diagrams/klassendiagramm.png}
-  \fbox{\parbox{0.9\textwidth}{\centering\vspace{3cm}
-    \textit{[Exportiertes UML-Klassendiagramm aus Sparx EA hier einfügen]}
-  \vspace{3cm}}}
-  \caption{UML-Klassendiagramm – erstellt mit Sparx Enterprise Architect}
-  \label{fig:klassendiagramm}
+\begin{figure}[ht]
+    \centering
+    % 'page=1' wählt die erste Seite der PDF aus
+    % 'width=0.8\textwidth' skaliert das Bild auf 80% der Textbreite
+    \includegraphics[page=1, width=1\textwidth]{UML_class.pdf}
+    \caption{UML Klassendiagramm dieses Projekts}
+    \label{fig:pdf_als_bild}
 \end{figure}
 
-\subsection{Weitere UML-Diagramme}
-
-% Beispiel für ein weiteres Diagramm:
-\begin{figure}[H]
-  \centering
-  % \includegraphics[width=0.8\textwidth]{diagrams/sequenzdiagramm.png}
-  \fbox{\parbox{0.9\textwidth}{\centering\vspace{2cm}
-    \textit{[Weiteres Diagramm, z.\,B. Sequenz- oder Zustandsdiagramm]}
-  \vspace{2cm}}}
-  \caption{[Diagrammtyp und Beschreibung]}
-  \label{fig:weiteres}
-\end{figure}
-
-\subsection{Architekturübersicht}
-
-Kurze textuelle Beschreibung der gewählten Architektur (z.\,B.\ MVC,
-Entity-Component-System) und Begründung der Wahl.
 
 % ============================================================
 \section{API-Dokumentation}
@@ -328,44 +346,9 @@ Entity-Component-System) und Begründung der Wahl.
 Kurze Dokumentation der wichtigsten Klassen und ihrer öffentlichen
 Schnittstellen.
 
-\subsection{Klasse: \texttt{[KlassenName]}}
-
-\textbf{Beschreibung:} Kurze Beschreibung, was diese Klasse macht.
-
-\begin{table}[H]
-  \centering
-  \rowcolors{2}{lightgray}{white}
-  \begin{tabularx}{\textwidth}{l l l X}
-    \toprule
-    \rowcolor{primaryblue!20}
-    \textbf{Methode} & \textbf{Parameter} & \textbf{Rückgabe} & \textbf{Beschreibung} \\
-    \midrule
-    \texttt{methodenName(p)} & \texttt{p: Typ}  & \texttt{Typ}  & Beschreibung der Methode. \\
-    \texttt{weitereMethode()} & –               & \texttt{void} & Beschreibung der Methode. \\
-    \bottomrule
-  \end{tabularx}
-  \caption{API -- \texttt{[KlassenName]}}
-\end{table}
-
-\subsection{Klasse: \texttt{[KlassenName]}}
-
-\textbf{Beschreibung:} Kurze Beschreibung, was diese Klasse macht.
-
-\begin{table}[H]
-  \centering
-  \rowcolors{2}{lightgray}{white}
-  \begin{tabularx}{\textwidth}{l l l X}
-    \toprule
-    \rowcolor{primaryblue!20}
-    \textbf{Methode} & \textbf{Parameter} & \textbf{Rückgabe} & \textbf{Beschreibung} \\
-    \midrule
-    \texttt{methodenName(p)} & \texttt{p: Typ} & \texttt{Typ} & Beschreibung der Methode. \\
-    \bottomrule
-  \end{tabularx}
-  \caption{API -- \texttt{[KlassenName]}}
-\end{table}
-
 % Weitere Klassen analog ergänzen
+
+\newpage
 
 % ============================================================
 \section{Quellcode-Metriken}
@@ -380,107 +363,40 @@ Gemessen zum Zeitpunkt der Abgabe.
     \rowcolor{primaryblue!20}
     \textbf{Metrik} & \textbf{Wert} \\
     \midrule
-    Anzahl Dateien (\#Files)   & XX          \\
-    Lines of Code (LOC)        & XXXX        \\
-    Anzahl Klassen             & XX          \\
-    Anzahl Methoden            & XX          \\
-    Anzahl Pakete / Module     & XX          \\
-    Testabdeckung (optional)   & XX\,\%      \\
-    Verwendete Bibliotheken    & Lib1, Lib2  \\
+    Anzahl Dateien (\#Files)   & 622          \\
+    Lines of Code (LOC)        & 1505          \\
+    Anzahl Klassen             & 20          \\
+    Anzahl Methoden            & 198          \\
     \bottomrule
   \end{tabular}
-  \caption{Quellcode-Metriken (ermittelt mit [Tool, z.\,B. cloc])}
+  \caption{Quellcode-Metriken (ermittelt mit lizard)}
 \end{table}
-
-% ============================================================
-\section{Herausforderungen und Lösungsdesign}
-
-\subsection{Herausforderung: [Bezeichnung]}
-
-\textbf{Beschreibung des Problems:}\\
-\ldots
-
-\textbf{Gewähltes Lösungsdesign:}\\
-\ldots
-
-\textbf{Begründung:}\\
-\ldots
-
-\subsection{Herausforderung: [Bezeichnung]}
-
-\textbf{Beschreibung des Problems:}\\
-\ldots
-
-\textbf{Gewähltes Lösungsdesign:}\\
-\ldots
-
-\textbf{Begründung:}\\
-\ldots
-
-\subsection{Herausforderung: [Bezeichnung – optional]}
-
-\textbf{Beschreibung des Problems:}\\
-\ldots
-
-\textbf{Gewähltes Lösungsdesign:}\\
-\ldots
 
 % ============================================================
 \section{Retrospektive}
 
 \subsection{Was hat gut funktioniert?}
-\begin{itemize}
-  \item \ldots
-  \item \ldots
-  \item \ldots
-\end{itemize}
+Die Einbindung des Tiled Map Editors hat gut funktioniert.
+Die Level sind jetzt einfach zu gestalten und das Spiel ist somit leicht erweiterbar.
+
+Die Umsetzung der Charakter Animation erwies sich als aufwändiger als gedacht. Das Endprodukt
+ist jedoch zufriedenstellend und die Bilddateien für die Animationen sind leicht austauschbar,
+wodurch das Aussehen des Spiels einfach verändert werden kann.
+
+Die Spielzustände haben den Arbeitsfluss verbessert. Dadurch war es leicht Menüs zu erweitern oder
+neue zu erstellen und neue Level schnell einzubinden. Außerdem wurde dadurch der Umfang des Gameloops
+erheblich reduziert.
+
 
 \subsection{Was würden wir beim nächsten Mal anders machen?}
-\begin{itemize}
-  \item \ldots
-  \item \ldots
-  \item \ldots
-\end{itemize}
+Obwohl wir mit dem Multiplayer zufrieden sind, gibt es noch Funktionen, die beim Multiplayer nicht
+funktionieren. Das Einbinden von beweglichen Objekten in den Multiplayer funktionierte bis zuletzt nicht.
+Nächstes mal würden wir bei der Planung der Architektur zu Beginn schon das Server CLient System berücksichtigen.
 
-\subsection{Persönliche Lerneffekte}
+Außerdem haben wir den zeitlichen Aufwand der Gestaltung unterschätzt. Daher haben wir unseren Spiel Titel
+und das Aussehen des Charakters und des Levels geändert, da wir keine passenden Assets für unser
+geplantes Thema gefunden haben.
 
-\textbf{\AuthorOne:}\\
-\ldots
-
-\medskip
-\textbf{\AuthorTwo:}\\
-\ldots
-
-\medskip
-\textbf{\AuthorThree:}\\
-\ldots
-
-% ============================================================
-\appendix
-\section{Anhang}
-
-\subsection{Verwendete Quellen und Literatur}
-
-\begin{enumerate}
-  \item Autor, \textit{Titel}, Jahr, \url{https://beispiel.de}
-  \item \ldots
-\end{enumerate}
-
-\subsection{Sparx Enterprise Architect – Kontakt zu Prof.\,Dr.\,Kücherer}
-\label{sec:sparx}
-
-\begin{description}
-  \item[Datum der Anfrage:] TT.MM.JJJJ
-  \item[Betreff:] \ldots
-  \item[Antwort erhalten am:] TT.MM.JJJJ
-\end{description}
-
-\subsection{Glossar}
-
-\begin{description}
-  \item[Begriff:] Erklärung \ldots
-  \item[Begriff:] Erklärung \ldots
-\end{description}
 
 % ============================================================
 \end{document}

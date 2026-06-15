@@ -38,7 +38,7 @@
     <property name="obj_type" value="goal"/>
    </properties>
   </object>
-  <object id="42" x="640" y="608" width="64" height="32">
+  <object id="42" x="544" y="608" width="32" height="32">
    <properties>
     <property name="obj_type" value="deadly"/>
    </properties>
@@ -116,7 +116,7 @@
  </objectgroup>
  <layer id="3" name="Kachelebene 1" width="33" height="22">
   <data encoding="base64" compression="zlib">
-   eJztVl0LwyAMvM3N2r30ya3t/v//3IuBEOJH2s7B6EFQrLlcE5UAJ/4R9x2+FwBXAC6NNHdsflP8VgOnq3B6AAOAkGxgI81Htj8CeAJ4AZgzGrzgCQr/mPE9oYPyTjYr37SavDvrlIhJ0+MgvinZLxGVGvRGSx7kuTiqBjz+pGjJrUvwd2wxxI7iHmhaSvokT+ktk2iNxWO25qM17p49uX+waqiZrJHGJfO/MOsJy5n5Btb0TufukQatd6iZZW+Jg3oIz/qErRY2+lAP8QExBgqY
+   eJztVl0PgyAMvI0N0Ref2HT+///pC02apnwpwWTxkgsE6bW2QArc+Ee8T9g+ADwBmDDS3LD5S7H7VWiajKYFMABwgQMbaT6y/R7AB8AXwBKJwQodp+iPEdsbOijvxEX5ptVk6xynhA8xTY305sAr4ZUa9EZJHuS5aFUD7n9WYomtS/B3bK3w7cU90GJJxSd1Um+ZRKkv7rM0H6V+z+yJ/UNtDDnKGmlaMv8rY0/UnJlW4O/yFBi7Rxq03iHHmr0pDeohLOsTjtIdtKEeYgcrJgqS
   </data>
  </layer>
 </map>

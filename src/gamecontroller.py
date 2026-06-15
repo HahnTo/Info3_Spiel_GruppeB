@@ -290,7 +290,8 @@ class GameController:
 
     def trigger_goal(self, send_to_server=True):
         """ Called when any player reaches the goal."""
-        self.end_menu.build_menu(self.level.level_id)
+        self.level.stop_timer()
+        self.end_menu.build_menu(self.level.level_id, self.level.timer)
         if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "game_over"})
         self.game_state_manager.set_state('end_menu')

@@ -11,7 +11,7 @@ from src.levelloader import LevelLoader
 WIDTH = 1056
 HEIGHT = 704
 
-BACKGROUND_COLOR = (50, 50, 50)
+
 background_image = pygame.image.load(GRAPHICS_DIR/"map"/"Background.png")
 
 

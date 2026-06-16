@@ -1,5 +1,6 @@
 import pygame
 
+from config import GRAPHICS_DIR
 from src.button import Button
 from src.inputhandler import InputHandler
 from src.states.state import State
@@ -16,6 +17,7 @@ class StartMenu(State):
         self.selected_index = 0
         self.buttons = []
         self.create_buttons()
+        self.image = pygame.image.load(GRAPHICS_DIR/"map"/"title_screen.png")
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
@@ -25,7 +27,7 @@ class StartMenu(State):
 
     def draw(self):
         """ Draws the menu with all buttons."""
-        self.screen.fill(MENU_BGCOLOR)
+        self.screen.blit(self.image,(0,0))
 
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected_index)

@@ -34,7 +34,7 @@ class WaitingState(State):
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_controller.start_online(4)))
+        self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 50), lambda: self.game_controller.start_online(4)))
 
     def update(self, dt):
         """ Updates the screen every Frame and waits for a message from the server. """
@@ -73,12 +73,12 @@ class WaitingState(State):
             self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy - 140)))
         elif self.waiting_for_start:
             title1 = font_title.render("Zwei Spieler sind verbunden", True, (0,0,0))
-            self.screen.blit(title1, title1.get_rect(center=(cx, cy + 30)))
+            self.screen.blit(title1, title1.get_rect(center=(cx, cy - 140)))
 
             if self.is_host:
                 # Only the Host can start the Game
-                title2 = font_title.render("Startet jetzt das Spiel", True, (0,0,0))
-                self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
+                title2 = font_title.render("Starte jetzt das Spiel", True, (0,0,0))
+                self.screen.blit(title2, title2.get_rect(center=(cx, cy - 200)))
                 for i, button in enumerate(self.buttons):
                     button.selected = (i == self.selected_index)
                 for button in self.buttons:
@@ -86,7 +86,7 @@ class WaitingState(State):
             else:
                 # Joiner waits
                 title2 = font_title.render("Warte auf Host …", True, (0,0,0))
-                self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
+                self.screen.blit(title2, title2.get_rect(center=(cx, cy- 200)))
 
 
         pygame.display.flip()

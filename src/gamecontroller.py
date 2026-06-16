@@ -227,12 +227,10 @@ class GameController:
 
             # if the obstacle is a button, check which other obstacles have the same id and move them
             elif obstacle.is_button:
-                print("Button gedrückt")
                 button = obstacle
                 for other in self.level.obstacles:
                     if button.button_id == other.button_id and not other.is_button:
                         other.move(200)
-                        print("button gefunden")
 
             #if the obstacle is a default platform, set the players rects position to that of the obstacles
             else:

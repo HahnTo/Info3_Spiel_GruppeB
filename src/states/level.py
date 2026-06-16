@@ -204,8 +204,7 @@ class Level(State):
         self.screen.blit(background_image,(0,0))
         self.draw_tiles()
         self.all_sprites.draw(self.screen)
-        for player in self.players:
-            pygame.draw.rect(self.screen, (255, 0, 0), player.rect, 2)
+
         self.draw_timer()
 
         if self.game_controller.is_paused:

@@ -24,7 +24,6 @@ class LevelLoader:
 
 
         for obj in self.tmx.objects:
-            print(obj)
             obj_type = obj.properties.get("obj_type")
             if obj_type is None:
                 continue

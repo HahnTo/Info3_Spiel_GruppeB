@@ -137,7 +137,6 @@ class Player(pygame.sprite.Sprite):
         """ Sets the state of the player for the animations. """
 
         if self.state != new_state:
-            print(f"{self.player_id}:{self.state} ->{new_state}")
             self.state = new_state
             self.frame_index = 0
 

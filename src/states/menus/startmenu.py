@@ -16,6 +16,7 @@ class StartMenu(State):
         self.selected_index = 0
         self.buttons = []
         self.create_buttons()
+        self.start_caption = pygame.image.load(GRAPHICS_DIR/"map"/"monster_jump.png")
 
 
     def create_buttons(self):
@@ -27,6 +28,7 @@ class StartMenu(State):
     def draw(self):
         """ Draws the menu with all buttons."""
         self.screen.blit(self.image,(0,0))
+        self.screen.blit(self.start_caption,(72,50))
 
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected_index)

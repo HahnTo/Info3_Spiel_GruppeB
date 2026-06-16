@@ -3,10 +3,13 @@ from unittest.mock import MagicMock, patch
 import pygame
 import pytest
 
+from src.config import GRAPHICS_DIR
 from src.states.level import Level
 
 
 class TestLevel:
+
+
     @pytest.fixture
     def mock_gc(self):
         gc = MagicMock()
@@ -70,8 +73,13 @@ class TestLevel:
 
         # MagicMock is not a pygame Sprite, so sprites() won't return it.
         # Use a real Obstacle and mock only its reset method.
+        try:
+            image = pygame.image.load(GRAPHICS_DIR / "map" / "movable.png").convert_alpha()
+        except Exception as e:
+            print(f"Fehler beim laden vom Bild: {e}")
+
         from src.obstacle import Obstacle
-        obs = Obstacle(color=(100, 100, 100), width=10, height=10, x_pos=0, y_pos=0)
+        obs = Obstacle(width=10, height=10, x_pos=0, y_pos=0, image=image)
         obs.reset = MagicMock()
         level_local.obstacles.add(obs)
 

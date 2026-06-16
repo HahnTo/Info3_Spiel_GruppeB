@@ -1,6 +1,7 @@
 import pygame
 import pytest
 
+from src.config import GRAPHICS_DIR
 from src.obstacle import Obstacle
 
 
@@ -15,24 +16,33 @@ def pygame_init():
 class TestObstacle:
     @pytest.fixture
     def basic_obstacle(self):
-        return Obstacle(color=(255, 0, 0), width=50, height=20, x_pos=100, y_pos=200)
+        image = pygame.Surface((50, 20))
+
+        return Obstacle(width=50, height=20, x_pos=100, y_pos=200, image=image)
 
     @pytest.fixture
     def goal_obstacle(self):
-        return Obstacle(color=(255, 0, 0), width=30, height=30, x_pos=0, y_pos=0, is_goal=True)
+        image = pygame.Surface((50, 20))
+
+        return Obstacle(width=30, height=30, x_pos=0, y_pos=0, is_goal=True, image=image)
 
     @pytest.fixture
     def deadly_obstacle(self):
-        return Obstacle(color=(255, 0, 0), width=30, height=10, x_pos=0, y_pos=0, is_deadly=True)
+        image = pygame.Surface((50, 20))
+
+        return Obstacle(width=30, height=10, x_pos=0, y_pos=0, is_deadly=True, image=image)
 
     @pytest.fixture
     def movable_obstacle(self):
-        return Obstacle(color=(255, 0, 0), width=40, height=40, x_pos=50, y_pos=50, is_movable=True)
+        image = pygame.Surface((50, 20))
+
+        return Obstacle(width=40, height=40, x_pos=50, y_pos=50, is_movable=True, image=image)
 
     @pytest.fixture
     def button_obstacle(self):
-        return Obstacle(color=None, width=20, height=20, x_pos=10, y_pos=10,
-                        is_button=True, button_id=42)
+        image = pygame.Surface((50, 20))
+
+        return Obstacle(width=20, height=20, x_pos=10, y_pos=10, is_button=True, button_id=42, image=image)
 
 
     def test_basic_obstacle(self, basic_obstacle):

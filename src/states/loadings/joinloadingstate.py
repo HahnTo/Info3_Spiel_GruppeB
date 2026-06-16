@@ -68,39 +68,30 @@ class JoinLoadingState(State):
 
     def draw(self):
         """ Draw the Spinner and text."""
-        bg      = (15, 15, 20)
-        accent  = (0, 200, 255)
-        dim     = (80, 80, 100)
-        white   = (230, 230, 240)
-        red     = (255, 80, 80)
-
         font_title = pygame.font.SysFont("Courier New", 36, bold=True)
         font_sub = pygame.font.SysFont("Courier New", 22)
-        font_ip = pygame.font.SysFont("Courier New", 18)
+        font_ip = pygame.font.SysFont("Courier New", 22)
 
-        self.screen.fill(bg)
+        self.screen.blit(self.image,(0,0))
 
         cx = WIDTH / 2
         cy = HEIGHT / 2
 
         if self.status == "connecting":
-            self.draw_spinner(cx, cy - 60, accent)
+            self.draw_spinner(cx, cy - 60, (0, 200, 255))
 
-            title = font_title.render("VERBINDE …", True, white)
-            self.screen.blit(title, title.get_rect(center=(cx, cy + 30)))
+            title = font_title.render("VERBINDE …", True, (0,0,0))
+            self.screen.blit(title, title.get_rect(center=(cx, cy - 220)))
 
-            ip_surf = font_ip.render(f"Server: {self.ip_address}", True, dim)
-            self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy + 75)))
+            ip_surf = font_ip.render(f"Server: {self.ip_address}", True, (0,0,0))
+            self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy - 140)))
 
         elif self.status == "failed":
-            # pulsating red X
-            pulse = 0.5 + 0.5 * math.sin(self.elapsed * 6)
-            r = int(red[0]), int(red[1] + pulse * 20), int(red[2] + pulse * 20)
-            err = font_title.render("VERBINDUNG FEHLGESCHLAGEN", True, r)
-            self.screen.blit(err, err.get_rect(center=(cx, cy - 20)))
+            err = font_title.render("VERBINDUNG FEHLGESCHLAGEN", True, (255, 20, 20))
+            self.screen.blit(err, err.get_rect(center=(cx, cy - 100)))
 
-            hint = font_sub.render("Zurück zum Menü …", True, dim)
-            self.screen.blit(hint, hint.get_rect(center=(cx, cy + 30)))
+            hint = font_sub.render("Zurück zum Menü …", True, (0,0,0))
+            self.screen.blit(hint, hint.get_rect(center=(cx, cy - 30)))
 
         pygame.display.flip()
 

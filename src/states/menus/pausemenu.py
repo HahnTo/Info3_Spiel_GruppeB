@@ -31,7 +31,7 @@ class PauseMenu:
             lambda: self.restart()
         ))
         self.buttons.append(Button(
-            'Zum Hauptmenü', 40, (WIDTH / 2, HEIGHT / 2 + 140),
+            'Zum Hauptmenu', 40, (WIDTH / 2, HEIGHT / 2 + 140),
             lambda: self.game_state_manager.set_state('start_menu')
         ))
 

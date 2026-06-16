@@ -22,7 +22,7 @@ class LevelChooserMenu(State):
         self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 150), lambda: self.game_controller.start_local(1)))
         self.buttons.append(Button('Level 2', 48, (WIDTH/2, HEIGHT/2 - 50), lambda: self.game_controller.start_local(2)))
         self.buttons.append(Button('Level 3', 48, (WIDTH/2, HEIGHT/2 + 50), lambda: self.game_controller.start_local(3)))
-        self.buttons.append(Button('Zurück', 40, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_state_manager.set_state('start_menu')))
+        self.buttons.append(Button('Zurueck', 40, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_state_manager.set_state('start_menu')))
 
     def draw(self):
         """ Draws the menu with all buttons."""

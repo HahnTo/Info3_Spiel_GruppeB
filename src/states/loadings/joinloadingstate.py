@@ -17,7 +17,7 @@ class JoinLoadingState(State):
     ERROR_DISPLAY_TIME = 3.0
 
     def __init__(self, screen, game_state_manager, game_controller, ip_address):
-        """ Initialise the Loading screen.
+        """ Initialize the Loading screen.
             Because it's a State, the run method is always running in the background from the game controller"""
         super().__init__(screen, game_state_manager, game_controller)
 
@@ -47,9 +47,10 @@ class JoinLoadingState(State):
                 print("Test failed")
                 with self.lock:
                     self.status = "failed"
-        except Exception:
+        except Exception as e:
             with self.lock:
                 self.status = "failed"
+            print(f"Fehler beim Verbinden: {e}")
 
     def update(self, dt):
         """ Updates the screen every frame"""
@@ -105,7 +106,6 @@ class JoinLoadingState(State):
             angle  = (t * 3 + i * (2 * math.pi / n_dots)) % (2 * math.pi)
             # fade: dots at the 'tail' are dimmer
             alpha  = int(40 + 215 * (i / n_dots))
-            dot_r  = int(radius * math.cos(angle))
             dot_x  = cx + int(radius * math.cos(angle))
             dot_y  = cy + int(radius * math.sin(angle))
             size   = max(2, int(5 * (i / n_dots)))

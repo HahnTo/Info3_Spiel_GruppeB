@@ -5,7 +5,7 @@ import pygame
 from src.button import Button
 from src.inputhandler import InputHandler
 from src.states.state import State
-from src.config import WIDTH, HEIGHT, MENU_BGCOLOR, get_local_ip
+from src.config import WIDTH, HEIGHT, get_local_ip
 
 
 class WaitingState(State):
@@ -15,7 +15,7 @@ class WaitingState(State):
     ERROR_DISPLAY_TIME = 3.0
 
     def __init__(self, screen, game_state_manager, game_controller):
-        """ Initialise the waiting screen. """
+        """ Initialize the waiting screen. """
         super().__init__(screen, game_state_manager, game_controller)
 
         self.waiting_for_connection = True
@@ -101,7 +101,6 @@ class WaitingState(State):
             angle  = (t * 3 + i * (2 * math.pi / n_dots)) % (2 * math.pi)
             # fade: dots at the 'tail' are dimmer
             alpha  = int(40 + 215 * (i / n_dots))
-            dot_r  = int(radius * math.cos(angle))
             dot_x  = cx + int(radius * math.cos(angle))
             dot_y  = cy + int(radius * math.sin(angle))
             size   = max(2, int(5 * (i / n_dots)))

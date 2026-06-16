@@ -3,7 +3,7 @@ import pygame
 from src.button import Button
 from src.states.state import State
 from src.inputhandler import InputHandler
-from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
+from src.config import WIDTH, HEIGHT
 
 class EndMenu(State):
     """ Creates the end menu that appears after the game."""

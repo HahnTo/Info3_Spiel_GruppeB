@@ -226,10 +226,10 @@ class Server:
                 if client and client != "reserved":
                     try:
                         client.close()
-                    except Exception:
-                        pass
+                    except Exception as e:
+                        print(f"Es gab einen Fehler beim Trennen des Clients: {e}")
                 self.clients[i] = None
         try:
             self.server.close()
-        except Exception:
-            pass
+        except Exception as e:
+            print(f"Es gab einen Fehler beim schließen des Servers: {e}")

@@ -4,7 +4,7 @@ from src.button import Button
 from src.inputfield import InputField
 from src.inputhandler import InputHandler
 from src.states.state import State
-from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
+from src.config import WIDTH, HEIGHT
 
 
 class MultiplayerMenu(State):

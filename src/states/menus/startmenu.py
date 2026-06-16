@@ -1,10 +1,9 @@
 import pygame
 
-from config import GRAPHICS_DIR
 from src.button import Button
 from src.inputhandler import InputHandler
 from src.states.state import State
-from src.config import WIDTH, HEIGHT, MENU_BGCOLOR
+from src.config import WIDTH, HEIGHT
 
 class StartMenu(State):
     """ Creates the start menu that appears after starting the application."""

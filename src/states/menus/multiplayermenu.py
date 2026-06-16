@@ -23,8 +23,8 @@ class MultiplayerMenu(State):
 
     def create_buttons(self):
         """ Adds buttons to the menu."""
-        self.buttons.append(Button('Spiel beitreten', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.create_input_field()))
-        self.buttons.append(Button('Server hosten', 48, (WIDTH/2, HEIGHT/2 ), lambda: self.game_controller.start_host()))
+        self.buttons.append(Button('Spiel beitreten', 48, (WIDTH/2, HEIGHT/2 - 200), lambda: self.create_input_field()))
+        self.buttons.append(Button('Server hosten', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_controller.start_host()))
         self.buttons.append(Button('Zurueck', 40, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_state_manager.set_state('start_menu')))
 
     def create_input_field(self):

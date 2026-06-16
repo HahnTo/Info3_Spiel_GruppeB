@@ -42,20 +42,20 @@ class Player(pygame.sprite.Sprite):
         if player_id == 2:
             pixels = pygame.PixelArray(run_sheet_image)
             pixels.replace(
-                jump_sheet_image.map_rgb((37, 150, 190)),
-                jump_sheet_image.map_rgb((255,255,255))
+                run_sheet_image.map_rgb((254, 254, 254)),
+                run_sheet_image.map_rgb((0,255,0))
             )
             del pixels
-            pixels = pygame.PixelArray(run_sheet_image)
+            pixels = pygame.PixelArray(jump_sheet_image)
             pixels.replace(
-                jump_sheet_image.map_rgb((37, 150, 190)),
-                jump_sheet_image.map_rgb((255, 255, 255))
+                jump_sheet_image.map_rgb((254, 254, 254)),
+                jump_sheet_image.map_rgb((0,255,0))
             )
             del pixels
             pixels = pygame.PixelArray(idle_sheet_image)
             pixels.replace(
-                idle_sheet_image.map_rgb((37, 150, 190)),
-                idle_sheet_image.map_rgb((255, 255, 255))
+                idle_sheet_image.map_rgb((254, 254, 254)),
+                idle_sheet_image.map_rgb((0,255,0))
             )
             del pixels
 

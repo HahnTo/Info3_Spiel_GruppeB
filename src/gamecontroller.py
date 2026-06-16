@@ -1,5 +1,4 @@
 import threading
-
 import pygame
 
 from src.config import WIDTH, HEIGHT, TITLE, FPS
@@ -15,23 +14,26 @@ from src.states.menus.levechoosermenu import LevelChooserMenu
 from src.states.menus.multiplayermenu import MultiplayerMenu
 from src.states.menus.startmenu import StartMenu
 
-class GameController:
-    """Initializes the game and creates the game loop"""
 
-    pygame.font.init()
-    FONT = pygame.font.SysFont("Arial", 48)
+class GameController:
+    """initializes the game and creates the game loop"""
+
+
 
     def __init__(self):
+
         pygame.init()
+        pygame.font.init()
 
+        # initializes the window
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
         pygame.display.set_caption(TITLE)
 
-        # The tick speed is set to 60 in the game loop to limit the frame rate to 60 FPS
+        # the tick speed is set to 60 in the game loop to limit the frame rate to 60 FPS
         self.clock = pygame.time.Clock()
         self.dt = 0
 
+        #sets a short pause when a player dies
         self.pause_timer = 0.0
         self.pause_duration = 1.5
         self.is_paused = False
@@ -51,10 +53,11 @@ class GameController:
         self.waiting_state = None
         self.join_loading_state = None
 
-        # Only initialize once it is known whether the game runs online or locally.
+        # only initialize once it is known whether the game runs online or locally
         self.level = None
         self.end_menu = EndMenu(self.screen, self.game_state_manager, self)
 
+        #create a dictionary for the different gamestates
         self.states = {
             'start_menu': self.start_menu,
             'level_chooser': self.level_chooser,
@@ -67,43 +70,55 @@ class GameController:
 
         self.input_handler = InputHandler()
 
+
     def start_local(self, level_id):
-        """ Starts the local game."""
+        """ starts the local game"""
+
         self.game_mode = 'local'
         self.level = Level(self.screen, self.game_state_manager, self, level_id)
         self.states['level'] = self.level
         self.game_state_manager.set_state('level')
 
+
     def start_online(self, level_id):
-        """ Starts the online game. """
+        """ starts the online game """
+
         self.network_client.send({"type": "game_start"})
         self.level = Level(self.screen, self.game_state_manager, self, level_id, self.network_client)
         self.states['level'] = self.level
         self.game_state_manager.set_state('level')
 
+
     def start_host(self):
-        """ Starts the server and shows the waiting screen till the other client connects."""
+        """ starts the server and shows the waiting screen till the other client connects"""
+
         self.game_mode = 'online'
         self.start_server()
         self.network_client = NetworkClient()
         self.go_to_waiting_state()
 
+
     def start_join(self, ip_address):
-        """ Called when the player wants to join a server.
-            Shows the loading screen while the connection is established in a background thread."""
+        """ called when the player wants to join a server.
+            Shows the loading screen while the connection is established in a background thread"""
+
         self.game_mode = 'online'
         self.join_loading_state = JoinLoadingState(self.screen, self.game_state_manager, self, ip_address)
         self.states['join_loading'] = self.join_loading_state
         self.game_state_manager.set_state('join_loading')
 
+
     def go_to_waiting_state(self):
-        """ Shows the waiting screen"""
+        """ shows the waiting screen"""
+
         self.waiting_state = WaitingState(self.screen, self.game_state_manager, self)
         self.states['waiting_for_client'] = self.waiting_state
         self.game_state_manager.set_state('waiting_for_client')
 
+
     def restart_game(self):
-        """ Restarts the game. Decides between local and online restart."""
+        """ restarts the game. Decides between local and online restart"""
+
         self.is_paused = False
         if self.game_mode == 'online':
             self.restart_online()
@@ -111,23 +126,29 @@ class GameController:
             self.level.reset()
             self.game_state_manager.set_state('level')
 
+
     def restart_online(self, send=True):
-        """ Restarts the online game. Send the message to the other client. """
+        """ restarts the online game and sends the message to the other client """
+
         if send:
             self.network_client.send({"type": "restart"})
         self.clear_network_queue()
         self.level.reset()
         self.game_state_manager.set_state('level')
 
+
     def clear_network_queue(self):
-        """Leert die komplette recv_queue, damit alte game_over/state-Pakete
-        das neue Level nicht sofort wieder beenden."""
+        """empties the recv_queue so old game_over/state packages don't immediately
+        terminate the new level instance"""
+
         if self.network_client:
             while self.network_client.get_update() is not None:
                 pass
 
+
     def start_server(self):
-        """ Starts the Server with a new thread."""
+        """ starts the Server with a new thread"""
+
         self.server = Server()
 
         threading.Thread(
@@ -135,9 +156,11 @@ class GameController:
             daemon=True
         ).start()
 
+
     def disconnect(self):
-        """ Closes the connection of the network_client and shuts down the Server.
+        """ closes the connection of the network_client and shuts down the Server.
             Resets the state to start_menu"""
+
         if self.network_client:
             try:
                 self.network_client.socket.close()
@@ -152,8 +175,10 @@ class GameController:
         self.game_mode = 'local'
         self.game_state_manager.set_state('start_menu')
 
+
     def events(self):
-        """Reacts to all pygame.events, like keyboard input and closing the Window"""
+        """reacts to all pygame.events, like keyboard input and closing the window"""
+
         for event in pygame.event.get():
             # Ends the script if window gets closed
             if event.type == pygame.QUIT:
@@ -161,7 +186,7 @@ class GameController:
 
             self.states[self.game_state_manager.get_state()].handle_event(event)
 
-        # If it is running in online mode, the local ID is required.
+        # if it is running in online mode, the local ID is required
         if self.game_state_manager.get_state() == 'level' and not self.level.is_menu_paused:
             if self.game_mode == 'local':
                 self.input_handler.get_input(self.level.players, self.game_mode)
@@ -172,20 +197,22 @@ class GameController:
     def handle_horizontal_collision(self, player):
         """ Handles horizontal collisions.
             If the player is coming from the left, their position is set to the right side of the object.
-            If the player is coming from the right, their position is set to the left side of the object.
-        """
+            If the player is coming from the right, their position is set to the left side of the object."""
 
         # Get all objects that are colliding with each other
         collider_group = pygame.sprite.spritecollide(player, self.level.obstacles, False)
+
         for obstacle in collider_group:
             # If the obstacle is the goal, set playing to false. The game loop will then jump to the end menu.
             if obstacle.is_goal:
                 if self.both_players_in_goal():
                     self.trigger_goal()
+
             # If the obstacle is deadly, trigger the death und restart the level.
             elif obstacle.is_deadly:
                 self.trigger_death()
 
+            #if the obstacle is movable, update its rects position to that of the player
             elif obstacle.is_movable:
                 if player.velocity.x < 0:
                     obstacle.rect.right = player.rect.left
@@ -197,6 +224,8 @@ class GameController:
                     obstacle.x_pos = obstacle.rect.x
                     player.rect.right = obstacle.rect.left
                     player.position.x = player.rect.x
+
+            # if the obstacle is a button, check which other obstacles have the same id and move them
             elif obstacle.is_button:
                 print("Button gedrückt")
                 button = obstacle
@@ -205,6 +234,7 @@ class GameController:
                         other.move(200)
                         print("button gefunden")
 
+            #if the obstacle is a default platform, set the players rects position to that of the obstacles
             else:
                 # It moves to the left, so it must stop at the right end of the obstacle.
                 if player.velocity.x < 0:
@@ -216,6 +246,8 @@ class GameController:
                     player.rect.right = obstacle.rect.left
                     player.position.x = player.rect.x
                     player.velocity.x = 0
+
+         #check if moving obstacles collide with other obstacles so they stop moving when being pushed against a wall
         collisions = pygame.sprite.groupcollide(self.level.obstacles, self.level.obstacles, False, False)
         for movable, colliders in collisions.items():
             if movable.is_movable:
@@ -235,13 +267,13 @@ class GameController:
                             player.position.x = player.rect.x
                             player.velocity.x = 0
 
+
     def handle_vertical_collision(self, player):
         """ Handles vertical collisions.
             If the player is coming from above, their position is set to the top of the object.
-            If the player is coming from below, their position is set to the bottom of the object.
-        """
+            If the player is coming from below, their position is set to the bottom of the object."""
 
-        # Get all objects that are colliding with each other
+        # Get all objects that are colliding with each other, same collisions as horizontal collision
         collider_group = pygame.sprite.spritecollide(player, self.level.obstacles, False)
         for obstacle in collider_group:
             if obstacle.is_goal:
@@ -267,8 +299,10 @@ class GameController:
                     player.position.y = player.rect.y
                     player.velocity.y = 0
 
+
     def both_players_in_goal(self):
         """ Returns true if both players are colliding with goal obstacles. Otherwise, it returns false"""
+
         goal_rects = [o.rect for o in self.level.obstacles if o.is_goal]
 
         if len(goal_rects) == 1:
@@ -288,33 +322,39 @@ class GameController:
         else:
             return False
 
+
     def trigger_goal(self, send_to_server=True):
         """ Called when any player reaches the goal."""
+
         self.level.stop_timer()
         self.end_menu.build_menu(self.level.level_id, self.level.timer)
         if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "game_over"})
         self.game_state_manager.set_state('end_menu')
 
+
     def trigger_death(self, send_to_server=True):
         """ Starts the pause after the collision and sends the message to the other client. """
+
         if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "died"})
         self.start_pause_after_death(callback=self.restart_game)
 
+
     def start_pause_after_death(self, callback=None):
         """ Starts a short pause."""
+
         if self.is_paused:  # only one at a time
             return
         self.pause_timer = 0.0
         self.is_paused = True
         self.pause_callback = callback
 
+
     def run(self):
         """ This is the main function.
             It runs the game loop.
-            It switches between different game states.
-        """
+            It switches between different game states."""
 
         # Game loop with the different game states. In each frame, events are checked and all elements are updated.
         while True:
@@ -342,8 +382,10 @@ class GameController:
             # Always run the current state.
             self.states[self.game_state_manager.get_state()].run(self.dt)
 
+
     def shutdown(self):
         """ Closes all connections and quit the game. """
+
         if self.network_client:
             try:
                 self.network_client.socket.close()
@@ -357,6 +399,7 @@ class GameController:
 
         pygame.quit()
         exit()
+
 
 if __name__ == "__main__":
     gc = GameController()

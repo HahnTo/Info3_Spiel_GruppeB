@@ -25,12 +25,10 @@ class Player(pygame.sprite.Sprite):
 
 
     def __init__(self, start_x, start_y, player_id, is_local):
-        """
-        Initializes the player.
-
+        """Initializes the player.
         Sets the starting point.
-        Loads the spritesheets and initialize the animations.
-        """
+        Loads the spritesheets and initialize the animations."""
+
         super().__init__()
 
         self.player_id = player_id
@@ -39,6 +37,8 @@ class Player(pygame.sprite.Sprite):
         run_sheet_image = pygame.image.load(GRAPHICS_DIR/"player"/"monster"/"Pink_Monster_Walk_6.png")
         jump_sheet_image = pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Jump_8.png")
         idle_sheet_image = pygame.image.load(GRAPHICS_DIR / "player" / "monster" / "Pink_Monster_Idle_4.png")
+
+        #make the second player look distinguishable
         if player_id == 2:
             pixels = pygame.PixelArray(run_sheet_image)
             pixels.replace(
@@ -46,12 +46,14 @@ class Player(pygame.sprite.Sprite):
                 run_sheet_image.map_rgb((0,255,0))
             )
             del pixels
+
             pixels = pygame.PixelArray(jump_sheet_image)
             pixels.replace(
                 jump_sheet_image.map_rgb((254, 254, 254)),
                 jump_sheet_image.map_rgb((0,255,0))
             )
             del pixels
+
             pixels = pygame.PixelArray(idle_sheet_image)
             pixels.replace(
                 idle_sheet_image.map_rgb((254, 254, 254)),
@@ -60,11 +62,7 @@ class Player(pygame.sprite.Sprite):
             del pixels
 
         run_sheet = Spritesheet(run_sheet_image)
-
-
         jump_sheet = Spritesheet(jump_sheet_image)
-
-
         idle_sheet = Spritesheet(idle_sheet_image)
 
 
@@ -83,8 +81,6 @@ class Player(pygame.sprite.Sprite):
         self.start_x = start_x
         self.start_y = start_y
 
-
-
         self.is_local = is_local
 
         # The target position received from the last network packet.
@@ -98,13 +94,11 @@ class Player(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(topleft=(start_x, start_y))
 
-
         # Rect gets a little bit smaller
         bottom = self.rect.bottom
         self.rect.width -= 10
         self.rect.x = start_x
         self.rect.bottom = bottom
-
 
         # Set the position to his spawn point
         self.rect.x = start_x
@@ -121,12 +115,9 @@ class Player(pygame.sprite.Sprite):
         self.facing_right = True
 
 
-
-
-
-
     def animate(self):
         """ Animates the Player. """
+
         current_time = pygame.time.get_ticks()
         if current_time - self.last_update >= self.animation_cooldown:
             self.frame_index += 1
@@ -141,18 +132,20 @@ class Player(pygame.sprite.Sprite):
             image.set_colorkey((0,0,0))
         self.image = image
 
+
     def set_state(self, new_state):
         """ Sets the state of the player for the animations. """
+
         if self.state != new_state:
             print(f"{self.player_id}:{self.state} ->{new_state}")
             self.state = new_state
             self.frame_index = 0
 
+
     def move(self, direction: Literal[-1, 0, 1]):
-        """
-        Moves the player when the function is called.
-        direction: -1 = left, 0 = stay in place, 1 = right
-        """
+        """ Moves the player when the function is called.
+        direction: -1 = left, 0 = stay in place, 1 = right """
+
         self.is_moving = direction != 0
 
         if not self.is_alive or direction == 0:
@@ -166,6 +159,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.facing_right = False
 
+
     def jump(self):
         """ The player jumps when standing on the ground. """
 
@@ -175,6 +169,7 @@ class Player(pygame.sprite.Sprite):
         if self.on_ground:
             self.velocity.y = self.JUMP_HEIGHT
             self.on_ground = False
+
 
     def update(self, dt, gc):
         """ Update the player's position based on velocity and apply physics and collision handling. """
@@ -217,6 +212,7 @@ class Player(pygame.sprite.Sprite):
         # Set the horizontal speed to zero to stop the player when the key is no longer pressed down
         self.velocity.x = 0
         self.is_moving = False
+
 
     def update_remote(self):
         """ Called every frame for the remote player instead of the normal physics update """
@@ -264,14 +260,16 @@ class Player(pygame.sprite.Sprite):
         self.velocity.x = 0
         self.velocity.y = 0
 
-        # Also reset the network interpolation state so the remote player
+        # Also resets the network interpolation state so the remote player
         # doesn't glide in from the old position after a respawn.
         if not self.is_local:
             self.network_target = Vector2(self.start_x, self.start_y)
             self.network_velocity = Vector2(0, 0)
 
+
     def get_data(self):
         """Send player state to server."""
+
         return {
             "x": self.position.x,
             "y": self.position.y,
@@ -280,6 +278,7 @@ class Player(pygame.sprite.Sprite):
             "facing_right": self.facing_right,
             "on_ground": self.on_ground
         }
+
 
     def set_data(self, data):
         """ Apply a network state update to the remote player """

@@ -5,6 +5,7 @@ from src.inputhandler import InputHandler
 from src.states.state import State
 from src.config import WIDTH, HEIGHT
 
+
 class LevelChooserMenu(State):
     """ Creates the Level Chooser Menu that appears for Level selection."""
 
@@ -17,15 +18,19 @@ class LevelChooserMenu(State):
         self.buttons = []
         self.create_buttons()
 
+
     def create_buttons(self):
         """ Adds buttons to the menu."""
+
         self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 150), lambda: self.game_controller.start_local(1)))
         self.buttons.append(Button('Level 2', 48, (WIDTH/2, HEIGHT/2 - 50), lambda: self.game_controller.start_local(2)))
         self.buttons.append(Button('Level 3', 48, (WIDTH/2, HEIGHT/2 + 50), lambda: self.game_controller.start_local(3)))
         self.buttons.append(Button('Zurueck', 40, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_state_manager.set_state('start_menu')))
 
+
     def draw(self):
         """ Draws the menu with all buttons."""
+
         self.screen.blit(self.image,(0,0))
 
         for i, button in enumerate(self.buttons):
@@ -35,6 +40,8 @@ class LevelChooserMenu(State):
             button.draw(self.screen)
         pygame.display.flip()
 
+
     def handle_event(self, event):
         """Handles the Menu Input"""
+
         self.input_handler.handle_menu_input(self, event)

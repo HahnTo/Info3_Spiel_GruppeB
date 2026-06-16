@@ -8,7 +8,6 @@ PARTIAL_IP_REGEX = re.compile(r"^\d{0,3}(\.\d{0,3}){0,3}$")
 class InputHandler:
     """ Converts keyboard input into actions."""
 
-    # Später über JSON Datei laden und speichern für custom Bindings
     # Two bindings for both local players
     BINDINGS = {
         "left1": pygame.K_a,
@@ -20,16 +19,13 @@ class InputHandler:
         "jump2": pygame.K_UP
     }
 
+
     def __init__(self):
         """ Initializes the input handler.
             Sets the default bindings """
+
         self.key_bindings = self.BINDINGS
-        # Später: self.key_bindings = self.load_bindings(path)
 
-
-    def set_custom_binding(self, action, key):
-        """ Set own keybindings. """
-        pass
 
     def get_input(self, players, mode, local_player_id=1):
         """ Handles the keyboard input depending on mode."""
@@ -46,8 +42,10 @@ class InputHandler:
 
             self.handle_player_input(player, mode, player.player_id)
 
+
     def handle_player_input(self, player, mode, player_id):
         """ Handles movement and jump for a single player."""
+
         # Get all pressed keys
         keys = pygame.key.get_pressed()
 
@@ -79,7 +77,8 @@ class InputHandler:
         player.move(direction)
         if jump:
             player.jump()
-    
+
+
     def handle_menu_input(self, menu, event):
         """ Handles the input in the menus. """
 
@@ -91,8 +90,10 @@ class InputHandler:
             if event.key == pygame.K_RETURN:
                 menu.buttons[menu.selected_index].on_click()
 
+
     def handle_input_field(self, input_field, event):
         """ Handles the input in the input_field. """
+
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_RETURN:
@@ -111,16 +112,3 @@ class InputHandler:
                     # check the regex
                     if len(new_value) <= 15 and PARTIAL_IP_REGEX.fullmatch(new_value):
                         input_field.value = new_value
-
-    def save_bindings(self, filepath: str = "config/keybindings.json"):
-        """
-        Saves the new keybindings.
-
-        TODO:
-            - Keybindings vermutlich in JSON Format abspeichern und dann per load_bindings laden.
-        """
-        pass
-
-    def load_bindings(self, filepath):
-        """ Loads the saved keybindings from a JSON file. """
-        pass

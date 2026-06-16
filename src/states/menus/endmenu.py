@@ -5,11 +5,13 @@ from src.states.state import State
 from src.inputhandler import InputHandler
 from src.config import WIDTH, HEIGHT
 
+
 class EndMenu(State):
     """ Creates the end menu that appears after the game."""
 
     def __init__(self, screen, game_state_manager, game_controller):
         """ Initialises the end menu screen."""
+
         super().__init__(screen, game_state_manager, game_controller)
 
         self.level_id = None
@@ -19,14 +21,18 @@ class EndMenu(State):
 
         self.timer = 0.0
 
+
     def build_menu(self, level_id, timer):
         """ Creates Level id and buttons. """
+
         self.level_id = level_id
         self.timer = timer
         self.create_buttons()
 
+
     def create_buttons(self):
         """ Create buttons depending on the game mode."""
+
         self.buttons = []
         self.selected_index = 0
         is_online = self.game_controller.game_mode == 'online'
@@ -56,15 +62,19 @@ class EndMenu(State):
                 lambda: self.game_state_manager.set_state('start_menu')
             ))
 
+
     def update(self, dt):
         """ Waits for a message from the server. """
+
         if self.game_controller.game_mode == 'online' and self.game_controller.network_client:
             msg = self.game_controller.network_client.get_update()
             if msg and msg.get("type") == "restart":
                 self.game_controller.restart_online(send=False)
 
+
     def draw(self):
         """ Draws the menu with all buttons."""
+
         self.screen.blit(self.image,(0,0))
 
         level_font = pygame.font.Font(None, 60)
@@ -111,6 +121,8 @@ class EndMenu(State):
             button.draw(self.screen)
         pygame.display.flip()
 
+
     def handle_event(self, event):
         """Handles the Menu Input"""
+
         self.input_handler.handle_menu_input(self, event)

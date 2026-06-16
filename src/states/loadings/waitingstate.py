@@ -16,6 +16,7 @@ class WaitingState(State):
 
     def __init__(self, screen, game_state_manager, game_controller):
         """ Initialize the waiting screen. """
+
         super().__init__(screen, game_state_manager, game_controller)
 
         self.waiting_for_connection = True
@@ -32,12 +33,16 @@ class WaitingState(State):
 
         self.is_host = self.game_controller.network_client.player_id == 1
 
+
     def create_buttons(self):
         """ Adds buttons to the menu."""
+
         self.buttons.append(Button('Level 1', 48, (WIDTH/2, HEIGHT/2 - 50), lambda: self.game_controller.start_online(4)))
+
 
     def update(self, dt):
         """ Updates the screen every Frame and waits for a message from the server. """
+
         self.elapsed += dt
 
         msg = self.game_controller.network_client.get_update()
@@ -51,9 +56,11 @@ class WaitingState(State):
                     self.game_controller.start_online(4)
                     return
 
+
     def draw(self):
         """ Draw the Spinner and text.
             It is variable to show text for the host or the joiner. """
+
         font_title = pygame.font.SysFont("Courier New", 36, bold=True)
         font_ip = pygame.font.SysFont("Courier New", 22, bold=True)
 
@@ -91,8 +98,10 @@ class WaitingState(State):
 
         pygame.display.flip()
 
+
     def draw_spinner(self, cx, cy, color):
         """Draws an arc-based spinner that rotates over time."""
+
         t      = self.elapsed
         radius = 38
         n_dots = 10
@@ -107,7 +116,9 @@ class WaitingState(State):
             c      = tuple(int(c * alpha / 255) for c in color)
             pygame.draw.circle(self.screen, c, (dot_x, dot_y), size)
 
+
     def handle_event(self, event):
         """ Handles the menu input."""
+
         if self.is_host:
             self.input_handler.handle_menu_input(self, event)

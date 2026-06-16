@@ -8,23 +8,25 @@ from src.states.menus.pausemenu import PauseMenu
 from src.states.state import State
 from src.levelloader import LevelLoader
 
+
 BACKGROUND_COLOR = (50, 50, 50)
+
 try:
-    background_image = pygame.image.load(GRAPHICS_DIR/"map"/"Background.png")
+    background_image = pygame.image.load(GRAPHICS_DIR / "map" / "Background.png")
 except Exception as e:
     print(f"Fehler beim laden vom Bild: {e}")
-
-# Level 1: easy
-# Level 2: mid
-# Level 3: hard
-# Level 4: server
 
 class Level(State):
     """ Creates the Level to play in.
         It takes the tmx file which is created with Tiled.
         To load the graphics, we have implemented the Level Loader. """
+
+
+
+
     def __init__(self, screen, game_state_manager, game_controller, level_id, network_client=None):
         """ Initialise the Level and check if it's an online game."""
+
         super().__init__(screen, game_state_manager, game_controller)
 
         self.network_client = network_client
@@ -61,10 +63,13 @@ class Level(State):
 
     def load_map(self):
         """ Load the map from the Level loader"""
+
         self.loader.load()
+
 
     def create_players(self):
         """ Create the players with their spawnpoint and physics"""
+
         if self.is_online:
             # If local_id == 1, the player with ID 1 is the local player
             player1 = Player(30, HEIGHT - 20, 1, self.local_id == 1)
@@ -80,17 +85,19 @@ class Level(State):
             player2 = Player(60, HEIGHT - 20, 2, True)
             player2.add(self.all_sprites, self.players)
 
+
     def get_player(self, player_id):
         """Returns the player with the given player_id."""
+
         for player in self.players.sprites():
             if player.player_id == player_id:
                 return player
         return None
 
     def update(self, dt):
+
         """ Update all sprites.
-            Player sprites need the game controller as an additional parameter
-        """
+            Player sprites need the game controller as an additional parameter"""
         self.obstacles.update()
         if not self.is_online:
             # Update all Players
@@ -104,30 +111,27 @@ class Level(State):
             if remote_player:
                 remote_player.update(dt, self.game_controller)
 
+
     def pause(self, send_to_server=True):
         """ Freezes the level (no updates, no movement input) and shows the pause overlay on top. """
+
         if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "open_pause"})
         self.is_menu_paused = True
         self.pause_menu.selected_index = 0
 
+
     def resume(self, send_to_server=True):
         """ Closes the pause overlay and unfreezes the level again. """
+
         if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "close_pause"})
         self.is_menu_paused = False
 
-    # def toggle_pause(self, send_to_server=True):
-    #     """ Toggles the pause overlay. Bound to Esc while in the level state. """
-    #     if send_to_server and self.network_client is not None:
-    #         self.network_client.send({"type": "toggle_pause"})
-    #     if self.is_menu_paused:
-    #         self.resume()
-    #     else:
-    #         self.pause()
 
     def reset(self):
         """ Reset all obstacles and players to their start position. Resets the Timer"""
+
         self.timer = 0.0
         self.timer_running = True
 
@@ -137,8 +141,10 @@ class Level(State):
         for player in self.players.sprites():
             player.respawn()
 
+
     def sync_network(self):
         """ Sends local player state to the server and applies received remote updates"""
+
         if not self.is_online:
             return
 
@@ -175,8 +181,10 @@ class Level(State):
                 self.resume(send_to_server=False)
                 return
 
+
     def draw_tiles(self):
         """ Draw all tiles from the tmx file"""
+
         tmx = self.loader.tmx
 
         for layer in tmx.layers:
@@ -189,8 +197,10 @@ class Level(State):
                             (x * tmx.tilewidth, y * tmx.tileheight)
                         )
 
+
     def draw(self):
         """ Draws all sprites."""
+
         self.screen.blit(background_image,(0,0))
         self.draw_tiles()
         self.all_sprites.draw(self.screen)
@@ -206,8 +216,10 @@ class Level(State):
 
         pygame.display.flip()
 
+
     def draw_dead(self):
         """ Transparent surface as an overlay"""
+
         overlay = pygame.Surface((WIDTH, HEIGHT), pygame.SRCALPHA)
         overlay.fill((0, 0, 0, 150))  # schwarz, 150/255 Transparenz
         self.screen.blit(overlay, (0, 0))
@@ -219,7 +231,10 @@ class Level(State):
         text2 = font.render("Neuer Versuch ...", True, (200, 200, 200))
         self.screen.blit(text2, text2.get_rect(center=(WIDTH / 2, HEIGHT / 2 + 30)))
 
+
     def draw_timer(self):
+        """draws a timer to track time of run"""
+
         font = pygame.font.SysFont("Courier New", 36, bold=True)
 
         minutes = int(self.timer // 60)
@@ -232,8 +247,12 @@ class Level(State):
 
         self.screen.blit(text, (20, 20))
 
+
     def stop_timer(self):
+        """stops the timer"""
+
         self.timer_running = False
+
 
     def handle_event(self, event):
         """ While paused, all input goes to the pause menu overlay (Esc closes it again).
@@ -244,6 +263,7 @@ class Level(State):
 
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.pause()
+
 
     def run(self, dt):
         """ Overrides and extends the base method to synchronize the data from the server on every frame.

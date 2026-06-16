@@ -4,7 +4,7 @@ from src.config import ASSETS_DIR
 
 
 class Button:
-    """ Creats a button which reacts to the function is_pressed() """
+    """ Creates a button which reacts to the function is_pressed() """
 
     def __init__(self, text, font_size, position, event_function):
         self.text = text

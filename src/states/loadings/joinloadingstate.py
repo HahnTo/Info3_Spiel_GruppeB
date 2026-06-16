@@ -8,10 +8,8 @@ from src.config import WIDTH, HEIGHT
 
 
 class JoinLoadingState(State):
-    """
-    Shown while trying to connect to a multiplayer server.
-    Runs the TCP handshake in a background thread so the screen stays animated.
-    """
+    """ Shown while trying to connect to a multiplayer server.
+    Runs the TCP handshake in a background thread so the screen stays animated. """
 
     # How long to show the error message before going back (in seconds)
     ERROR_DISPLAY_TIME = 3.0
@@ -19,6 +17,7 @@ class JoinLoadingState(State):
     def __init__(self, screen, game_state_manager, game_controller, ip_address):
         """ Initialize the Loading screen.
             Because it's a State, the run method is always running in the background from the game controller"""
+
         super().__init__(screen, game_state_manager, game_controller)
 
         self.ip_address = ip_address
@@ -33,9 +32,11 @@ class JoinLoadingState(State):
         # Start connecting in background
         threading.Thread(target=self.connect, daemon=True).start()
 
+
     def connect(self):
         """ Try to connect to the Server.
             If successfully, the status is changed and the update function works with it."""
+
         try:
             client = NetworkClient(self.ip_address)
             if client.player_id is not None:
@@ -52,8 +53,10 @@ class JoinLoadingState(State):
                 self.status = "failed"
             print(f"Fehler beim Verbinden: {e}")
 
+
     def update(self, dt):
         """ Updates the screen every frame"""
+
         self.elapsed += dt
 
         if self.status == "success":
@@ -67,8 +70,10 @@ class JoinLoadingState(State):
             if self.error_timer >= self.ERROR_DISPLAY_TIME:
                 self.game_state_manager.set_state("multiplayer_menu")
 
+
     def draw(self):
         """ Draw the Spinner and text."""
+
         font_title = pygame.font.SysFont("Courier New", 36, bold=True)
         font_sub = pygame.font.SysFont("Courier New", 22)
         font_ip = pygame.font.SysFont("Courier New", 22)
@@ -96,8 +101,10 @@ class JoinLoadingState(State):
 
         pygame.display.flip()
 
+
     def draw_spinner(self, cx, cy, color):
         """Draws an arc-based spinner that rotates over time."""
+
         t      = self.elapsed
         radius = 38
         n_dots = 10
@@ -112,8 +119,10 @@ class JoinLoadingState(State):
             c      = tuple(int(c * alpha / 255) for c in color)
             pygame.draw.circle(self.screen, c, (dot_x, dot_y), size)
 
+
     def handle_event(self, event):
         """ You can close the screen with esc"""
+
         # Allow ESC to cancel
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             self.game_state_manager.set_state("multiplayer_menu")

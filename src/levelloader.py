@@ -15,16 +15,21 @@ class LevelLoader:
 
         self.level = level
 
+
     def load(self):
         """ Generates the obstacles from the tmx objects.
-            Sets all different flags which where set in the Tiled editor. """
-        print("Map wird geladen")
+            Sets all different flags which where set in the Tiled editor
+            and loads images for moving platforms since they cannot be
+            loaded through the tiled editor. """
+
+
         for obj in self.tmx.objects:
             print(obj)
             obj_type = obj.properties.get("obj_type")
             if obj_type is None:
                 continue
 
+            #solid -> default platforms and moving platforms if they have a button id
             if obj_type == "solid":
                 button_id = obj.properties.get("button_id")
                 if button_id is not None:
@@ -49,7 +54,7 @@ class LevelLoader:
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
 
 
-            # GOAL
+            # goal
             elif obj_type == "goal":
                 try:
                     image = pygame.image.load(GRAPHICS_DIR / "map" / "Flagge_2.png").convert_alpha()
@@ -72,11 +77,7 @@ class LevelLoader:
                 obstacle_g.add(self.level.all_sprites, self.level.obstacles)
 
 
-
-
-
-
-            # MOVABLE
+            # movable blocks
             elif obj_type == "movable":
                 try:
                     image = pygame.image.load(GRAPHICS_DIR/"map"/"Block_3.png").convert_alpha()
@@ -97,7 +98,8 @@ class LevelLoader:
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
                 obstacle.image.set_colorkey((255,255,255))
 
-            # BUTTON
+
+            # button
             elif obj_type == "button":
                 button_id = obj.properties.get("button_id")
                 try:
@@ -119,7 +121,7 @@ class LevelLoader:
                 obstacle.add(self.level.all_sprites, self.level.obstacles)
 
 
-            # Deadly obstacle
+            # deadly obstacle
             elif obj_type == "deadly":
                 image = pygame.Surface([obj.width, obj.height])
                 image.set_alpha(0)

@@ -1,5 +1,8 @@
 import pygame
 
+from src.config import ASSETS_DIR
+
+
 class Button:
     """ Creats a button which reacts to the function is_pressed() """
 
@@ -10,8 +13,8 @@ class Button:
         self.event_function = event_function
 
         self.selected = False
-        self.font = pygame.font.Font('assets/font/Pixeltype.ttf', 50)
-        self.text_surf = self.font.render(self.text, False, (0, 0, 0))
+        self.font = pygame.font.Font(ASSETS_DIR / "font/Pixeltype.ttf", 50)
+        self.text_surf = self.font.render(self.text, False, (255,255,255))
         self.text_rect = self.text_surf.get_rect(center=self.position)
 
     def draw(self, screen):
@@ -19,9 +22,9 @@ class Button:
         if self.selected:
             pygame.draw.rect(
                 screen,
-                (255, 215, 0),  # border color
+                (150, 150, 0),  # border color
                 self.text_rect.inflate(20, 10),  #  Border slightly larger than the text_rect
-                3  # Border width
+                  # Border width
             )
         screen.blit(self.text_surf, self.text_rect)
 

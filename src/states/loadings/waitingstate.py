@@ -54,33 +54,30 @@ class WaitingState(State):
     def draw(self):
         """ Draw the Spinner and text.
             It is variable to show text for the host or the joiner. """
-        accent  = (0, 200, 255)
-        white   = (230, 230, 240)
-
         font_title = pygame.font.SysFont("Courier New", 36, bold=True)
         font_ip = pygame.font.SysFont("Courier New", 22, bold=True)
 
-        self.screen.fill(MENU_BGCOLOR)
+        self.screen.blit(self.image,(0,0))
 
         cx, cy = WIDTH / 2, HEIGHT / 2
 
         if self.waiting_for_connection:
-            self.draw_spinner(cx, cy - 60, accent)
+            self.draw_spinner(cx, cy - 60, (0, 200, 255))
 
-            title = font_title.render("Warte auf zweiten Spieler …", True, white)
-            self.screen.blit(title, title.get_rect(center=(cx, cy + 30)))
+            title = font_title.render("Warte auf zweiten Spieler …", True, (0,0,0))
+            self.screen.blit(title, title.get_rect(center=(cx, cy - 220)))
 
             # Print the ip if the joiner needs it.
             ip = get_local_ip()
-            ip_surf = font_ip.render(f"Deine IP: {ip}", True, white)
-            self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy + 120)))
+            ip_surf = font_ip.render(f"Deine IP: {ip}", True, (0,0,0))
+            self.screen.blit(ip_surf, ip_surf.get_rect(center=(cx, cy - 140)))
         elif self.waiting_for_start:
-            title1 = font_title.render("Zwei Spieler sind verbunden", True, white)
+            title1 = font_title.render("Zwei Spieler sind verbunden", True, (0,0,0))
             self.screen.blit(title1, title1.get_rect(center=(cx, cy + 30)))
 
             if self.is_host:
                 # Only the Host can start the Game
-                title2 = font_title.render("Startet jetzt das Spiel", True, white)
+                title2 = font_title.render("Startet jetzt das Spiel", True, (0,0,0))
                 self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
                 for i, button in enumerate(self.buttons):
                     button.selected = (i == self.selected_index)
@@ -88,7 +85,7 @@ class WaitingState(State):
                     button.draw(self.screen)
             else:
                 # Joiner waits
-                title2 = font_title.render("Warte auf Host …", True, white)
+                title2 = font_title.render("Warte auf Host …", True, (0,0,0))
                 self.screen.blit(title2, title2.get_rect(center=(cx, cy)))
 
 

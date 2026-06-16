@@ -1,6 +1,6 @@
 import pygame
 
-from config import GRAPHICS_DIR
+from src.config import GRAPHICS_DIR
 
 
 class State:

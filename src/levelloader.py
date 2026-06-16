@@ -1,7 +1,7 @@
 import pytmx
 import pygame
 
-from config import GRAPHICS_DIR
+from src.config import GRAPHICS_DIR
 from src.obstacle import Obstacle
 
 class LevelLoader:

@@ -34,8 +34,8 @@
 \fancyhf{} % alles zurücksetzen
 
 % Header
-\fancyhead[L]{\small\textit{Monster Escape}}
-\fancyhead[C]{\small\textit{Informatik 3 – \Semester}}
+\fancyhead[L]{\small\textit{Monster Jump}}
+\fancyhead[C]{\small\textit{Informatik 3 - \Semester}}
 \fancyhead[R]{\small\textit{\GroupName}}
 
 % Footer
@@ -128,7 +128,7 @@
   {\thesubsubsection}{1em}{}
 
 % ── Projektdaten (hier anpassen!) ───────────────────────────
-\newcommand{\ProjectTitle}{Monster Escape}
+\newcommand{\ProjectTitle}{Monster Jump}
 \newcommand{\GroupName}{Gruppe B}
 \newcommand{\Semester}{SoSe 2026}
 \newcommand{\Subject}{Informatik 3}
@@ -156,7 +156,7 @@
   {\color{primaryblue}\rule{\linewidth}{2pt}}
   \vspace{0.5cm}
 
-  {\Huge\bfseries\color{primaryblue} Monster Escape}\\[0.4cm]
+  {\Huge\bfseries\color{primaryblue} Monster Jump}\\[0.4cm]
   {\Large Projektdokumentation}
 
   \vspace{0.4cm}
@@ -184,7 +184,6 @@
   \begin{tabular}{ll}
     \textbf{Gruppenname:}    & \GroupName      \\
     \textbf{Abgabedatum:}    & \SubmissionDate \\
-    % \textbf{Version:}        & \DocVersion     \\
   \end{tabular}
 
   \vspace{1.5cm}
@@ -206,7 +205,7 @@
 \begin{description}
   \item[Genre:] Koop 2D Platformer
   \item[Technologie/Engine:] Python + PyGame
-  \item[Kurzbeschreibung:] Monster Escape ist ein 2D-Platformer,
+  \item[Kurzbeschreibung:] Monster Jump ist ein 2D Platformer, 
   bei dem zwei Spieler gemeinsam an einer Tastatur oder im Multiplayer gemeinsam spielen.
   Ziel ist es, kooperativ einen Ausweg aus dem Level zu finden, indem Rätsel gelöst und
   Hindernisse überwunden werden.
@@ -234,14 +233,14 @@
 \section{Herausforderungen und Lösungsdesign}
 
 \subsection{Grafische Oberfläche}
-Um überhaupt ein Window zeichnen zu können und Objekte grafisch darzustellen
-haben wir uns dazu entschieden die Bibliothek PyGame zu verwenden, da diese
+Um überhaupt ein Window zeichnen zu können und Objekte grafisch darzustellen 
+haben wir uns dazu entschieden die Bibliothek PyGame zu verwenden, da diese 
 perfekt zu unserem Anwendungsgebiet passt.
 
 \subsection{Objektplatzierung}
 Um Objekte nicht explizit mittels Koordinaten im Code platzieren zu müssen,
 nutzen wir den Editor Tiled und die Bibliothek Pytmx. So kann man im Editor
-die Objekte grafisch platzieren und mit der entstandenen tmx Datei sowohl Objekte als auch
+die Objekte grafisch platzieren und mit der entstandenen tmx Datei sowohl Objekte als auch 
 Grafiken platzieren bzw. darstellen.
 
 \subsection{Inputhandling}
@@ -254,18 +253,18 @@ Da PyGame auch für diese Probleme Lösungen anbietet, verwenden wir die eingeba
 Mit der Klasse pygame.Rect lassen sich Kollisionen leicht überprüfen und weiterverarbeiten
 
 \subsection{Multiplayer}
-Hier haben wir uns dazu entschieden, ein Server Client System umzusetzten.
-Dafür benutzen wir die Bibliothek socket, um einen TCP Server aufzusetzen.
-Ein Spieler ist der Host und startet den Server, der andere muss über die lokale IP Adresse
-im gleichen Netzwerk beitreten.
+Hier haben wir uns dazu entschieden, ein Server Client System umzusetzen. 
+Dafür benutzen wir die Bibliothek socket, um einen TCP Server aufzusetzen. 
+Ein Spieler ist der Host und startet den Server, der andere muss über die lokale IP Adresse 
+im gleichen Netzwerk beitreten. 
 
 \subsection{Animation}
-Für die Animation des Charakters gibt es je nach Bewegungsstatus verschiedene Bilddateien,
+Für die Animation des Charakters gibt es je nach Bewegungsstatus verschiedene Bilddateien, 
 durch die Frameweise iteriert wird. So entsteht eine flüssige Animation des Charakters.
 
 \subsection{Verschiedene Menüs}
 Um zwischen allen Menüs und Level zu wechseln, nutzen wir einen Game State Manager, welcher
-alle Zustände kennt und zwischen ihnen wechselt. Je nach Zustand wird eine andere grafische Oberfläche
+alle Zustände kennt und zwischen ihnen wechselt. Je nach Zustand wird eine andere grafische Oberfläche 
 dargestellt.
 
 \newpage
@@ -303,7 +302,7 @@ dargestellt.
     \textbf{Modellierung Sparx EA fertig} & 01.06.2026 & Gemeinsam & $\checkmark$ Erledigt \\
 
     Server Client System                  & 20.05.2026 & Tobias Hahn & $\checkmark$ Erledigt \\
-
+    
     Erweiterte Spielmechaniken            & 02.06.2026 & Jonas Uzelac & $\checkmark$ Erledigt \\
 
     Tests                                 & 02.06.2026 & Gemeinsam & $\checkmark$ Erledigt \\
@@ -339,14 +338,53 @@ Erstellt mit Sparx Enterprise Architect
     \label{fig:pdf_als_bild}
 \end{figure}
 
-
+\newpage
 % ============================================================
 \section{API-Dokumentation}
 
-Kurze Dokumentation der wichtigsten Klassen und ihrer öffentlichen
-Schnittstellen.
+\subsection{pygame}
 
-% Weitere Klassen analog ergänzen
+Pygame ist die zentrale API des Projekts und wird für nahezu alle Spielmechaniken verwendet.
+Über pygame.display hat man Zugriff auf das Window und kann über die blit() Methode
+alle erstellten Elemente zeichnen.
+
+Darüber hinaus haben alle Spielobjekte von pygame.sprite.Sprite geerbt, um die Kollisionsbehandlung
+und Grafik der Objekte zu vereinfachen.
+
+Die Tastatureingabe wurde ebenfalls mithilfe von pygame umgesetzt. Über pygame.event.get() bekommt 
+man alle aktuellen Events, darunter auch Tastatureingaben. 
+Um feste FPS zu haben, nutzen wir pygame.time.
+
+\subsection{pytmx}
+Pytmx wird zum Laden von Maps verwendet, die mit dem Tiled Map Editor erstellt wurden.
+Man kann im Editor mithilfe von Tilesets die Objekte platzieren und erhält eine .tmx Datei.
+Diese kann dann in Python mithilfe dieser API ausgewertet werden.
+
+\subsection{socket}
+Die API socket wir für die TCP-Netzwerkkommunikation für den Multiplayer-Modus verwendet.
+Es wird verwendet, um den Server zu erstellen und mit 2 Clients zu verbinden. Die Verbindung
+funktioniert über die lokale IP Adresse in einem lokalen Netzwerk.
+
+
+\subsection{json}
+Die json API nutzen wir für die Serialisierung der Daten, welche über den Server versendet werden.
+Mithilfe von json.dumps werden Daten serialisiert und mit loads deserialisiert.
+Die Daten werden dabei immer als Dictionaries versendet.
+
+\subsection{struct}
+Wir verwenden struct für die Paketlänge der versendeten Daten.
+Jedes Paket beinhaltet einen Head mit einer 4-Byte Nachricht, die die Länge des jeweiligen
+Pakets beschreibt. Ansonsten wüsste man bei der TCP Verbindung nicht, wie lang die Pakete sind
+und wo eine neue Nachricht beginnt.
+
+\subsection{unittest \& pytest}
+Diese beiden APIs werden für unsere Unit Tests verwendet. Sie helfen dabei, indem 
+man über @pytest.fixture kann man vereinfachte Objekte erstellen, die als Parameter an Methoden 
+übergeben werden. 
+
+Über unittest.mock kann man Mock Objekte erstellen, die normale Objekte wie unseren Server 
+simulieren, ohne diese wirklich verwenden zu müssen. 
+
 
 \newpage
 
@@ -363,10 +401,10 @@ Gemessen zum Zeitpunkt der Abgabe.
     \rowcolor{primaryblue!20}
     \textbf{Metrik} & \textbf{Wert} \\
     \midrule
-    Anzahl Dateien (\#Files)   & 622          \\
-    Lines of Code (LOC)        & 1505          \\
-    Anzahl Klassen             & 20          \\
-    Anzahl Methoden            & 198          \\
+    Anzahl Dateien (\#Files)   & 326          \\
+    Lines of Code (LOC)        & 1573          \\
+    Anzahl Klassen             & 21          \\
+    Anzahl Methoden            & 135          \\
     \bottomrule
   \end{tabular}
   \caption{Quellcode-Metriken (ermittelt mit lizard)}
@@ -376,20 +414,20 @@ Gemessen zum Zeitpunkt der Abgabe.
 \section{Retrospektive}
 
 \subsection{Was hat gut funktioniert?}
-Die Einbindung des Tiled Map Editors hat gut funktioniert.
+Die Einbindung des Tiled Map Editors hat gut funktioniert. 
 Die Level sind jetzt einfach zu gestalten und das Spiel ist somit leicht erweiterbar.
 
 Die Umsetzung der Charakter Animation erwies sich als aufwändiger als gedacht. Das Endprodukt
 ist jedoch zufriedenstellend und die Bilddateien für die Animationen sind leicht austauschbar,
 wodurch das Aussehen des Spiels einfach verändert werden kann.
 
-Die Spielzustände haben den Arbeitsfluss verbessert. Dadurch war es leicht Menüs zu erweitern oder
-neue zu erstellen und neue Level schnell einzubinden. Außerdem wurde dadurch der Umfang des Gameloops
+Die Spielzustände haben den Arbeitsfluss verbessert. Dadurch war es leicht Menüs zu erweitern oder 
+neue zu erstellen und neue Level schnell einzubinden. Außerdem wurde dadurch der Umfang des Gameloops 
 erheblich reduziert.
 
 
 \subsection{Was würden wir beim nächsten Mal anders machen?}
-Obwohl wir mit dem Multiplayer zufrieden sind, gibt es noch Funktionen, die beim Multiplayer nicht
+Obwohl wir mit dem Multiplayer zufrieden sind, gibt es noch Funktionen, die beim Multiplayer nicht 
 funktionieren. Das Einbinden von beweglichen Objekten in den Multiplayer funktionierte bis zuletzt nicht.
 Nächstes mal würden wir bei der Planung der Architektur zu Beginn schon das Server CLient System berücksichtigen.
 

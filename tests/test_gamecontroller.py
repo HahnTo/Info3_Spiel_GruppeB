@@ -19,11 +19,11 @@ class TestGameController:
         assert game_controller.game_state_manager.get_state() == "start_menu"
 
     def test_start_pause(self, game_controller):
-        game_controller.start_pause()
+        game_controller.start_pause_after_death()
         assert game_controller.is_paused is True
-        game_controller.start_pause()
+        game_controller.start_pause_after_death()
         game_controller.pause_timer = 0.5
-        game_controller.start_pause()
+        game_controller.start_pause_after_death()
         # Timer should not have been reset
         assert game_controller.pause_timer == 0.5
 

@@ -4,6 +4,7 @@ import pytmx
 
 from src.config import ASSETS_DIR, HEIGHT, WIDTH, GRAPHICS_DIR
 from src.player import Player
+from src.states.menus.pausemenu import PauseMenu
 from src.states.state import State
 from src.levelloader import LevelLoader
 
@@ -43,6 +44,9 @@ class Level(State):
 
         self.game_controller = game_controller
         self.loader = LevelLoader(map_location, self)
+
+        self.is_menu_paused = False
+        self.pause_menu = PauseMenu(self.screen, self, self.game_state_manager, self.game_controller)
 
         # Initialize all sprite groups
         self.all_sprites = pygame.sprite.Group()
@@ -99,6 +103,22 @@ class Level(State):
                 local_player.update(dt, self.game_controller)
             if remote_player:
                 remote_player.update(dt, self.game_controller)
+
+    def pause(self):
+        """ Freezes the level (no updates, no movement input) and shows the pause overlay on top. """
+        self.is_menu_paused = True
+        self.pause_menu.selected_index = 0
+
+    def resume(self):
+        """ Closes the pause overlay and unfreezes the level again. """
+        self.is_menu_paused = False
+
+    def toggle_pause(self):
+        """ Toggles the pause overlay. Bound to Esc while in the level state. """
+        if self.is_menu_paused:
+            self.resume()
+        else:
+            self.pause()
 
     def reset(self):
         """ Reset all obstacles and players to their start position. Resets the Timer"""
@@ -169,6 +189,9 @@ class Level(State):
         if self.game_controller.is_paused:
             self.draw_dead()
 
+        if self.is_menu_paused:
+            self.pause_menu.draw()
+
         pygame.display.flip()
 
     def draw_dead(self):
@@ -200,8 +223,23 @@ class Level(State):
     def stop_timer(self):
         self.timer_running = False
 
+    def handle_event(self, event):
+        """ While paused, all input goes to the pause menu overlay (Esc closes it again).
+            While playing, Esc opens the pause overlay. """
+        if self.is_menu_paused:
+            self.pause_menu.handle_event(event)
+            return
+
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            self.pause()
+
     def run(self, dt):
-        """ Overrides and extends the base method to synchronize the data from the server on every frame."""
+        """ Overrides and extends the base method to synchronize the data from the server on every frame.
+            While the pause overlay is open, gameplay is frozen. """
+        if self.is_menu_paused:
+            self.draw()
+            return
+
         if not self.game_controller.is_paused:
             if self.timer_running: self.timer += dt
             self.update(dt)

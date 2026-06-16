@@ -162,7 +162,7 @@ class GameController:
             self.states[self.game_state_manager.get_state()].handle_event(event)
 
         # If it is running in online mode, the local ID is required.
-        if self.game_state_manager.get_state() == 'level':
+        if self.game_state_manager.get_state() == 'level' and not self.level.is_menu_paused:
             if self.game_mode == 'local':
                 self.input_handler.get_input(self.level.players, self.game_mode)
             else:
@@ -300,9 +300,9 @@ class GameController:
         """ Starts the pause after the collision and sends the message to the other client. """
         if send_to_server and self.network_client is not None:
             self.network_client.send({"type": "died"})
-        self.start_pause(callback=self.restart_game)
+        self.start_pause_after_death(callback=self.restart_game)
 
-    def start_pause(self, callback=None):
+    def start_pause_after_death(self, callback=None):
         """ Starts a short pause."""
         if self.is_paused:  # only one at a time
             return

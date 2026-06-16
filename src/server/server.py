@@ -202,6 +202,14 @@ class Server:
                     if other_client and other_client != "reserved":
                         self.send(other_client, {"type": "died"})
 
+                elif data.get("type") == "open_pause":
+                    if other_client and other_client != "reserved":
+                        self.send(other_client, {"type": "open_pause"})
+
+                elif data.get("type") == "close_pause":
+                    if other_client and other_client != "reserved":
+                        self.send(other_client, {"type": "close_pause"})
+
         except Exception as e:
             print(f"[CLIENT ERROR] player_id={player_id}: {e}")
 

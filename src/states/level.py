@@ -104,21 +104,27 @@ class Level(State):
             if remote_player:
                 remote_player.update(dt, self.game_controller)
 
-    def pause(self):
+    def pause(self, send_to_server=True):
         """ Freezes the level (no updates, no movement input) and shows the pause overlay on top. """
+        if send_to_server and self.network_client is not None:
+            self.network_client.send({"type": "open_pause"})
         self.is_menu_paused = True
         self.pause_menu.selected_index = 0
 
-    def resume(self):
+    def resume(self, send_to_server=True):
         """ Closes the pause overlay and unfreezes the level again. """
+        if send_to_server and self.network_client is not None:
+            self.network_client.send({"type": "close_pause"})
         self.is_menu_paused = False
 
-    def toggle_pause(self):
-        """ Toggles the pause overlay. Bound to Esc while in the level state. """
-        if self.is_menu_paused:
-            self.resume()
-        else:
-            self.pause()
+    # def toggle_pause(self, send_to_server=True):
+    #     """ Toggles the pause overlay. Bound to Esc while in the level state. """
+    #     if send_to_server and self.network_client is not None:
+    #         self.network_client.send({"type": "toggle_pause"})
+    #     if self.is_menu_paused:
+    #         self.resume()
+    #     else:
+    #         self.pause()
 
     def reset(self):
         """ Reset all obstacles and players to their start position. Resets the Timer"""
@@ -161,6 +167,12 @@ class Level(State):
                 return
             elif msg.get("type") == "died":
                 self.game_controller.trigger_death(send_to_server=False)
+                return
+            elif msg.get("type") == "open_pause":
+                self.pause(send_to_server=False)
+                return
+            elif msg.get("type") == "close_pause":
+                self.resume(send_to_server=False)
                 return
 
     def draw_tiles(self):
@@ -238,6 +250,7 @@ class Level(State):
             While the pause overlay is open, gameplay is frozen. """
         if self.is_menu_paused:
             self.draw()
+            self.sync_network()
             return
 
         if not self.game_controller.is_paused:

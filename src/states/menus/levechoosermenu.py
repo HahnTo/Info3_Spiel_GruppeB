@@ -26,7 +26,7 @@ class LevelChooserMenu(State):
 
     def draw(self):
         """ Draws the menu with all buttons."""
-        self.screen.fill(MENU_BGCOLOR)
+        self.screen.blit(self.image,(0,0))
 
         for i, button in enumerate(self.buttons):
             button.selected = (i == self.selected_index)

@@ -1,3 +1,6 @@
+import pygame
+
+from config import GRAPHICS_DIR
 
 
 class State:
@@ -7,6 +10,7 @@ class State:
         self.screen = screen
         self.game_state_manager = game_state_manager
         self.game_controller = game_controller
+        self.image = pygame.image.load(GRAPHICS_DIR / "map" / "title_screen.png")
 
     def run(self, dt):
         self.update(dt)

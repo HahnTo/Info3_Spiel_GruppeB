@@ -17,7 +17,7 @@ class StartMenu(State):
         self.selected_index = 0
         self.buttons = []
         self.create_buttons()
-        self.image = pygame.image.load(GRAPHICS_DIR/"map"/"title_screen.png")
+
 
     def create_buttons(self):
         """ Adds buttons to the menu."""

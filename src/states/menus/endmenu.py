@@ -65,7 +65,7 @@ class EndMenu(State):
 
     def draw(self):
         """ Draws the menu with all buttons."""
-        self.screen.fill(MENU_BGCOLOR)
+        self.screen.blit(self.image,(0,0))
 
         level_font = pygame.font.Font(None, 60)
         title_font = pygame.font.Font(None, 72)

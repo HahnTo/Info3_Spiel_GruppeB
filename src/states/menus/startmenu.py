@@ -24,9 +24,9 @@ class StartMenu(State):
     def create_buttons(self):
         """ Adds buttons to the menu."""
 
-        self.buttons.append(Button('Lokales Spiel', 48, (WIDTH/2, HEIGHT/2 - 100), lambda: self.game_state_manager.set_state('level_chooser')))
-        self.buttons.append(Button('Multiplayer', 48, (WIDTH/2, HEIGHT/2), lambda: self.game_state_manager.set_state('multiplayer_menu')))
-        self.buttons.append(Button('Spiel verlassen', 48, (WIDTH/2, HEIGHT/2 + 200), lambda: self.game_controller.shutdown()))
+        self.buttons.append(Button('Lokales Spiel', 48, (WIDTH/2, HEIGHT/2 + 100), lambda: self.game_state_manager.set_state('level_chooser')))
+        self.buttons.append(Button('Multiplayer', 48, (WIDTH/2, HEIGHT/2 + 150), lambda: self.game_state_manager.set_state('multiplayer_menu')))
+        self.buttons.append(Button('Spiel verlassen', 48, (WIDTH/2, HEIGHT/2 + 250), lambda: self.game_controller.shutdown()))
 
 
     def draw(self):

@@ -10,7 +10,7 @@ class Button:
         self.event_function = event_function
 
         self.selected = False
-        self.font = pygame.font.SysFont('Arial', self.font_size)
+        self.font = pygame.font.Font('assets/font/Pixeltype.ttf', 50)
         self.text_surf = self.font.render(self.text, False, (0, 0, 0))
         self.text_rect = self.text_surf.get_rect(center=self.position)
 

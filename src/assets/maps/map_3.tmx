@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="105">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="33" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="136">
  <tileset firstgid="1" source="tileset_xy.tsx"/>
  <tileset firstgid="26" source="Stacheln_3.tsx"/>
  <objectgroup id="2" name="Objektebene 1">
@@ -23,7 +23,7 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="33" name="platform" x="576" y="352" width="224" height="32">
+  <object id="107" name="Decke" x="480" y="0" width="576" height="24">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
@@ -71,17 +71,17 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="76" name="Block movable" x="384" y="576" width="64" height="16">
+  <object id="76" name="Block movable" x="288" y="576" width="64" height="16">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="78" name="Goal" x="0" y="576" width="64" height="64">
+  <object id="78" name="Goal" x="544" y="96" width="64" height="64">
    <properties>
     <property name="obj_type" value="goal"/>
    </properties>
   </object>
-  <object id="80" name="Button 2" x="0" y="192" width="32" height="32">
+  <object id="110" name="Button 2" x="0" y="192" width="32" height="32">
    <properties>
     <property name="button_id" value="2"/>
     <property name="obj_type" value="button"/>
@@ -91,12 +91,6 @@
    <properties>
     <property name="button_id" value="2"/>
     <property name="obj_type" value="solid"/>
-   </properties>
-  </object>
-  <object id="83" name="Button 3" x="352" y="64" width="32" height="32">
-   <properties>
-    <property name="button_id" value="3"/>
-    <property name="obj_type" value="button"/>
    </properties>
   </object>
   <object id="84" name="Wand 1" x="288" y="96" width="96" height="352">
@@ -114,7 +108,7 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="91" name="Wand 4" x="304" y="0" width="80" height="16">
+  <object id="91" name="Wand 4" x="304" y="-100" width="80" height="116">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
@@ -134,7 +128,7 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="96" name="Platform 2" x="72" y="224" width="152" height="32">
+  <object id="96" name="Platform 2" x="74" y="224" width="150" height="32">
    <properties>
     <property name="obj_type" value="solid"/>
    </properties>
@@ -154,12 +148,6 @@
     <property name="obj_type" value="solid"/>
    </properties>
   </object>
-  <object id="102" name="Lift 3" x="512" y="224" width="32" height="32">
-   <properties>
-    <property name="button_id" value="2"/>
-    <property name="obj_type" value="solid"/>
-   </properties>
-  </object>
   <object id="103" name="Part 2 Stachel 1" x="136" y="392" width="48" height="24">
    <properties>
     <property name="obj_type" value="deadly"/>
@@ -170,10 +158,130 @@
     <property name="obj_type" value="deadly"/>
    </properties>
   </object>
+  <object id="83" name="Button 3" x="352" y="64" width="32" height="32">
+   <properties>
+    <property name="button_id" value="3"/>
+    <property name="obj_type" value="button"/>
+   </properties>
+  </object>
+  <object id="102" name="Lift 3" x="576" y="272" width="32" height="32">
+   <properties>
+    <property name="button_id" value="3"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="105" name="Lift 3.5" x="544" y="272" width="32" height="32">
+   <properties>
+    <property name="button_id" value="3"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="106" name="Goal" x="160" y="0" width="64" height="64">
+   <properties>
+    <property name="obj_type" value="goall"/>
+   </properties>
+  </object>
+  <object id="33" name="P 3 platform" x="608" y="352" width="448" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="112" name="Button 3" x="640" y="320" width="32" height="32">
+   <properties>
+    <property name="button_id" value="3"/>
+    <property name="obj_type" value="button"/>
+   </properties>
+  </object>
+  <object id="113" name="P 3 platform Treppe" x="1000" y="256" width="56" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="114" name="P 3 platform Ziel 1" x="484" y="192" width="152" height="24">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="115" name="P 3 platform Ziel 2" x="480" y="160" width="480" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="116" name="P 3 platform Ziel 3" x="900" y="192" width="56" height="24">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="117" name="Button 4" x="1024" y="320" width="32" height="32">
+   <properties>
+    <property name="button_id" value="4"/>
+    <property name="obj_type" value="button"/>
+   </properties>
+  </object>
+  <object id="118" name="Button 4.5" x="480" y="128" width="32" height="32">
+   <properties>
+    <property name="button_id" value="4"/>
+    <property name="obj_type" value="button"/>
+   </properties>
+  </object>
+  <object id="119" name="Lift 4.1" x="672" y="96" width="32" height="32">
+   <properties>
+    <property name="button_id" value="4"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="120" name="Lift 4.2" x="704" y="96" width="32" height="32">
+   <properties>
+    <property name="button_id" value="4"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="121" name="Lift 4.3" x="672" y="128" width="32" height="32">
+   <properties>
+    <property name="button_id" value="4"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="122" name="Lift 4.4" x="704" y="128" width="32" height="32">
+   <properties>
+    <property name="button_id" value="4"/>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="125" name="Lift 4 Wall" x="676" y="64" width="56" height="32">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="126" name="Deko 1" x="480" y="0" width="128" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="127" name="Deko 2" x="608" y="0" width="128" height="64">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="128" name="Deko 3" x="968" y="0" width="88" height="88">
+   <properties>
+    <property name="obj_type" value="solid"/>
+   </properties>
+  </object>
+  <object id="129" name="Part 3 Stachel 1" x="808" y="328" width="48" height="24">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
+  <object id="131" name="Part 3 Stachel 2" x="808" y="136" width="48" height="24">
+   <properties>
+    <property name="obj_type" value="deadly"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="3" name="Kachelebene 1" width="33" height="22">
   <data encoding="base64" compression="zlib">
-   eJzlVlsSgjAMjIAWBnREfHsZj9ajm2gisWJ5Ff1wZ3YKnaRNm2QBoB0zZIQskDEyUfOpmluwXcrM1BoxU78btvNhy9SIORbCGrlkVhxTwe8Uy0r5rdlGkKsz6XPukQfmEXlqiEv2aFqbnkvkhlnBZ2jbphhdUIyGY0453k+YK4bEAuoc0P6+eKcC7W3gPQ8EyVtInJEXZw5ryxqoay80MNeWx/s9Sw8lykZ6LnOdAyFpN6G9rejDFFi1mzz73tcPY9Alv6Qnru59G3IPvhh28Kpx8jykZ5r6QnS1S+2MgXsOrdeiq7/Qpn9CBLU2TZ1vFzMeS3j93obWfh9If7HGrn398K5s3/uSXpNRvgukOUO0N3/Q9vEhrS+g1phCUf6/pB6ijuxj61tD/4eakUwH+oj+3wA8YgwE
+   eJztVe1uwjAMTGlHWlHQ+Bhj28vwaHm0Pdp8wlZNiBL3A37tpFPS1I2d2L46V0ZFXBF7Yk1s1HrLazQPa7bDWkd853dHnr8pYt2zbQ4npkbNsQAfxD3xQLywH8y3HFNu7406kz7nmfjJxJ5fiW979pEDYjkabCR+yzeI0XPMLcf7aqzdkAP4L50xxjfxZ2YM8O3dYx4kh7UakcdzNGrCrnF5pGLeUX159q/vQHIqtNxPKu9Sv/pMuv8A6bnO4GMKSvfibr6D6MOSQG8jXzuDbeWGenwGLDmEnoj2TcESfSH3UIpB90dqXCWeU3qaill0tVQ7dKcBugfu1Sjz+N3B3edB6kP3sui19OBYbfrHOOg6sWjFkqh4jGvm8sIYoL9UY1eLLd1PmHNH0msyNqy70Bzqt1/LHpsbw9QYoPU9++uG5yvW0Gvx/9fCMba5PaQGkRM/k+3Eb0T//wBmjhKp
   </data>
  </layer>
 </map>

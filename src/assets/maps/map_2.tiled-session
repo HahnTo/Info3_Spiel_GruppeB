@@ -6,7 +6,7 @@
     "fileStates": {
         "Stacheln.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1.5,
+            "scaleInDock": 3,
             "scaleInEditor": 1
         },
         "Stacheln2.tsx": {
@@ -15,7 +15,7 @@
             "scaleInEditor": 1
         },
         "Stacheln_3.tsx": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 1,
             "scaleInEditor": 1
         },
         "map_1 - Kopie.tmx": {
@@ -30,46 +30,38 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 0.5,
-            "selectedLayer": 0,
+            "scale": 0.33,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 744,
-                "y": 607
+                "x": 107.57575757575773,
+                "y": 774.2424242424241
             }
         },
         "map_2.tmx": {
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 486,
-                "y": 362.5
-            }
-        },
-        "map_3.tmx": {
-            "scale": 1.1011363636363636,
-            "selectedLayer": 0,
-            "viewCenter": {
-                "x": 527.6367389060888,
-                "y": 351.9091847265222
+                "x": 528,
+                "y": 351.33333333333326
             }
         },
         "map_3.tmx": {
             "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 834.8484848484848,
-                "y": 1050
+                "x": 528.7878787878789,
+                "y": 353.0303030303031
             }
         },
         "map_4.tmx": {
             "scale": 0.8630887681159419,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 552.6662118906439,
-                "y": 359.75442094768334
+                "x": 527.7556803274388,
+                "y": 351.64401532245375
             }
         },
         "tileset_x.tsx": {
@@ -77,7 +69,7 @@
             "scaleInEditor": 1
         },
         "tileset_xy.tsx": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "tileset_y.tsx": {
@@ -96,17 +88,20 @@
         "map_1.tmx",
         "tileset_xy.tsx",
         "Stacheln.tsx",
-        "Stacheln_3.tsx"
+        "Stacheln_3.tsx",
+        "map_1 - Kopie.tmx",
+        "map_3.tmx"
     ],
     "project": "map_2.tiled-project",
     "recentFiles": [
-        "map_1.tmx",
+        "map_2.tmx",
         "map_4.tmx",
         "map_3.tmx",
+        "map_1 - Kopie.tmx",
         "Stacheln_3.tsx",
         "Stacheln.tsx",
         "tileset_xy.tsx",
-        "map_2.tmx",
+        "map_1.tmx",
         "Stacheln2.tsx",
         "tileset_x.tsx"
     ],

@@ -21,7 +21,7 @@ Ziel ist es, kooperativ einen Ausweg aus dem Level zu finden, indem Rätsel gel�
 
 ## Ziel des Spiels
 
-Um ein Level zu beenden, müssen **beide Spieler gleichzeitig auf der Flagge stehen**.
+Um ein Level zu beenden, müssen **beide Spieler gleichzeitig auf der selben oder zwei unterschiedlichen Flaggen stehen**.
 
 ---
 
@@ -45,7 +45,7 @@ Für den Online Multiplayer gilt:
 ## Level
 
 - 3 lokale Level
-- 1 Multiplayer Level
+- 1 Multiplayer Level 
 
 ---
 
@@ -80,6 +80,7 @@ python -m src.gamecontroller
  
 ```text
 .
+├── Dokumentation.pdf
 ├── README.md
 ├── requirements.txt
 ├── src/
@@ -88,7 +89,7 @@ python -m src.gamecontroller
 │   ├── config.py              # Konstanten (Fenstergröße, FPS, Pfade), lokale IP
 │   ├── player.py              # Spieler: Physik, Animation, Netzwerk-Interpolation
 │   ├── obstacle.py            # Hindernisse (Plattformen, Buttons, Stacheln, Flagge, …)
-│   ├── levelloader.py         # Erzeugt Hindernisse aus den TMX-Karten
+│   ├── levelloader.py         # Erzeugt Hindernisse aus den TMX-Maps
 │   ├── inputhandler.py        # Tastatureingaben für Spiel und Menüs
 │   ├── inputfield.py          # Eingabefeld (IP-Adresse)
 │   ├── button.py              # Menü-Button
@@ -101,9 +102,7 @@ python -m src.gamecontroller
 │   ├── server/
 │   │   ├── server.py          # TCP-Server
 │   │   └── networkclient.py   # TCP-Client
-│   ├── assets/
-│   │   ├── maps/              # Level (map_1–map_4.tmx) und Tilesets (.tsx)
-│   │   └── font/              # Schriftart Pixeltype.ttf
+│   ├── assets/                # Level (map_1–map_4.tmx), Tilesets (.tsx) und Schriftart
 │   └── graphics/              # Grafiken (Karte, Spielfiguren)
 └── tests/                     # pytest-Tests
 ```

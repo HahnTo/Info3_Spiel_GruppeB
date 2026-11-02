@@ -12,16 +12,25 @@ Ziel ist es, kooperativ einen Ausweg aus dem Level zu finden, indem Rätsel gel�
 
 ---
 
+## Screenshots 
+
+<p align="center">
+  <img src="public/screenshots/Startscreen.png" alt="Screenshot vom Startmenü des Spiels" width="45%" />
+  <img src="public/screenshots/Gameplay.png" alt="Screenshot vom Gameplay des Spiels" width="45%" />
+</p>
+
+--- 
+
 ## Steuerung
 
-- **Spieler 1:** WASD Tasten  
+- **Spieler 1:** WAD Tasten  
 - **Spieler 2:** Pfeiltasten  
 
 ---
 
 ## Ziel des Spiels
 
-Um ein Level zu beenden, müssen **beide Spieler gleichzeitig auf der Flagge stehen**.
+Um ein Level zu beenden, müssen **beide Spieler gleichzeitig auf der selben oder zwei unterschiedlichen Flaggen stehen**.
 
 ---
 
@@ -45,7 +54,7 @@ Für den Online Multiplayer gilt:
 ## Level
 
 - 3 lokale Level
-- 1 Multiplayer Level
+- 1 Multiplayer Level 
 
 ---
 
@@ -53,7 +62,7 @@ Für den Online Multiplayer gilt:
 
 Benötigt werden:
 
-- Python **3.13 oder älter**
+- Python 3.10 oder neuer
 - Pakete:
   - `pygame`
   - `pytmx`
@@ -61,9 +70,51 @@ Benötigt werden:
 Installation:
 
 ```bash
+
+git clone https://github.com/HahnTo/Info3_Spiel_GruppeB.git
+cd Info3_Spiel_GruppeB
+
 pip install -r requirements.txt
 ```
 
+---
+ 
+## Spiel starten
+ 
+```bash
+python -m src.gamecontroller
+```
+
+## Projektstruktur
+ 
+```text
+.
+├── Dokumentation.pdf
+├── README.md
+├── requirements.txt
+├── src/
+│   ├── gamecontroller.py      # Einstiegspunkt, Spielschleife, Kollisionen, Zustandswechsel
+│   ├── gamestatemanager.py    # Verwaltung des aktuellen Spielzustands
+│   ├── config.py              # Konstanten (Fenstergröße, FPS, Pfade), lokale IP
+│   ├── player.py              # Spieler: Physik, Animation, Netzwerk-Interpolation
+│   ├── obstacle.py            # Hindernisse (Plattformen, Buttons, Stacheln, Flagge, …)
+│   ├── levelloader.py         # Erzeugt Hindernisse aus den TMX-Maps
+│   ├── inputhandler.py        # Tastatureingaben für Spiel und Menüs
+│   ├── inputfield.py          # Eingabefeld (IP-Adresse)
+│   ├── button.py              # Menü-Button
+│   ├── spritesheet.py         # Ausschneiden von Animationsframes
+│   ├── states/
+│   │   ├── state.py           # Basisklasse für Zustände
+│   │   ├── level.py           # Spielzustand: Level, Timer, Netzwerk-Sync
+│   │   ├── menus/             # Start-, Level-, Multiplayer-, End- und Pausemenü
+│   │   └── loadings/          # Warte- und Verbindungsbildschirm
+│   ├── server/
+│   │   ├── server.py          # TCP-Server
+│   │   └── networkclient.py   # TCP-Client
+│   ├── assets/                # Level (map_1–map_4.tmx), Tilesets (.tsx) und Schriftart
+│   └── graphics/              # Grafiken (Karte, Spielfiguren)
+└── tests/                     # pytest-Tests
+```
 ---
 
 **Viel Spaß beim Spielen wünschen Tobias, Lutz und Jonas!**
